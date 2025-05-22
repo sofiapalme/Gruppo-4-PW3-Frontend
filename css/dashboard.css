@@ -164,5 +164,18 @@ html, body {
   border-radius: 40px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 20px;
+  overflow-y: auto; /* meglio mettere overflow-y */
+  scroll-behavior: smooth; /* per scroll fluido */
+  scroll-snap-type: y mandatory; /* per scroll “snap” */
+}
+
+.section {
+  display: none;
+  height: 100%;
   overflow: auto;
 }
+
+.section.active {
+  display: block;
+}
+

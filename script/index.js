@@ -27,8 +27,8 @@ async function login(event) {
         }
         const json = await response.json();
 
-        sessionStorage.setItem("accessToken", json.accessToken)
-        sessionStorage.setItem("refreshToken", json.refreshToken)
+        localStorage.setItem("accessToken", json.accessToken)
+        localStorage.setItem("refreshToken", json.refreshToken)
 
         roleRedirection();
     }
@@ -38,7 +38,7 @@ async function login(event) {
 };
 
 function roleRedirection() {
-    const accessToken = sessionStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken) {
         const decodedToken = jwtDecode(accessToken);

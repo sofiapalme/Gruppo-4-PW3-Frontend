@@ -8,11 +8,11 @@
     <script src="script/dashboard.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">    
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Funzione per calcolare la differenza tra una data e oggi
-            $.fn.dataTable.ext.type.order['date-distance-pre'] = function(data) {
+            $.fn.dataTable.ext.type.order['date-distance-pre'] = function (data) {
                 const today = new Date();
                 const date = new Date(data);
                 return Math.abs(date - today);
@@ -35,7 +35,7 @@
             }
 
             // Fetch visite e popola la tabella
-            const accessToken = sessionStorage.getItem("accessToken");
+            const accessToken = localStorage.getItem("accessToken");
             fetch('http://localhost:8080/visit', {
                 method: 'GET',
                 headers: {
@@ -47,24 +47,30 @@
                     return response.json();
                 })
                 .then(data => {
+                    // Per ogni visita, aggiungi idPersonaVisitatore = visit.personaVisitatore.idPersona
+                    data.forEach(visit => {
+                        visit.idPersonaVisitatore = visit.personaVisitatore?.idPersona || '';
+                    });
                     const tbody = $('#table1-body');
                     tbody.empty();
                     data.forEach(visit => {
-                        // Adatta i nomi dei campi a quelli restituiti dal backend
                         const row = `
-                            <tr data-id="${visit.id}">
-                                <td>${visit.personaVisitatore?.nome || ''}</td>
-                                <td>${visit.personaVisitatore?.cognome || ''}</td>
-                                <td>${visit.dataInizio || ''}</td>
-                                <td>${visit.oraInizio || ''}</td>
-                                <td>${visit.dataFine || ''}</td>
-                                <td>${visit.oraFine || ''}</td>
-                                <td>${getActionButtons(visit.personaVisitatore?.azienda || '', visit.motivo || '', visit.responsabile?.nome + ' ' + visit.responsabile?.cognome || '')}</td>
-                                <td>${getEliminaButton()}</td>
-                                <td>${getModificaButton()}</td>
-                                <td>${getAssegnaBadgeButton()}</td>
-                            </tr>
-                        `;
+    <tr data-id="${visit.id}">
+        <td>
+            ${visit.personaVisitatore?.nome || ''}
+            <input type="hidden" class="hidden-id-persona-visitatore" value="${visit.personaVisitatore?.idPersona || ''}">
+        </td>
+        <td>${visit.personaVisitatore?.cognome || ''}</td>
+        <td>${visit.dataInizio || ''}</td>
+        <td>${visit.oraInizio || ''}</td>
+        <td>${visit.dataFine || ''}</td>
+        <td>${visit.oraFine || ''}</td>
+        <td>${getActionButtons(visit.personaVisitatore?.azienda || '', visit.motivo || '', visit.responsabile?.nome + ' ' + visit.responsabile?.cognome || '')}</td>
+        <td>${getEliminaButton()}</td>
+        <td>${getModificaButton()}</td>
+        <td>${getAssegnaBadgeButton()}</td>
+    </tr>
+`;
                         tbody.append(row);
                     });
                     // Aggiorna DataTable dopo aver popolato
@@ -123,58 +129,129 @@
                 });
 
             // Gestione modale dettagli
-            $(document).on('click', '.dettagli-btn', function(e) {
+            $(document).on('click', '.dettagli-btn', function (e) {
                 e.preventDefault();
                 $('#modal-azienda').text($(this).data('azienda'));
                 $('#modal-motivo').text($(this).data('motivo'));
                 $('#modal-dipendente').text($(this).data('dipendente'));
                 $('#dettagli-modal').css('display', 'flex');
             });
-            $(document).on('click', '#close-modal', function() {
+            $(document).on('click', '#close-modal', function () {
                 $('#dettagli-modal').hide();
             });
-            $(document).on('click', '#dettagli-modal', function(e) {
+            $(document).on('click', '#dettagli-modal', function (e) {
                 if (e.target === this) $(this).hide();
             });
-            
+
             // Gestione elimina visita
             let visitIdToDelete = null;
             let rowToDelete = null;
-            $(document).on('click', '.elimina-btn', function(e) {
+            $(document).on('click', '.elimina-btn', function (e) {
                 rowToDelete = $(this).closest('tr');
                 visitIdToDelete = rowToDelete.data('id');
                 if (!visitIdToDelete) return;
                 $('#delete-modal').css('display', 'flex');
             });
-            $(document).on('click', '#delete-confirm', function() {
-                const accessToken = sessionStorage.getItem("accessToken");
+            $(document).on('click', '#delete-confirm', function () {
+                const accessToken = localStorage.getItem("accessToken");
                 fetch(`http://localhost:8080/visit/${visitIdToDelete}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
                     }
                 })
-                .then(response => {
-                    if (!response.ok) throw new Error('Errore durante l\'eliminazione');
-                    if ($.fn.DataTable.isDataTable('#table1')) {
-                        $('#table1').DataTable().row(rowToDelete).remove().draw();
-                    } else {
-                        rowToDelete.remove();
-                    }
-                })
-                .catch(err => {
-                    // Mostra errore nella modale
-                    $('#delete-modal-message').text('Errore durante l\'eliminazione della visita');
-                })
-                .finally(() => {
-                    $('#delete-modal').hide();
-                });
+                    .then(response => {
+                        if (!response.ok) throw new Error('Errore durante l\'eliminazione');
+                        if ($.fn.DataTable.isDataTable('#table1')) {
+                            $('#table1').DataTable().row(rowToDelete).remove().draw();
+                        } else {
+                            rowToDelete.remove();
+                        }
+                    })
+                    .catch(err => {
+                        // Mostra errore nella modale
+                        $('#delete-modal-message').text('Errore durante l\'eliminazione della visita');
+                    })
+                    .finally(() => {
+                        $('#delete-modal').hide();
+                    });
             });
-            $(document).on('click', '#delete-cancel', function() {
+            $(document).on('click', '#delete-cancel', function () {
                 $('#delete-modal').hide();
             });
-        }); 
-          
+            $(document).on('click', '.action-button:contains("Modifica")', function(e) {
+    e.preventDefault();
+    const row = $(this).closest('tr');
+    const idVisita = row.data('id');
+    const idPersonaVisitatore = row.find('.hidden-id-persona-visitatore').val();
+
+    $('#modifica-idVisita').val(idVisita);
+    $('#modifica-idPersonaVisitatore').val(idPersonaVisitatore);
+
+    $('#modifica-nome').val(row.find('td').eq(0).contents().filter(function() {
+        return this.nodeType === 3;
+    }).text().trim());
+
+    $('#modifica-cognome').val(row.find('td').eq(1).text());
+    $('#modifica-dataInizio').val(row.find('td').eq(2).text());
+    $('#modifica-oraInizio').val(row.find('td').eq(3).text());
+    $('#modifica-dataFine').val(row.find('td').eq(4).text());
+    $('#modifica-oraFine').val(row.find('td').eq(5).text());
+
+    const dettagliBtn = row.find('.dettagli-btn');
+    $('#modifica-azienda').val(dettagliBtn.data('azienda') || '');
+    $('#modifica-motivo').val(dettagliBtn.data('motivo') || '');
+    $('#modifica-dipendente').val(dettagliBtn.data('dipendente') || '');
+
+    $('#modifica-modal').css('display', 'flex');
+});
+            $(document).on('click', '#close-modifica-modal', function () {
+                $('#modifica-modal').hide();
+            });
+            $(document).on('click', '#modifica-modal', function (e) {
+                if (e.target === this) $(this).hide();
+            });
+            $('#modifica-form').on('submit', function(e) {
+    e.preventDefault();
+    const idVisita = $('#modifica-idVisita').val();
+    const idPersonaVisitatore = $('#modifica-idPersonaVisitatore').val();
+
+    const payload = {
+        nome: $('#modifica-nome').val(),
+        cognome: $('#modifica-cognome').val(),
+        azienda: $('#modifica-azienda').val(),
+        motivo: $('#modifica-motivo').val(),
+        dipendente: $('#modifica-dipendente').val(),
+        dataInizio: $('#modifica-dataInizio').val(),
+        oraInizio: $('#modifica-oraInizio').val(),
+        dataFine: $('#modifica-dataFine').val(),
+        oraFine: $('#modifica-oraFine').val(),
+        idPersonaVisitatore: idPersonaVisitatore
+    };
+
+    console.log('Payload:', payload);
+
+    const accessToken = localStorage.getItem("accessToken");
+
+    fetch(`http://localhost:8080/visit/${idVisita}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Errore durante la modifica');
+        $('#modifica-modal').hide();
+        location.reload();
+    })
+    .catch(err => {
+        alert('Errore durante la modifica della visita');
+    });
+});
+        });
+
     </script>
     <title>Dashboard</title>
 </head>
@@ -184,7 +261,8 @@
         <div class="modal-content">
             <div id="delete-modal-message">Sei sicuro di voler eliminare questa visita?</div>
             <div class="modal-actions">
-                <button class="action-button" id="delete-confirm" style="background:#c0392b;color:#fff;">Elimina</button>
+                <button class="action-button" id="delete-confirm"
+                    style="background:#c0392b;color:#fff;">Elimina</button>
                 <button class="action-button" id="delete-cancel">Annulla</button>
             </div>
         </div>
@@ -197,14 +275,16 @@
 
                 <div class="menu-item" id="visualizza">
                     <div class="menu-content">
-                        Visualizza <span class="arrow"><img src="assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
+                        Visualizza <span class="arrow"><img src="assets/down_arrow_white_icon.png"
+                                alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
                         <div class="submenu-item" id="visualizza-opzione1">Visualizza - Opzione 1</div>
                         <div class="submenu-item" id="visualizza-visite">Visite</div>
                         <div class="submenu-item" id="visualizza-presenti">Presenti</div>
                         <div class="submenu-item" id="visualizza-elenco-tel-dip">Elenco tel dipendenti</div>
-                        <div class="submenu-item" id="visualizza-elenco-visitatori-futuri">Elenco visitatori futuri</div>
+                        <div class="submenu-item" id="visualizza-elenco-visitatori-futuri">Elenco visitatori futuri
+                        </div>
                         <div class="submenu-item" id="visualizza-elenco-visitatori-oggi">Elenco visitatori odierni</div>
                         <div class="submenu-item" id="visualizza-visite-suo-carico">Visite a suo carico</div>
                         <div class="submenu-item" id="visualizza-presenti-suo-carico">Presenti a suo carico</div>
@@ -215,7 +295,8 @@
 
                 <div class="menu-item" id="storico">
                     <div class="menu-content">
-                        Storico <span class="arrow"><img src="assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
+                        Storico <span class="arrow"><img src="assets/down_arrow_white_icon.png"
+                                alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
                         <div class="submenu-item" id="storico-timbrature-visi">Storico timbrature visi</div>
@@ -226,7 +307,8 @@
 
                 <div class="menu-item" id="visitatori">
                     <div class="menu-content">
-                        Visitatori <span class="arrow"><img src="assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
+                        Visitatori <span class="arrow"><img src="assets/down_arrow_white_icon.png"
+                                alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
                         <div class="submenu-item" id="visitatori-opzione1">Opzione 1</div>
@@ -242,8 +324,8 @@
                 <div class="user-name">Nome e Cognome</div>
                 <button class="action-button">Logout</button>
             </div>
-        </aside>        
-        
+        </aside>
+
         <main class="content-area">
             <section id="home-section" class="section">
                 <h2>Home</h2>
@@ -271,13 +353,69 @@
                     </tbody>
                 </table>
                 <!-- Modale Dettagli -->
-                <div id="dettagli-modal" class="modal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
-                    <div class="modal-content" style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
-                        <span id="close-modal" style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                <div id="dettagli-modal" class="modal"
+                    style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                    <div class="modal-content"
+                        style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                        <span id="close-modal"
+                            style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
                         <h3>Dettagli Visitatore</h3>
                         <div><b>Azienda:</b> <span id="modal-azienda"></span></div>
                         <div><b>Motivazione:</b> <span id="modal-motivo"></span></div>
                         <div><b>Dipendente:</b> <span id="modal-dipendente"></span></div>
+                    </div>
+                </div>
+                <!-- Modale Modifica -->
+                <div id="modifica-modal" class="modal"
+                    style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                    <div class="modal-content"
+                        style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                        <span id="close-modifica-modal"
+                            style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                        <h3>Modifica Visita</h3>
+                        <form id="modifica-form">
+                            <input type="hidden" id="modifica-idVisita">
+                            <input type="hidden" id="modifica-IdPersonaVisitatore">
+                            <div class="input-group">
+                                <label for="modifica-nome">Nome</label>
+                                <input type="text" id="modifica-nome" name="nome" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="modifica-cognome">Cognome</label>
+                                <input type="text" id="modifica-cognome" name="cognome" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="modifica-azienda">Azienda</label>
+                                <input type="text" id="modifica-azienda" name="azienda" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="modifica-motivo">Motivo visita</label>
+                                <input type="text" id="modifica-motivo" name="motivo" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="modifica-dipendente">Responsabile visita</label>
+                                <input type="text" id="modifica-dipendente" name="dipendente" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="modifica-dataInizio">Data inizio</label>
+                                <input type="date" id="modifica-dataInizio" name="dataInizio" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="modifica-oraInizio">Ora inizio</label>
+                                <input type="time" id="modifica-oraInizio" name="oraInizio" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="modifica-dataFine">Data fine</label>
+                                <input type="date" id="modifica-dataFine" name="dataFine" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="modifica-oraFine">Ora fine</label>
+                                <input type="time" id="modifica-oraFine" name="oraFine" required>
+                            </div>
+                            <div class="button-container">
+                                <button type="submit" class="action-button" style="width:100%;">Salva modifiche</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </section>
@@ -367,7 +505,7 @@
                                 <label for="dpi">Richiesta DPI</label>
                             </div>
                         </div>
-                        
+
                         <div class="button-container">
                             <button class="action-button">Prenota</button>
                         </div>
@@ -424,4 +562,5 @@
 
     </div>
 </body>
+
 </html>

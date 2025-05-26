@@ -1,39 +1,59 @@
 function showSection(id) {
-    document.querySelectorAll('.section').forEach(sec => {
-        if (sec.id === id) {
-            sec.classList.add('active');
-        } else {
-            sec.classList.remove('active');
-        }
+    // Nascondi tutte le sezioni
+    document.querySelectorAll('.section').forEach(section => {
+        section.style.display = 'none';
     });
+    
+    // Mostra solo la sezione richiesta
+    const sectionToShow = document.getElementById(id);
+    if (sectionToShow) {
+        sectionToShow.style.display = 'block';
+    }
 }
 
 document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', function (e) {
+    item.addEventListener('click', function(e) {
         const submenu = this.querySelector('.submenu');
         const arrow = this.querySelector('.arrow');
+        
+        // Se non c'è submenu, mostra la sezione corrispondente
+        if (!submenu) {
+            showSection(item.id + '-section');
+        }
 
+        // Gestione dei sottomenu
         document.querySelectorAll('.submenu').forEach(s => {
-            if (s !== submenu) s.classList.remove('active');
+            if (s !== submenu) {
+                s.classList.remove('active');
+            }
         });
 
         document.querySelectorAll('.arrow').forEach(a => {
-            if (a !== arrow) a.textContent = '▼';
+            if (a !== arrow) {
+                a.textContent = '▼';
+            }
         });
 
         if (submenu) {
             const isActive = submenu.classList.contains('active');
-            submenu.classList.toggle('active', !isActive);
+            submenu.classList.toggle('active');
             arrow.textContent = isActive ? '▼' : '▲';
-        } else {
-            // se non c'è submenu, mostra la home (o altra sezione)
-            showSection('home-section');
         }
 
         e.stopPropagation();
     });
 });
 
+// Gestione click sui sottomenu
+document.querySelectorAll('.submenu-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.stopPropagation(); // Previene la propagazione al menu-item padre
+        const targetId = item.id + '-section';
+        showSection(targetId);
+    });
+});
+
+// Click fuori dal menu chiude i sottomenu
 document.addEventListener('click', function(e) {
     const menu = document.querySelector('.menu');
     if (!menu.contains(e.target)) {
@@ -46,14 +66,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-document.querySelectorAll('.submenu-item').forEach(item => {
-    item.addEventListener('click', () => {
-        const targetId = item.id + '-section';
-        showSection(targetId);
-    });
-});
-
+// All'avvio mostra la home
 document.addEventListener('DOMContentLoaded', () => {
-    // Mostra home all’avvio
     showSection('home-section');
 });

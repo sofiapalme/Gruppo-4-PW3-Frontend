@@ -20,14 +20,14 @@
 
             $('#table1').DataTable({
                 lengthChange: false,  // Nasconde il selettore del numero di righe
-                pageLength: 5,        // Imposta 5 righe per pagina
+                pageLength: 10,        // Imposta 5 righe per pagina
                 order: [[3, 'asc']], // Ordina per vicinanza alla data odierna (la più vicina prima)
                 columnDefs: [{
                     targets: 3,       // Target della colonna data
                     type: 'date-distance'  // Usa il nostro ordinamento personalizzato
                 }],
                 language: {
-                    info: "Mostrando da _START_ a _END_ di _TOTAL_ elementi",
+                    info: "Elemento _START_ di _TOTAL_",
                     infoEmpty: "Nessun elemento disponibile",
                     infoFiltered: "(filtrati da _MAX_ elementi totali)",
                     search: "Cerca:",
@@ -94,17 +94,13 @@
                 <button class="action-button">Logout</button>
             </div>
         </aside>        <main class="content-area">
-            <!-- TODO: Risolvere il problema della visualizzazione simultanea delle sezioni.
-                 Attualmente possono essere visibili più sezioni contemporaneamente.
-                 Implementare la logica nel file JavaScript per assicurarsi che solo
-                 una sezione sia visibile alla volta, nascondendo tutte le altre
-                 quando viene selezionata una voce dal menu. -->
             <section id="home-section" class="section">
                 <h2>Home</h2>
                 <p>Benvenuto nella dashboard!</p>
             </section>
             <section id="visualizza-opzione1-section" class="section">
-                <h2>Visualizza - Opzione 1</h2>                <table id="table1" class="display custom-table">
+                <h2>Visualizza - Opzione 1</h2>                
+                <table id="table1" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
@@ -113,126 +109,31 @@
                             <th>Data</th>
                         </tr>
                     </thead>                    <tbody>
-                        <tr>
-                            <td>Marco</td>
-                            <td>Bianchi</td>
-                            <td>Tech Solutions</td>
-                            <td>2025-05-23</td>
-                        </tr>
-                        <tr>
-                            <td>Laura</td>
-                            <td>Neri</td>
-                            <td>Digital Corp</td>
-                            <td>2025-05-24</td>
-                        </tr>
-                        <tr>
-                            <td>Giovanni</td>
-                            <td>Verdi</td>
-                            <td>IT Services</td>
-                            <td>2025-05-22</td>
-                        </tr>
-                        <tr>
-                            <td>Sofia</td>
-                            <td>Russo</td>
-                            <td>Web Solutions</td>
-                            <td>2025-05-25</td>
-                        </tr>
-                        <tr>
-                            <td>Andrea</td>
-                            <td>Ferrari</td>
-                            <td>Data Corp</td>
-                            <td>2025-05-21</td>
-                        </tr>
-                        <tr>
-                            <td>Elena</td>
-                            <td>Romano</td>
-                            <td>Smart Tech</td>
-                            <td>2025-05-26</td>
-                        </tr>
-                        <tr>
-                            <td>Alessandro</td>
-                            <td>Colombo</td>
-                            <td>Innovation Lab</td>
-                            <td>2025-05-20</td>
-                        </tr>
-                        <tr>
-                            <td>Martina</td>
-                            <td>Ricci</td>
-                            <td>Future Systems</td>
-                            <td>2025-05-27</td>
-                        </tr>
-                        <tr>
-                            <td>Francesco</td>
-                            <td>Marino</td>
-                            <td>Tech Hub</td>
-                            <td>2025-05-19</td>
-                        </tr>
-                        <tr>
-                            <td>Chiara</td>
-                            <td>Greco</td>
-                            <td>Cloud Services</td>
-                            <td>2025-05-28</td>
-                        </tr>
-                        <tr>
-                            <td>Davide</td>
-                            <td>Conti</td>
-                            <td>Net Solutions</td>
-                            <td>2025-05-18</td>
-                        </tr>
-                        <tr>
-                            <td>Valentina</td>
-                            <td>Serra</td>
-                            <td>Dev Group</td>
-                            <td>2025-05-29</td>
-                        </tr>
-                        <tr>
-                            <td>Lorenzo</td>
-                            <td>Mancini</td>
-                            <td>Software House</td>
-                            <td>2025-05-17</td>
-                        </tr>
-                        <tr>
-                            <td>Alice</td>
-                            <td>Galli</td>
-                            <td>Tech Point</td>
-                            <td>2025-05-30</td>
-                        </tr>
-                        <tr>
-                            <td>Simone</td>
-                            <td>Leone</td>
-                            <td>Cyber Security</td>
-                            <td>2025-05-16</td>
-                        </tr>
-                        <tr>
-                            <td>Giulia</td>
-                            <td>Mariani</td>
-                            <td>AI Solutions</td>
-                            <td>2025-05-31</td>
-                        </tr>
-                        <tr>
-                            <td>Matteo</td>
-                            <td>Vitale</td>
-                            <td>Data Systems</td>
-                            <td>2025-05-15</td>
-                        </tr>
-                        <tr>
-                            <td>Sara</td>
-                            <td>Ferraro</td>
-                            <td>Cloud Tech</td>
-                            <td>2025-06-01</td>
-                        </tr>
-                        <tr>
-                            <td>Luca</td>
-                            <td>Santoro</td>
-                            <td>Mobile Dev</td>
-                            <td>2025-05-14</td>
-                        </tr>
-                        <tr>
-                            <td>Beatrice</td>
-                            <td>Palmieri</td>
-                            <td>Web Dev</td>
-                            <td>2025-06-02</td>
-                        </tr>
+                        <tr><td>Marco</td><td>Bianchi</td><td>Tech Solutions</td><td>2025-05-23</td></tr>
+                        <tr><td>Laura</td><td>Neri</td><td>Digital Corp</td><td>2025-05-24</td></tr>
+                        <tr><td>Giuseppe</td><td>Rossi</td><td>Innovate IT</td><td>2025-05-27</td></tr>
+                        <tr><td>Anna</td><td>Verdi</td><td>Smart Systems</td><td>2025-05-28</td></tr>
+                        <tr><td>Paolo</td><td>Ferrari</td><td>Data Solutions</td><td>2025-05-29</td></tr>
+                        <tr><td>Sofia</td><td>Romano</td><td>Cloud Tech</td><td>2025-05-30</td></tr>
+                        <tr><td>Roberto</td><td>Marini</td><td>Security Plus</td><td>2025-06-01</td></tr>
+                        <tr><td>Elena</td><td>Costa</td><td>Web Dynamics</td><td>2025-06-02</td></tr>
+                        <tr><td>Andrea</td><td>Moretti</td><td>Network Pro</td><td>2025-06-03</td></tr>
+                        <tr><td>Chiara</td><td>Ricci</td><td>Software Hub</td><td>2025-06-04</td></tr>
+                        <tr><td>Luca</td><td>Conti</td><td>Dev Solutions</td><td>2025-06-05</td></tr>
+                        <tr><td>Martina</td><td>Galli</td><td>AI Systems</td><td>2025-06-06</td></tr>
+                        <tr><td>Davide</td><td>Mancini</td><td>Cloud Force</td><td>2025-06-07</td></tr>
+                        <tr><td>Valentina</td><td>Leone</td><td>Data Insights</td><td>2025-06-08</td></tr>
+                        <tr><td>Francesco</td><td>Barbieri</td><td>Tech Advance</td><td>2025-06-09</td></tr>
+                        <tr><td>Giulia</td><td>Santoro</td><td>Smart Logic</td><td>2025-06-10</td></tr>
+                        <tr><td>Alessandro</td><td>Colombo</td><td>Net Systems</td><td>2025-06-11</td></tr>
+                        <tr><td>Sara</td><td>Vitali</td><td>Code Masters</td><td>2025-06-12</td></tr>
+                        <tr><td>Matteo</td><td>Greco</td><td>Data Force</td><td>2025-06-13</td></tr>
+                        <tr><td>Federica</td><td>Marino</td><td>Tech Wave</td><td>2025-06-14</td></tr>
+                        <tr><td>Simone</td><td>Lombardi</td><td>Cloud Masters</td><td>2025-06-15</td></tr>
+                        <tr><td>Elisa</td><td>Serra</td><td>Dev Hub</td><td>2025-06-16</td></tr>
+                        <tr><td>Lorenzo</td><td>Caruso</td><td>Network Plus</td><td>2025-06-17</td></tr>
+                        <tr><td>Alice</td><td>Ferraro</td><td>Smart Tech</td><td>2025-06-18</td></tr>
+                        <tr><td>Riccardo</td><td>De Luca</td><td>System Pro</td><td>2025-06-19</td></tr>
                     </tbody>
                 </table>
             </section>

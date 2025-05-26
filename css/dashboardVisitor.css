@@ -167,7 +167,7 @@ html, body {
 .content-area {
   position: absolute;
   top: 20px;
-  left: 270px;
+  left: 250px;
   right: 20px;
   width: calc(100% - 270px - 20px);
   height: calc(100% - 40px);
@@ -498,4 +498,135 @@ table.dataTable.custom-table thead td {
 
 table.dataTable.custom-table.no-footer {
   border-bottom: none !important;
+}
+
+/* Migliora la visualizzazione della DataTable per evitare le scrollbar e comprimere le colonne */
+.custom-table {
+    table-layout: auto; /* Permette alle colonne di adattarsi meglio al contenuto */
+    width: 100%;
+    font-size: 13px;
+}
+.custom-table th {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    font-size: 14px;
+    padding: 8px 6px;
+    position: relative;
+    z-index: 1;
+}
+.custom-table td {
+    white-space: normal; /* Permette ai dati di andare a capo */
+    overflow: visible;
+    text-overflow: unset;
+    font-size: 13px;
+    padding: 6px 6px;
+    word-break: break-word;
+}
+
+/* Migliora la visibilità delle frecce di ordinamento */
+table.dataTable.custom-table thead .sorting,
+table.dataTable.custom-table thead .sorting_asc,
+table.dataTable.custom-table thead .sorting_desc {
+  background-position: right 6px center;
+  background-size: 14px 14px;
+  padding-right: 22px !important;
+}
+
+/* Bottone Assegna Badge: forza la scritta a capo e riduci font se necessario */
+.custom-table .action-button {
+    min-width: 0;
+    width: 100%;
+    padding: 1px 2px;
+    font-size: 10px;
+    height: 22px;
+    border-radius: 12px;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.1;
+}
+
+.custom-table .action-button[style*="Assegna Badge"] {
+    font-size: 11px;
+    padding: 2px 2px;
+    min-width: 0;
+    max-width: 110px;
+}
+
+/* Rimuovi overflow dal contenitore della tabella se presente */
+#visualizza-opzione1-section {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.dataTables_wrapper .dataTables_scrollBody {
+    overflow-y: visible !important;
+    max-height: none !important;
+}
+
+/* Allunga la colonna Nome e accorcia le colonne Azione */
+.custom-table th:nth-child(1),
+.custom-table td:nth-child(1) {
+    min-width: 120px;
+    max-width: 200px;
+    width: 160px;
+}
+
+/* Riduci la larghezza delle colonne azione per recuperare spazio */
+.custom-table th:nth-last-child(-n+3),
+.custom-table td:nth-last-child(-n+3) {
+    min-width: 70px;
+    max-width: 110px;
+    width: 90px;
+}
+
+/* Riduci padding globale per aumentare lo spazio verticale */
+.custom-table th, .custom-table td {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+/* Modale dettagli tabella */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 18px;
+    min-width: 300px;
+    max-width: 90vw;
+    max-height: 90vh;
+    box-shadow: 0 2px 16px #0002;
+    position: relative;
+    color: #0A1429;
+    font-size: 16px;
+}
+#close-modal {
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #405577;
+}
+#dettagli-modal h3 {
+    margin-bottom: 18px;
+    color: #405577;
+    font-size: 22px;
+}
+#dettagli-modal div {
+    margin-bottom: 10px;
+}
+#dettagli-modal b {
+    color: #1b2b48;
 }

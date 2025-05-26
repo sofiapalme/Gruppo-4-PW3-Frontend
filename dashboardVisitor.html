@@ -18,31 +18,115 @@
                 return Math.abs(date - today);
             };
 
-            $('#table1').DataTable({
-                lengthChange: false,  // Nasconde il selettore del numero di righe
-                pageLength: 10,        // Imposta 5 righe per pagina
-                order: [[3, 'asc']], // Ordina per vicinanza alla data odierna (la più vicina prima)
-                columnDefs: [{
-                    targets: 3,       // Target della colonna data
-                    type: 'date-distance'  // Usa il nostro ordinamento personalizzato
-                }],
-                language: {
-                    info: "Elemento _START_ di _TOTAL_",
-                    infoEmpty: "Nessun elemento disponibile",
-                    infoFiltered: "(filtrati da _MAX_ elementi totali)",
-                    search: "Cerca:",
-                    paginate: {
-                        next: ">",
-                        previous: "<"
-                    },
-                    emptyTable: "Nessun dato presente nella tabella",
-                    zeroRecords: "Nessun risultato trovato"
-                }
-            });
+            // Funzione per generare i pulsanti azione
+            function getActionButtons(azienda, motivo, dipendente) {
+                return `
+                    <button class="action-button dettagli-btn" data-azienda="${azienda}" data-motivo="${motivo}" data-dipendente="${dipendente}">Dettagli</button>
+                `;
+            }
+            function getEliminaButton() {
+                return '<button class="action-button" style="max-width:70px;height:28px;font-size:12px;background:#c0392b;">Elimina</button>';
+            }
+            function getModificaButton() {
+                return '<button class="action-button" style="max-width:70px;height:28px;font-size:12px;">Modifica</button>';
+            }
+            function getAssegnaBadgeButton() {
+                return '<button class="action-button" style="max-width:110px;height:28px;font-size:12px;background:#27ae60;">Assegna Badge</button>';
+            }
 
-            // Inizializza la seconda tabella
-            $('#table2').DataTable({
-                // Configurazione specifica per la seconda tabella
+            // Fetch visite e popola la tabella
+            fetch('/visit')
+                .then(response => {
+                    if (!response.ok) throw new Error('Errore nel recupero delle visite');
+                    return response.json();
+                })
+                .then(data => {
+                    const tbody = $('#table1-body');
+                    tbody.empty();
+                    data.forEach(visit => {
+                        // Adatta i nomi dei campi a quelli restituiti dal backend
+                        const row = `
+                            <tr>
+                                <td>${visit.nome || ''}</td>
+                                <td>${visit.cognome || ''}</td>
+                                <td>${visit.dataInizio || ''}</td>
+                                <td>${visit.oraInizio || ''}</td>
+                                <td>${visit.dataFine || ''}</td>
+                                <td>${visit.oraFine || ''}</td>
+                                <td>${getActionButtons(visit.azienda || '', visit.motivo || '', visit.dipendente || '')}</td>
+                                <td>${getEliminaButton()}</td>
+                                <td>${getModificaButton()}</td>
+                                <td>${getAssegnaBadgeButton()}</td>
+                            </tr>
+                        `;
+                        tbody.append(row);
+                    });
+                    // Aggiorna DataTable dopo aver popolato
+                    $('#table1').DataTable().clear().destroy();
+                    $('#table1').DataTable({
+                        lengthChange: false,
+                        pageLength: 8,
+                        order: [[3, 'asc']],
+                        columnDefs: [{
+                            targets: 3,
+                            type: 'date-distance'
+                        }],
+                        autoWidth: false,
+                        responsive: true,
+                        language: {
+                            info: "Elemento _START_ di _TOTAL_",
+                            infoEmpty: "Nessun elemento disponibile",
+                            infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                            search: "Cerca:",
+                            paginate: {
+                                next: ">",
+                                previous: "<"
+                            },
+                            emptyTable: "Nessun dato presente nella tabella",
+                            zeroRecords: "Nessun risultato trovato"
+                        }
+                    });
+                })
+                .catch(err => {
+                    const tbody = $('#table1-body');
+                    tbody.html('<tr><td colspan="10">Errore nel caricamento delle visite</td></tr>');
+                    // Inizializza comunque DataTable per applicare il CSS
+                    if ($.fn.DataTable.isDataTable('#table1')) {
+                        $('#table1').DataTable().clear().destroy();
+                    }
+                    $('#table1').DataTable({
+                        lengthChange: false,
+                        pageLength: 8,
+                        autoWidth: false,
+                        responsive: true,
+                        language: {
+                            info: "Elemento _START_ di _TOTAL_",
+                            infoEmpty: "Nessun elemento disponibile",
+                            infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                            search: "Cerca:",
+                            paginate: {
+                                next: ">",
+                                previous: "<"
+                            },
+                            emptyTable: "Nessun dato presente nella tabella",
+                            zeroRecords: "Nessun risultato trovato"
+                        }
+                    });
+                });
+
+            // Gestione modale dettagli
+            $(document).on('click', '.dettagli-btn', function(e) {
+                e.preventDefault();
+                $('#modal-azienda').text($(this).data('azienda'));
+                $('#modal-motivo').text($(this).data('motivo'));
+                $('#modal-dipendente').text($(this).data('dipendente'));
+                $('#dettagli-modal').css('display', 'flex');
+            });
+            $(document).on('click', '#close-modal', function() {
+                $('#dettagli-modal').hide();
+            });
+            $(document).on('click', '#dettagli-modal', function(e) {
+                if (e.target === this) $(this).hide();
             });
         });   
     </script>
@@ -96,7 +180,7 @@
                 </div>
             </nav>
 
-            <!-- TODO: Sistemare il bug della dimensione della user-box e come fare bene la home -->
+            <!-- TODO: Sistemare il bug della dimensione della user-box e come fare bene la home-->
             <div class="user-box">
                 <div class="avatar-bg"></div>
                 <img class="avatar" src="assets/utente.png" alt="User Avatar">
@@ -117,37 +201,30 @@
                         <tr>
                             <th>Nome</th>
                             <th>Cognome</th>
-                            <th>Azienda</th>
-                            <th>Data</th>
+                            <th>Data inizio</th>
+                            <th>Ora inizio</th>
+                            <th>Data fine</th>
+                            <th>Ora fine</th>
+                            <th>Dettagli</th>
+                            <th>Elimina</th>
+                            <th>Modifica</th>
+                            <th>Assegna Badge</th>
                         </tr>
-                    </thead>                    <tbody>
-                        <tr><td>Marco</td><td>Bianchi</td><td>Tech Solutions</td><td>2025-05-23</td></tr>
-                        <tr><td>Laura</td><td>Neri</td><td>Digital Corp</td><td>2025-05-24</td></tr>
-                        <tr><td>Giuseppe</td><td>Rossi</td><td>Innovate IT</td><td>2025-05-27</td></tr>
-                        <tr><td>Anna</td><td>Verdi</td><td>Smart Systems</td><td>2025-05-28</td></tr>
-                        <tr><td>Paolo</td><td>Ferrari</td><td>Data Solutions</td><td>2025-05-29</td></tr>
-                        <tr><td>Sofia</td><td>Romano</td><td>Cloud Tech</td><td>2025-05-30</td></tr>
-                        <tr><td>Roberto</td><td>Marini</td><td>Security Plus</td><td>2025-06-01</td></tr>
-                        <tr><td>Elena</td><td>Costa</td><td>Web Dynamics</td><td>2025-06-02</td></tr>
-                        <tr><td>Andrea</td><td>Moretti</td><td>Network Pro</td><td>2025-06-03</td></tr>
-                        <tr><td>Chiara</td><td>Ricci</td><td>Software Hub</td><td>2025-06-04</td></tr>
-                        <tr><td>Luca</td><td>Conti</td><td>Dev Solutions</td><td>2025-06-05</td></tr>
-                        <tr><td>Martina</td><td>Galli</td><td>AI Systems</td><td>2025-06-06</td></tr>
-                        <tr><td>Davide</td><td>Mancini</td><td>Cloud Force</td><td>2025-06-07</td></tr>
-                        <tr><td>Valentina</td><td>Leone</td><td>Data Insights</td><td>2025-06-08</td></tr>
-                        <tr><td>Francesco</td><td>Barbieri</td><td>Tech Advance</td><td>2025-06-09</td></tr>
-                        <tr><td>Giulia</td><td>Santoro</td><td>Smart Logic</td><td>2025-06-10</td></tr>
-                        <tr><td>Alessandro</td><td>Colombo</td><td>Net Systems</td><td>2025-06-11</td></tr>
-                        <tr><td>Sara</td><td>Vitali</td><td>Code Masters</td><td>2025-06-12</td></tr>
-                        <tr><td>Matteo</td><td>Greco</td><td>Data Force</td><td>2025-06-13</td></tr>
-                        <tr><td>Federica</td><td>Marino</td><td>Tech Wave</td><td>2025-06-14</td></tr>
-                        <tr><td>Simone</td><td>Lombardi</td><td>Cloud Masters</td><td>2025-06-15</td></tr>
-                        <tr><td>Elisa</td><td>Serra</td><td>Dev Hub</td><td>2025-06-16</td></tr>
-                        <tr><td>Lorenzo</td><td>Caruso</td><td>Network Plus</td><td>2025-06-17</td></tr>
-                        <tr><td>Alice</td><td>Ferraro</td><td>Smart Tech</td><td>2025-06-18</td></tr>
-                        <tr><td>Riccardo</td><td>De Luca</td><td>System Pro</td><td>2025-06-19</td></tr>
+                    </thead>
+                    <tbody id="table1-body">
+                        <!-- Popolato dinamicamente -->
                     </tbody>
                 </table>
+                <!-- Modale Dettagli -->
+                <div id="dettagli-modal" class="modal" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                    <div class="modal-content" style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                        <span id="close-modal" style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                        <h3>Dettagli Visitatore</h3>
+                        <div><b>Azienda:</b> <span id="modal-azienda"></span></div>
+                        <div><b>Motivazione:</b> <span id="modal-motivo"></span></div>
+                        <div><b>Dipendente:</b> <span id="modal-dipendente"></span></div>
+                    </div>
+                </div>
             </section>
             <section id="visualizza-opzione2-section" class="section">
                 <h2>Visualizza - Opzione 2</h2>

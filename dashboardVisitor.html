@@ -35,7 +35,13 @@
             }
 
             // Fetch visite e popola la tabella
-            fetch('/visit')
+            const accessToken = sessionStorage.getItem("accessToken");
+            fetch('http://localhost:8080/visit', {
+                method: 'GET',
+                headers: {
+                    'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+                }
+            })
                 .then(response => {
                     if (!response.ok) throw new Error('Errore nel recupero delle visite');
                     return response.json();
@@ -46,14 +52,14 @@
                     data.forEach(visit => {
                         // Adatta i nomi dei campi a quelli restituiti dal backend
                         const row = `
-                            <tr>
-                                <td>${visit.nome || ''}</td>
-                                <td>${visit.cognome || ''}</td>
+                            <tr data-id="${visit.id}">
+                                <td>${visit.personaVisitatore?.nome || ''}</td>
+                                <td>${visit.personaVisitatore?.cognome || ''}</td>
                                 <td>${visit.dataInizio || ''}</td>
                                 <td>${visit.oraInizio || ''}</td>
                                 <td>${visit.dataFine || ''}</td>
                                 <td>${visit.oraFine || ''}</td>
-                                <td>${getActionButtons(visit.azienda || '', visit.motivo || '', visit.dipendente || '')}</td>
+                                <td>${getActionButtons(visit.personaVisitatore?.azienda || '', visit.motivo || '', visit.responsabile?.nome + ' ' + visit.responsabile?.cognome || '')}</td>
                                 <td>${getEliminaButton()}</td>
                                 <td>${getModificaButton()}</td>
                                 <td>${getAssegnaBadgeButton()}</td>
@@ -62,7 +68,9 @@
                         tbody.append(row);
                     });
                     // Aggiorna DataTable dopo aver popolato
-                    $('#table1').DataTable().clear().destroy();
+                    if ($.fn.DataTable.isDataTable('#table1')) {
+                        $('#table1').DataTable().clear().destroy();
+                    }
                     $('#table1').DataTable({
                         lengthChange: false,
                         pageLength: 8,
@@ -89,8 +97,8 @@
                 })
                 .catch(err => {
                     const tbody = $('#table1-body');
+                    // Assicura che la riga di errore abbia 10 colonne
                     tbody.html('<tr><td colspan="10">Errore nel caricamento delle visite</td></tr>');
-                    // Inizializza comunque DataTable per applicare il CSS
                     if ($.fn.DataTable.isDataTable('#table1')) {
                         $('#table1').DataTable().clear().destroy();
                     }
@@ -195,7 +203,7 @@
                 <p>Benvenuto nella dashboard!</p>
             </section>
             <section id="visualizza-opzione1-section" class="section">
-                <h2>Visualizza - Opzione 1</h2>                
+                <h2>Visualizza - Opzione 1</h2>
                 <table id="table1" class="display custom-table">
                     <thead>
                         <tr>

@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/index.css">
-  <title>Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Login</title>
 </head>
+
 <body>
-  <div class="container">
-    <img class="left-image" src="assets/immagine.png" alt="Immagine sinistra">
+    <div class="container">
+        <img class="left-image" src="assets/immagine.png" alt="Immagine sinistra">
 
-    <div class="right-panel">
-      <img class="logo" src="assets/logo-mona.png" alt="Logo Mona">
+        <div class="right-panel">
+            <img class="logo" src="assets/logo-mona.png" alt="Logo Mona">
 
-      <div class="form-box">
-        <h1 class="title">Accedi</h1>
+            <div class="form-box">
+                <h1 class="title">Accedi</h1>
 
-        <form>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" class="input" placeholder="Inserisci la tua email" required>
+                <form>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="input" placeholder="Inserisci la tua email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" class="input" placeholder="Inserisci la tua password"
+                            required>
+                    </div>
+
+                    <div id="errore" style="color: red; margin-top: 10px;"></div>
+
+                    <button type="submit" class="login-button" onclick="login(event)">Accedi</button>
+                </form>
             </div>
-          
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" class="input" placeholder="Inserisci la tua password" required>
-            </div>
-
-             <div id="errore" style="color: red; margin-top: 10px;"></div>
-          
-            <button type="submit" class="login-button">Accedi</button>
-          </form>
-          
-      </div>
+        </div>
     </div>
-  </div>
 </body>
+<script src="script/index.js"></script>
+
 </html>

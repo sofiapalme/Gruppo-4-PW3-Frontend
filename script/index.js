@@ -1,44 +1,110 @@
-async function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const errore = document.getElementById("errore");
+class InvalidTokenError extends Error {}
 
-    if (!email || !password) {
-        errore.textContent = "Compila tutti i campi!";
-        return;
+async function login(event) {
+    event.preventDefault();
+    const inputEmail = document.getElementById("email").value
+    const inputPasdword = document.getElementById("password").value;
+
+    const url = "http://localhost:8080/auth/login";
+    const requestBody = {
+        email: inputEmail,
+        password: inputPasdword
     }
 
-    const response = await fetch("http://localhost:8080/autch/login",{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "email": email,
-            "password": password
-        })
-    });
+    try {
+        const response = await fetch(
+            url,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestBody)
+            });
 
-    if(!response.ok){
-        throw(new Error("Errore nella login."))
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        const json = await response.json();
+
+        sessionStorage.setItem("accessToken", json.accessToken)
+        sessionStorage.setItem("refreshToken", json.refreshToken)
+
+        roleRedirection();
     }
-    else{
-        const data=await response.json();
-        const decoded=jwtDecode(data.accessToken);
-        console.log(data.accessToken)
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("refreshToken", data.refreshToken);
+    catch (error) {
+        console.error(error);
+    }
+};
 
-        if(decoded.groups.indexOf("Admin") >= 0){
-            window.location.href = "dashboard.html";
+function roleRedirection() {
+    const accessToken = sessionStorage.getItem("accessToken");
+
+    if (accessToken) {
+        const decodedToken = jwtDecode(accessToken);
+
+        if (decodedToken.groups.indexOf("Admin") >= 0) {
+            window.location.href = "dashboardVisitor.html";
+        }
+        else if (decodedToken.groups.indexOf("Requester") >= 0) {
+            window.location.href = "dashboardVisitor.html";
+        }
+        else if (decodedToken.groups.indexOf("Reception") >= 0) {
+            window.location.href = "dashboardVisitor.html";
+        }
+        else {
+            window.location.href = "index.html";
         }
     }
-}
+};
 
-function setSubmit(){
-    const form =document.querySelector("form");
-    form.onsubmit=function(e){
-        e.preventDefault();
-        login();
-    };
-}
+function b64DecodeUnicode(e) {
+    return decodeURIComponent(atob(e).replace(/(.)/g, ((e, r) => {
+        let o = r.charCodeAt(0).toString(16).toUpperCase();
+        return o.length < 2 && (o = "0" + o),
+            "%" + o
+    }
+    )))
+};
+
+function base64UrlDecode(e) {
+    let r = e.replace(/-/g, "+").replace(/_/g, "/");
+    switch (r.length % 4) {
+        case 0:
+            break;
+        case 2:
+            r += "==";
+            break;
+        case 3:
+            r += "=";
+            break;
+        default:
+            throw new Error("base64 string is not of the correct length")
+    }
+    try {
+        return b64DecodeUnicode(r)
+    } catch (e) {
+        return atob(r)
+    }
+};
+
+function jwtDecode(e, r) {
+    if ("string" != typeof e)
+        throw new InvalidTokenError("Invalid token specified: must be a string");
+    r || (r = {});
+    const o = !0 === r.header ? 0 : 1
+        , t = e.split(".")[o];
+    if ("string" != typeof t)
+        throw new InvalidTokenError(`Invalid token specified: missing part #${o + 1}`);
+    let n;
+    try {
+        n = base64UrlDecode(t)
+    } catch (e) {
+        throw new InvalidTokenError(`Invalid token specified: invalid base64 for part #${o + 1} (${e.message})`)
+    }
+    try {
+        return JSON.parse(n)
+    } catch (e) {
+        throw new InvalidTokenError(`Invalid token specified: invalid json for part #${o + 1} (${e.message})`)
+    }
+};

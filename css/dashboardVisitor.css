@@ -630,3 +630,37 @@ table.dataTable.custom-table thead .sorting_desc {
 #dettagli-modal b {
     color: #1b2b48;
 }
+
+#delete-modal {
+                display: none;
+                position: fixed;
+                z-index: 10000;
+                left: 0;
+                top: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0,0,0,0.4);
+                align-items: center;
+                justify-content: center;
+            }
+            #delete-modal .modal-content {
+                background: #fff;
+                padding: 30px 40px;
+                border-radius: 18px;
+                min-width: 300px;
+                max-width: 90vw;
+                max-height: 90vh;
+                box-shadow: 0 2px 16px #0002;
+                position: relative;
+                text-align: center;
+            }
+            #delete-modal .modal-actions {
+                margin-top: 24px;
+                display: flex;
+                gap: 18px;
+                justify-content: center;
+            }
+            #delete-modal .action-button {
+                min-width: 90px;
+            }
+ 

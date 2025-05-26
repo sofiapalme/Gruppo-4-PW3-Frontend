@@ -25,7 +25,7 @@
                 `;
             }
             function getEliminaButton() {
-                return '<button class="action-button" style="max-width:70px;height:28px;font-size:12px;background:#c0392b;">Elimina</button>';
+                return '<button class="action-button elimina-btn" style="max-width:70px;height:28px;font-size:12px;background:#c0392b;">Elimina</button>';
             }
             function getModificaButton() {
                 return '<button class="action-button" style="max-width:70px;height:28px;font-size:12px;">Modifica</button>';
@@ -140,13 +140,11 @@
             // Gestione elimina visita
             let visitIdToDelete = null;
             let rowToDelete = null;
-            $(document).on('click', '.action-button', function(e) {
-                if ($(this).text().trim() === 'Elimina') {
-                    rowToDelete = $(this).closest('tr');
-                    visitIdToDelete = rowToDelete.data('id');
-                    if (!visitIdToDelete) return;
-                    $('#delete-modal').css('display', 'flex');
-                }
+            $(document).on('click', '.elimina-btn', function(e) {
+                rowToDelete = $(this).closest('tr');
+                visitIdToDelete = rowToDelete.data('id');
+                if (!visitIdToDelete) return;
+                $('#delete-modal').css('display', 'flex');
             });
             $(document).on('click', '#delete-confirm', function() {
                 const accessToken = sessionStorage.getItem("accessToken");

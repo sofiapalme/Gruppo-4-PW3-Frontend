@@ -5,10 +5,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/dashboardVisitor.css" />
-    <script src="script/dashboard.js" defer></script>
+    
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">    
+    <script src="script/dashboard.js" defer></script>
     <script>
         $(document).ready(function() {
             // Funzione per calcolare la differenza tra una data e oggi
@@ -180,6 +181,7 @@
 </head>
 
 <body>
+    <div class="dashboard">
     <div id="delete-modal">
         <div class="modal-content">
             <div id="delete-modal-message">Sei sicuro di voler eliminare questa visita?</div>
@@ -189,7 +191,7 @@
             </div>
         </div>
     </div>
-    <div class="dashboard">
+    <div class="dashboardDesktop">
         <aside class="sidebar">
             <img class="logo" src="assets/logo.png" alt="Logo">
             <nav class="menu">
@@ -423,5 +425,10 @@
         </main>
 
     </div>
+
+    <div class="dashboardMobile">
+        <h1>dashboard mobile</h1>
+    		
+  	</div>
 </body>
 </html>

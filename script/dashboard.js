@@ -16,6 +16,12 @@ document.querySelectorAll('.menu-item').forEach(item => {
         const submenu = this.querySelector('.submenu');
         const arrowImg = this.querySelector('.arrow img');
         
+        document.querySelectorAll('.menu-item, .submenu-item').forEach(el => {
+            el.classList.remove('selected');
+        });
+
+        this.classList.add('selected');
+
         // Se non c'è submenu, mostra la sezione corrispondente
         if (!submenu) {
             showSection(item.id + '-section');
@@ -52,6 +58,13 @@ document.querySelectorAll('.menu-item').forEach(item => {
 document.querySelectorAll('.submenu-item').forEach(item => {
     item.addEventListener('click', (e) => {
         e.stopPropagation(); // Previene la propagazione al menu-item padre
+        
+        document.querySelectorAll('.menu-item, .submenu-item').forEach(el => {
+            el.classList.remove('selected');
+        });
+        
+        item.classList.add('selected');
+
         const targetId = item.id + '-section';
         showSection(targetId);
     });

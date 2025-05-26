@@ -4,6 +4,14 @@
   box-sizing: border-box;
 }
 
+.dashboardDesktop {
+  display: block;
+}
+
+.dashboardMobile {
+  display: none;
+}
+
 html, body {
   height: 100%;
   overflow: hidden;
@@ -663,4 +671,18 @@ table.dataTable.custom-table thead .sorting_desc {
             #delete-modal .action-button {
                 min-width: 90px;
             }
+
+            @media (max-width: 480px) {
+  .dashboardDesktop {
+    display: none;
+  }
+  .dashboardMobile {
+    display: block;
+  }
+
+  h1 {
+    color: white;
+  }
+
+}
  

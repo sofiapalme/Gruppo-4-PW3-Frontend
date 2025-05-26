@@ -12,19 +12,25 @@ document.querySelectorAll('.menu-item').forEach(item => {
     item.addEventListener('click', function (e) {
         const submenu = this.querySelector('.submenu');
         const arrow = this.querySelector('.arrow');
+        const arrowImg = arrow ? arrow.querySelector('img') : null;
 
         document.querySelectorAll('.submenu').forEach(s => {
             if (s !== submenu) s.classList.remove('active');
         });
 
-        document.querySelectorAll('.arrow').forEach(a => {
-            if (a !== arrow) a.textContent = '▼';
+        document.querySelectorAll('.arrow img').forEach(img => {
+            img.src = 'assets/down_arrow_white_icon.png';
+            img.alt = 'Freccia giù';
         });
 
         if (submenu) {
             const isActive = submenu.classList.contains('active');
             submenu.classList.toggle('active', !isActive);
-            arrow.textContent = isActive ? '▼' : '▲';
+
+            if (arrowImg) {
+                arrowImg.src = isActive ? 'assets/down_arrow_white_icon.png' : 'assets/up_arrow_white_icon.png';
+                arrowImg.alt = isActive ? 'Freccia giù' : 'Freccia su';
+            }
         } else {
             // se non c'è submenu, mostra la home (o altra sezione)
             showSection('home-section');
@@ -40,8 +46,10 @@ document.addEventListener('click', function(e) {
         document.querySelectorAll('.submenu').forEach(submenu => {
             submenu.classList.remove('active');
         });
-        document.querySelectorAll('.arrow').forEach(arrow => {
-            arrow.textContent = '▼';
+
+        document.querySelectorAll('.arrow img').forEach(img => {
+            img.src = 'assets/down_arrow_white_icon.png';
+            img.alt = 'Freccia giù';
         });
     }
 });

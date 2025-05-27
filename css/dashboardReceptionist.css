@@ -1,3 +1,6 @@
+/* =====================
+   RESET E BASE
+   ===================== */
 * {
   margin: 0;
   padding: 0;
@@ -19,12 +22,18 @@ html, body {
   background-color: #0A1429;
 }
 
+/* =====================
+   LAYOUT PRINCIPALE
+   ===================== */
 .dashboard {
   display: flex;
   height: 100vh;
   width: 100%;
 }
 
+/* =====================
+   SIDEBAR E MENU
+   ===================== */
 .sidebar {
   width: 250px;
   height: 100%;
@@ -62,18 +71,15 @@ html, body {
   display: block;
   position: relative;
 }
-
 .menu-item .menu-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
 .menu-item .arrow {
   margin-left: 8px;
   transition: transform 0.3s ease;
 }
-
 .menu-item .arrow img {
   height: 25px;
   width: auto;
@@ -91,13 +97,11 @@ html, body {
   overflow: hidden;
   transition: max-height 0.3s ease-out;
 }
-
 .submenu.active {
   display: block;
   max-height: 500px;
   padding-top: 10px;
 }
-
 .submenu-item {
   padding: 8px 0;
   font-size: 16px;
@@ -105,21 +109,48 @@ html, body {
   cursor: pointer;
   transition: color 0.3s ease;
 }
-
 .menu-item:hover,
 .submenu-item:hover {
   color: #7C8BA6;
 }
-
 .menu-item:active,
 .submenu-item:active {
   color: #7C8BA6;
 }
 
+/* --- Submenu scroll se più di 5 elementi --- */
+.menu .submenu {
+  max-height: 220px; /* Circa 5 elementi da 40-44px ciascuno */
+  overflow-y: auto;
+  transition: max-height 0.2s;
+}
+
+/* Scrollbar custom per submenu */
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  background: #1b2b48;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #405577;
+  border-radius: 8px;
+  min-height: 30px;
+}
+
+/* TODO: Sistemare la rimozione delle frecce della scrollbar verticale del submenu su tutti i browser. */
+/* =====================
+   USER BOX
+   ===================== */
 .user-box {
   margin-top: auto;
   margin-left: 12.5%;
-  width: 100%;
+  width: 80%;
   background-color: #7C8BA6;
   border-radius: 16px;
   padding: 20px 10px;
@@ -130,9 +161,7 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  width: 80%;
 }
-
 .avatar {
   width: 50px;
   height: 50px;
@@ -140,14 +169,21 @@ html, body {
   object-fit: cover;
   margin-bottom: 6px;
 }
-
 .user-name {
   font-size: 14px;
   margin-bottom: 6px;
   color: #0A1429;
   font-weight: bold;
 }
+.user-box .action-button {
+  max-width: 120px;
+  height: 35px;
+  font-size: 14px;
+}
 
+/* =====================
+   BOTTONI GENERICI
+   ===================== */
 .action-button {
   width: 100%;
   max-width: 240px;
@@ -161,17 +197,13 @@ html, body {
   display: block;
   margin: 0 auto;
 }
-
-.user-box .action-button {
-  max-width: 120px;
-  height: 35px;
-  font-size: 14px;
-}
-
 .action-button:hover {
   background-color: #405577;
 }
 
+/* =====================
+   AREA CONTENUTI PRINCIPALE
+   ===================== */
 .content-area {
   position: absolute;
   top: 20px;
@@ -187,16 +219,17 @@ html, body {
   scroll-snap-type: y mandatory;
 }
 
+/* =====================
+   SEZIONI E LAYOUT FORM
+   ===================== */
 .section {
   display: none;
   height: 100%;
   overflow: auto;
 }
-
 .section.active {
   display: block;
 }
-
 .section.centered {
   display: flex;
   align-items: center;
@@ -205,6 +238,9 @@ html, body {
   box-sizing: border-box;
 }
 
+/* =====================
+   FORM VISITATORI
+   ===================== */
 .visitatori-wrapper {
   background-color: rgba(45, 64, 98, 0.5);
   border-radius: 30px;
@@ -213,41 +249,34 @@ html, body {
   max-width: 1000px;
   margin: auto;
 }
-
 .visitatori-wrapper h2 {
   font-size: 36px;
   text-align: center;
   margin-bottom: 30px;
 }
-
 .form-sezione {
   display: flex;
   flex-direction: column;
   gap: 25px;
 }
-
 .input-row {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-   justify-content: flex-start;
+  justify-content: flex-start;
 }
-
 .input-row.left-align {
   justify-content: flex-start;
 }
-
 .input-group {
   display: flex;
   flex-direction: column;
   min-width: 250px;
 }
-
 .input-group label {
   font-size: 18px;
   margin-bottom: 8px;
 }
-
 .input-group input {
   padding: 10px;
   border-radius: 15px;
@@ -256,19 +285,16 @@ html, body {
   color: black;
   outline: none;
 }
-
 .checkbox-group {
   display: flex;
   justify-content: flex-start;
   gap: 40px;
 }
-
 .checkbox-row {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-
 .checkbox-row input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
@@ -282,11 +308,9 @@ html, body {
   outline: none;
   transition: background-color 0.3s ease;
 }
-
 .checkbox-row input[type="checkbox"]:checked {
   background-color: rgba(45, 64, 98, 0.75);
 }
-
 .checkbox-row input[type="checkbox"]::after {
   content: '';
   position: absolute;
@@ -300,11 +324,9 @@ html, body {
   opacity: 0;
   transition: opacity 0.2s ease;
 }
-
 .checkbox-row input[type="checkbox"]:checked::after {
   opacity: 1;
 }
-
 .button-container {
   display: flex;
   justify-content: center;
@@ -312,22 +334,21 @@ html, body {
   padding: 20px 0;
 }
 
-/* Stili per la tabella */
+/* =====================
+   TABELLA VISITATORI (DATATABLES)
+   ===================== */
 table.dataTable.custom-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 10px;
   margin: 0;
 }
-
-/* Header styles */
 table.dataTable.custom-table thead tr {
   background-color: #405577;
   color: #fff;
   border-radius: 15px;
   box-shadow: none;
 }
-
 table.dataTable.custom-table thead tr th {
   padding: 12px 16px;
   font-size: 16px;
@@ -335,59 +356,47 @@ table.dataTable.custom-table thead tr th {
   background-color: #405577;
   box-shadow: none;
   border: none;
-  border-bottom: none;  /* Override DataTables border */
+  border-bottom: none;
 }
-
 table.dataTable.custom-table thead tr th:first-child {
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
 }
-
 table.dataTable.custom-table thead tr th:last-child {
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
 }
-
-/* Body styles */
 table.dataTable.custom-table tbody tr {
   background-color: #d9d9d9;
   border-radius: 15px;
   box-shadow: none;
   transition: background-color 0.3s ease;
 }
-
 table.dataTable.custom-table tbody tr:hover {
   background-color: #c5c5c5;
 }
-
 table.dataTable.custom-table tbody tr td {
   padding: 12px 16px;
   font-size: 16px;
   background-color: #d9d9d9;
   box-shadow: none;
   border: none;
-  border-top: none;  /* Override DataTables border */
+  border-top: none;
 }
-
 table.dataTable.custom-table tbody tr:hover td {
   background-color: #c5c5c5;
 }
-
 table.dataTable.custom-table tbody tr td:first-child {
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
 }
-
 table.dataTable.custom-table tbody tr td:last-child {
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
 }
-
-/* DataTables specific overrides */
 .dataTables_wrapper .dataTables_filter {
   margin-bottom: 1em;
 }
-
 .dataTables_wrapper .dataTables_filter input {
   border-radius: 10px;
   border: 1px solid #ccc;
@@ -395,8 +404,6 @@ table.dataTable.custom-table tbody tr td:last-child {
   box-shadow: none;
   margin-left: 8px;
 }
-
-/* Stili per la paginazione */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
   box-shadow: none;
   border: none;
@@ -406,30 +413,24 @@ table.dataTable.custom-table tbody tr td:last-child {
   color: #405577 !important;
   background: none !important;
 }
-
 .dataTables_wrapper .dataTables_paginate .paginate_button {
   background: none !important;
   border: none !important;
   color: #1b2b48 !important;
 }
-
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
   background-color: #405577 !important;
   color: black   !important;
   border: none;
 }
-
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
   background-color: #405577 !important;
   color: black !important;
 }
-
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
   color: #7C8BA6 !important;
   cursor: default;
 }
-
-/* Nuovi stili per i pulsanti di paginazione DataTables */
 div.dt-container .dt-paging .dt-paging-button {
     box-sizing: border-box;
     display: inline-block;
@@ -445,34 +446,25 @@ div.dt-container .dt-paging .dt-paging-button {
     background: transparent !important;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
-
 div.dt-container .dt-paging .dt-paging-button:hover {
   color: white !important;
-    background-color: black !important;
 }
-
 div.dt-container .dt-paging .dt-paging-button.current {
     background-color: transparent !important;
     color: #405577 !important;
     border-color: transparent;
 }
-
-/* Remove default DataTables borders and shadows */
 table.dataTable.custom-table,
 table.dataTable.custom-table th,
 table.dataTable.custom-table td {
   border: none;
   box-shadow: none;
 }
-
-/* Remove sorting icons */
 table.dataTable.custom-table thead .sorting,
 table.dataTable.custom-table thead .sorting_asc,
 table.dataTable.custom-table thead .sorting_desc {
   background-image: none;
 }
-
-/* Rimozione completa di tutti i bordi e ombre */
 .dataTables_wrapper .dataTable.custom-table,
 .dataTables_wrapper .dataTable.custom-table thead,
 .dataTables_wrapper .dataTable.custom-table tbody,
@@ -485,34 +477,25 @@ table.dataTable.custom-table thead .sorting_desc {
   border: none !important;
   outline: none !important;
 }
-
 table.dataTable.custom-table,
 table.dataTable.custom-table * {
   border-collapse: separate !important;
   border: none !important;
   box-shadow: none !important;
 }
-
 .dataTables_wrapper {
   box-shadow: none !important;
   border: none !important;
 }
-
-/* Rimuovi il bordo tra header e body */
 table.dataTable.custom-table thead th, 
 table.dataTable.custom-table thead td {
   border-bottom: none !important;
 }
-
 table.dataTable.custom-table.no-footer {
   border-bottom: none !important;
 }
-
-/* Migliora la visualizzazione della DataTable per evitare le scrollbar e comprimere le colonne */
 .custom-table {
-    table-layout: auto; /* Permette alle colonne di adattarsi meglio al contenuto */
-    width: 100%;
-    font-size: 13px;
+    table-layout: auto; width: 100%; font-size: 13px;
 }
 .custom-table th {
     white-space: normal;
@@ -524,24 +507,13 @@ table.dataTable.custom-table.no-footer {
     z-index: 1;
 }
 .custom-table td {
-    white-space: normal; /* Permette ai dati di andare a capo */
-    overflow: visible;
-    text-overflow: unset;
-    font-size: 13px;
-    padding: 6px 6px;
-    word-break: break-word;
+    white-space: normal; overflow: visible; text-overflow: unset; font-size: 13px; padding: 6px 6px; word-break: break-word;
 }
-
-/* Migliora la visibilità delle frecce di ordinamento */
-table.dataTable.custom-table thead .sorting,
-table.dataTable.custom-table thead .sorting_asc,
-table.dataTable.custom-table thead .sorting_desc {
+table.dataTable.custom-table thead .sorting, table.dataTable.custom-table thead .sorting_asc, table.dataTable.custom-table thead .sorting_desc {
   background-position: right 6px center;
   background-size: 14px 14px;
   padding-right: 22px !important;
 }
-
-/* Bottone Assegna Badge: forza la scritta a capo e riduci font se necessario */
 .custom-table .action-button {
     min-width: 0;
     width: 100%;
@@ -553,48 +525,38 @@ table.dataTable.custom-table thead .sorting_desc {
     word-break: break-word;
     line-height: 1.1;
 }
-
 .custom-table .action-button[style*="Assegna Badge"] {
     font-size: 11px;
     padding: 2px 2px;
     min-width: 0;
     max-width: 110px;
 }
-
-/* Rimuovi overflow dal contenitore della tabella se presente */
 #visualizza-opzione1-section {
     overflow: visible !important;
     max-height: none !important;
 }
-
 .dataTables_wrapper .dataTables_scrollBody {
     overflow-y: visible !important;
     max-height: none !important;
 }
-
-/* Allunga la colonna Nome e accorcia le colonne Azione */
-.custom-table th:nth-child(1),
-.custom-table td:nth-child(1) {
+.custom-table th:nth-child(1), .custom-table td:nth-child(1) {
     min-width: 120px;
     max-width: 200px;
     width: 160px;
 }
-
-/* Riduci la larghezza delle colonne azione per recuperare spazio */
-.custom-table th:nth-last-child(-n+3),
-.custom-table td:nth-last-child(-n+3) {
+.custom-table th:nth-last-child(-n+3), .custom-table td:nth-last-child(-n+3) {
     min-width: 70px;
     max-width: 110px;
     width: 90px;
 }
-
-/* Riduci padding globale per aumentare lo spazio verticale */
 .custom-table th, .custom-table td {
     padding-top: 4px;
     padding-bottom: 4px;
 }
 
-/* Modale dettagli tabella */
+/* =====================
+   MODALI (DETTAGLI, ELIMINA)
+   ===================== */
 .modal {
     display: none;
     position: fixed;
@@ -619,7 +581,7 @@ table.dataTable.custom-table thead .sorting_desc {
     color: #0A1429;
     font-size: 16px;
 }
-#close-modal {
+#close-modal, #close-modifica-modal {
     position: absolute;
     top: 10px;
     right: 18px;
@@ -627,7 +589,7 @@ table.dataTable.custom-table thead .sorting_desc {
     cursor: pointer;
     color: #405577;
 }
-#dettagli-modal h3 {
+#dettagli-modal h3, #modifica-modal h3 {
     margin-bottom: 18px;
     color: #405577;
     font-size: 22px;
@@ -638,8 +600,8 @@ table.dataTable.custom-table thead .sorting_desc {
 #dettagli-modal b {
     color: #1b2b48;
 }
-
 #delete-modal {
+<<<<<<< HEAD:css/dashboardVisitor.css
                 display: none;
                 position: fixed;
                 z-index: 10000;
@@ -686,3 +648,173 @@ table.dataTable.custom-table thead .sorting_desc {
 
 }
  
+=======
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.4);
+    align-items: center;
+    justify-content: center;
+}
+#delete-modal .modal-content {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 18px;
+    min-width: 300px;
+    max-width: 90vw;
+    max-height: 90vh;
+    box-shadow: 0 2px 16px #0002;
+    position: relative;
+    text-align: center;
+}
+#delete-modal .modal-actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+}
+#delete-modal .action-button {
+    min-width: 90px;
+}
+/* Bottone Elimina rosso nei modali */
+.action-button.delete, #delete-modal .action-button, .action-button[style*="background:#c0392b"] {
+    background: #c0392b !important;
+    color: #fff !important;
+}
+/* Bottone con larghezza 100% nei modali */
+.modal .action-button,
+#modifica-modal .action-button[style*="width:100%"] {
+    width: 100% !important;
+    max-width: 100%;
+}
+
+/* =====================
+   ELEMENTI CUSTOM FRAME/RECTANGLE
+   ===================== */
+.home {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  background: transparent;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100%;
+  background: white;
+  border-radius: 32px;
+  padding: 1rem 1rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+.top-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 3.5rem; /* padding extra tra top e bottom */
+  width: 100%;
+}
+
+.top-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: auto;
+}
+
+.top-left h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.top-right {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  align-items: stretch;
+  width: auto;
+}
+
+.big-box, .small-box {
+  min-width: 200px;
+  width: 220px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #1b2b48; /* colore principale sito */
+  color: #fff; /* testo chiaro */
+  border-radius: 18px;
+  transition: background 0.2s, color 0.2s;
+  padding: 16px 20px;
+}
+
+.big-box.create-user-box {
+  background: #1b2b48;
+}
+
+.big-box .action-button.mini-link,
+.small-box .action-button.mini-link {
+  background: #405577;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  transition: background 0.2s;
+}
+.big-box .action-button.mini-link:hover,
+.small-box .action-button.mini-link:hover {
+  background: #7C8BA6;
+  color: #0A1429;
+}
+
+.bottom-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  flex: 1;
+  min-height: 400px;
+}
+
+.box {
+  flex: 1 1 0;
+  min-width: 220px;
+  height: 100%;
+  min-height: 520px;
+  background: #ddd;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  font-size: 1.1rem;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
+} 
+.big-box.create-user-box .action-button.mini-link {
+  min-height: 28px;
+  font-size: 14px;
+  padding: 4px 10px;
+  width: 80%;
+  max-width: 120px;
+}
+>>>>>>> master:css/dashboardReceptionist.css

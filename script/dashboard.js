@@ -202,7 +202,7 @@ $(document).ready(function () {
                 autoWidth: false,
                 responsive: true,
                 language: {
-                    info: "Elemento _START_ di _TOTAL_",
+                    info: "Pagina _PAGE_ di _PAGES_",
                     infoEmpty: "Nessun elemento disponibile",
                     infoFiltered: "(filtrati da _MAX_ elementi totali)",
                     search: "Cerca:",
@@ -227,7 +227,7 @@ $(document).ready(function () {
                 autoWidth: false,
                 responsive: true,
                 language: {
-                    info: "Elemento _START_ di _TOTAL_",
+                    info: "Pagina _PAGE_ di _PAGES_",
                     infoEmpty: "Nessun elemento disponibile",
                     infoFiltered: "(filtrati da _MAX_ elementi totali)",
                     search: "Cerca:",

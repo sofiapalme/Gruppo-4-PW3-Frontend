@@ -477,6 +477,7 @@ table.dataTable.custom-table * {
   border-collapse: separate !important;
   border: none !important;
   box-shadow: none !important;
+  height: 50px !important;
 }
 .dataTables_wrapper {
   box-shadow: none !important;
@@ -502,51 +503,15 @@ table.dataTable.custom-table.no-footer {
     z-index: 1;
 }
 .custom-table td {
-    white-space: normal; overflow: visible; text-overflow: unset; font-size: 13px; padding: 6px 6px; word-break: break-word;
-}
-table.dataTable.custom-table thead .sorting, table.dataTable.custom-table thead .sorting_asc, table.dataTable.custom-table thead .sorting_desc {
-  background-position: right 6px center;
-  background-size: 14px 14px;
-  padding-right: 22px !important;
-}
-.custom-table .action-button {
-    min-width: 0;
-    width: 100%;
-    padding: 1px 2px;
-    font-size: 10px;
-    height: 22px;
-    border-radius: 12px;
-    white-space: normal;
-    word-break: break-word;
-    line-height: 1.1;
-}
-.custom-table .action-button[style*="Assegna Badge"] {
-    font-size: 11px;
-    padding: 2px 2px;
-    min-width: 0;
-    max-width: 110px;
-}
-#visualizza-opzione1-section {
-    overflow: visible !important;
-    max-height: none !important;
-}
-.dataTables_wrapper .dataTables_scrollBody {
-    overflow-y: visible !important;
-    max-height: none !important;
-}
-.custom-table th:nth-child(1), .custom-table td:nth-child(1) {
-    min-width: 120px;
-    max-width: 200px;
-    width: 160px;
-}
-.custom-table th:nth-last-child(-n+3), .custom-table td:nth-last-child(-n+3) {
-    min-width: 70px;
-    max-width: 110px;
-    width: 90px;
-}
-.custom-table th, .custom-table td {
-    padding-top: 4px;
-    padding-bottom: 4px;
+    text-align: left !important;
+    vertical-align: middle !important;
+    min-width: 80px !important;
+    max-width: 350px !important;
+    width: auto !important;
+    padding: 10px 14px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    box-sizing: border-box !important;
 }
 
 /* =====================
@@ -784,4 +749,64 @@ body div.dt-container .dt-paging .dt-paging-button:focus {
   border-color: #405577 !important;
   outline: none !important;
   box-shadow: none !important;
+}
+
+/* Uniforma larghezza e testo di tutte le celle delle DataTables custom-table */
+table.dataTable.custom-table th,
+table.dataTable.custom-table td {
+  text-align: left !important;
+  vertical-align: middle !important;
+  font-size: 15px !important;
+  padding: 10px 14px !important;
+  min-width: 80px !important;
+  max-width: 350px !important;
+  width: auto !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+/* Altezza uniforme per tutte le righe delle DataTables custom-table */
+table.dataTable.custom-table tr,
+table.dataTable.custom-table th,
+table.dataTable.custom-table td {
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  vertical-align: middle !important;
+}
+
+/* Uniforma altezza delle celle tra intestazione e dati */
+table.dataTable.custom-table th,
+table.dataTable.custom-table td {
+  min-height: 44px !important;
+  height: 44px !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+/* Rimuovi restrizioni precedenti su colonne specifiche */
+.custom-table th:nth-child(1), .custom-table td:nth-child(1),
+.custom-table th:nth-last-child(-n+3), .custom-table td:nth-last-child(-n+3) {
+  min-width: unset !important;
+  max-width: unset !important;
+  width: auto !important;
+}
+
+/* Forza il table-layout auto per evitare colonne troppo strette o larghe */
+table.dataTable.custom-table {
+  table-layout: auto !important;
+}
+
+/* Forza dimensione e padding dei bottoni nelle tabelle per uniformare l'altezza delle righe */
+table.dataTable.custom-table .action-button {
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+  padding: 2px 8px !important;
+  font-size: 13px !important;
+  line-height: 1.1 !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
 }

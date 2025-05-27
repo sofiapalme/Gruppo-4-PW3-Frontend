@@ -8,8 +8,12 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
-    <script src="script/dashboard.js" defer></script>
     <title>Dashboard</title>
+    <style>
+        .section {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -38,7 +42,6 @@
                         <div class="submenu-item" id="visualizza-opzione1">Visualizza - Opzione 1 </div>
                         <div class="submenu-item" id="visualizza-visite">Visite</div>
                         <div class="submenu-item" id="visualizza-presenti">Presenti</div>
-                        <div class="submenu-item" id="visualizza-elenco-tel-dip">Elenco tel dipendenti</div>
                         <div class="submenu-item" id="visualizza-elenco-visitatori-futuri">Elenco visitatori futuri
                         </div>
                         <div class="submenu-item" id="visualizza-elenco-visitatori-oggi">Elenco visitatori odierni</div>
@@ -295,13 +298,27 @@
                 <h2>Futuri a suo carico</h2>
                 <div id="tabella-futuri-suo-carico"></div>
             </section>
+
+            <!-- Elenco telefonico dipendenti -->
             <section id="visualizza-elenco-tel-sm-section" class="section">
                 <h2>Elenco telefonico sm</h2>
-                <div id="tabella-tel-sm"></div>
+                <table id="contactListTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Email</th>
+                            <th>Telefono</th>
+                            <th>Cellulare</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </section>
         </main>
 
     </div>
 </body>
-
+<script src="script/dataTables.js"></script>
+<script src="script/dashboard.js" defer></script>
 </html>

@@ -439,13 +439,16 @@ div.dt-container .dt-paging .dt-paging-button {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 div.dt-container .dt-paging .dt-paging-button:hover {
-  color: white !important;
+  color: black !important;
+  border: 1px solid #405577 !important;
+  
 }
-div.dt-container .dt-paging .dt-paging-button.current {
-    background-color: transparent !important;
-    color: #405577 !important;
-    border-color: transparent;
+
+div.dt-container .dt-paging .dt-paging-button:hover{
+  color: black !important;
 }
+
+
 table.dataTable.custom-table,
 table.dataTable.custom-table th,
 table.dataTable.custom-table td {
@@ -726,7 +729,6 @@ table.dataTable.custom-table thead .sorting, table.dataTable.custom-table thead 
 .big-box .action-button.mini-link:hover,
 .small-box .action-button.mini-link:hover {
   background: #7C8BA6;
-  color: #0A1429;
 }
 
 .bottom-section {
@@ -743,7 +745,7 @@ table.dataTable.custom-table thead .sorting, table.dataTable.custom-table thead 
   min-width: 220px;
   height: 100%;
   min-height: 520px;
-  background: #ddd;
+  background: #7C8BA6;
   border-radius: 24px;
   display: flex;
   flex-direction: column;
@@ -760,4 +762,26 @@ table.dataTable.custom-table thead .sorting, table.dataTable.custom-table thead 
   padding: 4px 10px;
   width: 80%;
   max-width: 120px;
+}
+
+/* Forza colore nero su hover dei bottoni paginazione DataTables */
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+div.dt-container .dt-paging .dt-paging-button:hover {
+  color: black !important;
+  background: none !important;
+  border-color: #405577 !important;
+}
+
+body .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+body .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+body .dataTables_wrapper .dataTables_paginate .paginate_button:active,
+body .dataTables_wrapper .dataTables_paginate .paginate_button:focus,
+body div.dt-container .dt-paging .dt-paging-button:hover,
+body div.dt-container .dt-paging .dt-paging-button:active,
+body div.dt-container .dt-paging .dt-paging-button:focus {
+  color: black !important;
+  background: none !important;
+  border-color: #405577 !important;
+  outline: none !important;
+  box-shadow: none !important;
 }

@@ -22,8 +22,16 @@ async function login(event) {
                 body: JSON.stringify(requestBody)
             });
 
+        chiudiModalErrore(); // Chiude eventuale modale aperta
+
         if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+            if (response.status === 401 || response.status === 400) {
+                mostraModalErrore();
+                return;
+            } else {
+                mostraModalErrore(`Errore: ${response.status}`);
+                return;
+            }
         }
         const json = await response.json();
 
@@ -33,9 +41,28 @@ async function login(event) {
         roleRedirection();
     }
     catch (error) {
+        mostraModalErrore("Errore di connessione al server.");
         console.error(error);
     }
-};
+}
+
+function mostraModalErrore(testo) {
+    const overlay = document.getElementById("modal-errore-overlay");
+    const modal = document.getElementById("modal-errore");
+    const text = modal.querySelector(".modal-text");
+    if (testo) text.textContent = testo;
+    overlay.style.display = "flex";
+    // Chiudi la modale solo cliccando sull'overlay, non sulla modale
+    overlay.onclick = function(e) {
+        if (e.target === overlay) chiudiModalErrore();
+    };
+}
+
+function chiudiModalErrore() {
+    const overlay = document.getElementById("modal-errore-overlay");
+    overlay.style.display = "none";
+    overlay.onclick = null;
+}
 
 function roleRedirection() {
     const accessToken = localStorage.getItem("accessToken");
@@ -44,7 +71,7 @@ function roleRedirection() {
         const decodedToken = jwtDecode(accessToken);
 
         if (decodedToken.groups.indexOf("Admin") >= 0) {
-            window.location.href = "dashboardVisitor.html";
+            window.location.href = "dashboardReceptionist.html";
         }
         else if (decodedToken.groups.indexOf("Requester") >= 0) {
             window.location.href = "dashboardVisitor.html";

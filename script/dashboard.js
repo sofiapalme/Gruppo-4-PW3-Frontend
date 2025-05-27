@@ -3,7 +3,7 @@ function showSection(id) {
     document.querySelectorAll('.section').forEach(section => {
         section.style.display = 'none';
     });
-    
+
     // Mostra solo la sezione richiesta
     const sectionToShow = document.getElementById(id);
     if (sectionToShow) {
@@ -12,10 +12,10 @@ function showSection(id) {
 }
 
 document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', function(e) {
+    item.addEventListener('click', function (e) {
         const submenu = this.querySelector('.submenu');
         const arrowImg = this.querySelector('.arrow img');
-        
+
         // Se non c'è submenu, mostra la sezione corrispondente
         if (!submenu) {
             showSection(item.id + '-section');
@@ -58,7 +58,7 @@ document.querySelectorAll('.submenu-item').forEach(item => {
 });
 
 // Click fuori dal menu chiude i sottomenu
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     const menu = document.querySelector('.menu');
     if (!menu.contains(e.target)) {
         document.querySelectorAll('.submenu').forEach(submenu => {

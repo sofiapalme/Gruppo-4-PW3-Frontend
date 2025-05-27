@@ -94,6 +94,57 @@ label {
   background-color: #405577;
 }
 
+.modal-errore-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+.modal-errore {
+    margin-top: 32px;
+    background: #ffdddd;
+    color: #b30000;
+    border: 1px solid #b30000;
+    border-radius: 8px;
+    padding: 16px 32px;
+    min-width: 300px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    font-weight: bold;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.modal-close {
+    margin-right: 16px;
+    font-size: 1.5em;
+    color: #b30000;
+    font-weight: bold;
+    user-select: none;
+    pointer-events: none; /* la X non è cliccabile */
+}
+.modal-text {
+    color: #b30000;
+}
+
+.modal-open *:not(.modal-errore):not(.modal-errore *) {
+    pointer-events: none !important;
+    user-select: none !important;
+}
+.modal-open input,
+.modal-open button,
+.modal-open textarea,
+.modal-open select {
+    pointer-events: none !important;
+    user-select: none !important;
+}
+
 @media (max-width: 480px) {
   html, body {
     width: 100%;

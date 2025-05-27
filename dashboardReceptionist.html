@@ -44,9 +44,8 @@
                         <div class="submenu-item" id="visualizza-opzione1">Visualizza - Opzione 1 </div>
                         <div class="submenu-item" id="visualizza-visite">Visite</div>
                         <div class="submenu-item" id="visualizza-presenti">Presenti</div>
-                        <div class="submenu-item" id="visualizza-elenco-visitatori-futuri">Elenco visitatori futuri
-                        </div>
-                        <div class="submenu-item" id="visualizza-elenco-visitatori-oggi">Elenco visitatori odierni</div>
+                        <div class="submenu-item" id="visualizza-elenco-visite-future">Elenco visite future</div>
+                        <div class="submenu-item" id="visualizza-elenco-visite-odierne">Elenco visite odierne</div>
                         <div class="submenu-item" id="visualizza-visite-suo-carico">Visite a suo carico</div>
                         <div class="submenu-item" id="visualizza-presenti-suo-carico">Presenti a suo carico</div>
                         <div class="submenu-item" id="visualizza-futuri-suo-carico">Futuri a suo carico</div>
@@ -73,12 +72,10 @@
                     </div>
                     <div class="submenu">
                         <div class="submenu-item" id="visitatori-opzione1">Opzione 1</div>
-                        <div class="submenu-item" id="visitatori-opzione2">Opzione 2</div>
+                        <div class="submenu-item" id="crea-persone">Opzione 2</div>
                     </div>
                 </div>
             </nav>
-
-            <!-- TODO: Sistemare il bug della dimensione della user-box e come fare bene la home-->
             <div class="user-box">
                 <div class="avatar-bg"></div>
                 <img class="avatar" src="assets/utente.png" alt="User Avatar">
@@ -92,13 +89,15 @@
                 <div class="container">
 
                     <div class="top-section">
-                        <div class="top-left"><h1>Home</h1></div>
+                        <div class="top-left">
+                            <h1>Home</h1>
+                        </div>
                         <div class="top-right">
                             <div class="big-box">
                                 <div style="font-size:2.5rem;font-weight:bold;line-height:1;">128</div>
                                 <div style="font-size:1rem;">Presenti totali</div>
                             </div>
-                            
+
                             <div class="small-box">
                                 <div style="font-size:1.5rem;font-weight:bold;">85</div>
                                 <div style="font-size:0.9rem;">Dipendenti</div>
@@ -109,7 +108,8 @@
                             </div>
                             <div class="big-box create-user-box">
                                 <div style="font-size:1.3rem;font-weight:bold;margin-bottom:0.5rem;">Crea utente</div>
-                                <button class="action-button mini-link" type="button" onclick="showSection('visitatori-opzione1-section')">Vai</button>
+                                <button class="action-button mini-link" type="button"
+                                    onclick="showSection('visitatori-opzione1-section')">Vai</button>
                             </div>
                         </div>
                     </div>
@@ -126,14 +126,15 @@
                                         <th>Ora inizio</th>
                                         <th>Data fine</th>
                                         <th>Ora fine</th>
-                                        <th>Dettagli</th>
                                     </tr>
                                 </thead>
                                 <tbody id="home-table1-body">
                                     <!-- Popolato dinamicamente -->
                                 </tbody>
                             </table>
-                            <button class="action-button mini-link" type="button" onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione 1</button>
+                            <button class="action-button mini-link" type="button"
+                                onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione
+                                1</button>
                         </div>
                         <div class="box">
                             <h3>Visitatori domani</h3>
@@ -146,14 +147,15 @@
                                         <th>Ora inizio</th>
                                         <th>Data fine</th>
                                         <th>Ora fine</th>
-                                        <th>Dettagli</th>
                                     </tr>
                                 </thead>
                                 <tbody id="home-table2-body">
                                     <!-- Popolato dinamicamente -->
                                 </tbody>
                             </table>
-                            <button class="action-button mini-link" type="button" onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione 1</button>
+                            <button class="action-button mini-link" type="button"
+                                onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione
+                                1</button>
                         </div>
                     </div>
                 </div>
@@ -322,9 +324,81 @@
                 </div>
             </section>
 
-            <section id="visitatori-opzione2-section" class="section">
-                <h2>Visitatori - Opzione 2</h2>
-                <p>Contenuto della sezione Visitatori Opzione 2</p>
+            <section id="crea-persone-section" class="section">
+                <h2>Crea Persone</h2>
+
+                <form id="personForm">
+                    <label>
+                        Nome: 
+                        <input type="text" name="nome" placeholder="Nome" required />
+                    </label
+                    ><br />
+                    <label>
+                        Cognome: 
+                        <input type="text" name="cognome" placeholder="Cognome" required />
+                    </label>
+                    <br />
+                    <label>
+                        Azienda: 
+                        <input type="text" name="azienda" placeholder="Azienda" required />
+                    </label>
+                    <br />
+                    <label>
+                        Indirizzo: 
+                        <input type="text" name="indirizzo" placeholder="Indirizzo" required />
+                    </label>
+                    <br />
+                    <label>Città: <input type="text" name="citta" placeholder="Città" required /></label><br />
+                    <label>Provincia: <input type="text" name="provincia" placeholder="Provincia"
+                            required /></label><br />
+                    <label>Nazione: <input type="text" name="nazione" placeholder="Nazione" required /></label><br />
+                    <label>Telefono: <input type="tel" name="telefono" placeholder="Telefono" /></label><br />
+                    <label>Cellulare: <input type="tel" name="cellulare" placeholder="Cellulare" /></label><br />
+                    <label>Fax: <input type="text" name="fax" placeholder="Fax" /></label><br />
+                    <label>Partita IVA: <input type="text" name="pIva" placeholder="Partita IVA" /></label><br />
+                    <label>Codice Fiscale: <input type="text" name="cf" placeholder="Codice Fiscale"
+                            required /></label><br />
+                    <label>Email: <input type="email" name="mail" placeholder="Email" required /></label><br />
+                    <label>Foto: <input type="checkbox" name="foto" /></label> Foto presente<br />
+                    <label>Data Assunzione: <input type="date" name="dataAssunzione" /></label><br />
+                    <label>Matricola: <input type="text" name="matricola" placeholder="Matricola" /></label><br />
+                    <label>ID Filiale: <input type="number" name="idFiliale" placeholder="ID Filiale" /></label><br />
+                    <label>ID Mansione: <input type="number" name="idMansione"
+                            placeholder="ID Mansione" /></label><br />
+                    <label>ID Deposito: <input type="number" name="idDeposito"
+                            placeholder="ID Deposito" /></label><br />
+                    <label>ID Riferimento: <input type="number" name="idRiferimento"
+                            placeholder="ID Riferimento" /></label><br />
+                    <label>Visitatore: <input type="checkbox" name="visitatore" /></label> È un visitatore?<br />
+                    <label>Access Number: <input type="number" name="accessNumber"
+                            placeholder="Access Number" /></label><br />
+                    <label>Access Count: <input type="number" name="accessCount"
+                            placeholder="Access Count" /></label><br />
+                    <label>Access Update: <input type="date" name="accessUpdate" /></label><br />
+                    <label>Luogo Nascita: <input type="text" name="luogoNascita"
+                            placeholder="Luogo di Nascita" /></label><br />
+                    <label>Data Nascita: <input type="date" name="dataNascita" /></label><br />
+                    <label>Data Scadenza Certificato: <input type="date" name="dataScadCertificato" /></label><br />
+                    <label>Preposto: <input type="checkbox" name="preposto" /></label> Preposto?<br />
+                    <label>Antincendio: <input type="checkbox" name="antincendio" /></label> Addetto Antincendio?<br />
+                    <label>Primo Soccorso: <input type="checkbox" name="primoSoccorso" /></label> Addetto Primo
+                    Soccorso?<br />
+                    <label>Tipo Documento: <input type="text" name="tipoDocumento"
+                            placeholder="Tipo Documento (es. PATENTE)" /></label><br />
+                    <label>Numero Documento: <input type="text" name="numeroDocumento"
+                            placeholder="Numero Documento" /></label><br />
+                    <label>Data Scadenza Documento: <input type="date" name="dataScadenzaDoc" /></label><br />
+                    <label>DUVRI: <input type="text" name="duvri" placeholder="DUVRI" /></label><br />
+                    <label>Numero Centri Costo: <input type="number" name="numCentriCosto"
+                            placeholder="Numero Centri Costo" /></label><br />
+                    <label>Flag Doc Privacy: <input type="checkbox" name="flagDocPrivacy" /></label> Documento Privacy
+                    Concesso?<br />
+                    <label>Data Consegna Doc Privacy: <input type="date" name="dataConsegnaDocPrivacy" /></label><br />
+                    <label>ID Ruolo: <input type="number" name="idRuolo" placeholder="ID Ruolo" /></label><br />
+
+                    <button type="submit">Invia</button>
+                </form>
+
             </section>
 
             <section id="visualizza-visite-section" class="section">
@@ -338,14 +412,52 @@
                 <div id="tab-dip-presenti"></div>
                 <div id="tab-vis-presenti"></div>
             </section>
-            <section id="visualizza-elenco-visitatori-futuri-section" class="section">
+
+            <!-- Tabella visite future -->
+            <section id="visualizza-elenco-visite-future-section" class="section">
                 <h2>Elenco visitatori futuri</h2>
-                <div id="tabella-visitatori-futuri"></div>
+                <table id="tabella-visite-future" class="display custom-table">
+                    <thead>
+                        <tr>
+                            <th>Data inizio</th>
+                            <th>Data fine</th>
+                            <th>Ora inizio</th>
+                            <th>Ora fine</th>
+                            <th>Motivo</th>
+                            <th>Visitatore</th>
+                            <th>Responsabile</th>
+                            <th>Flag DPI</th>
+                            <th>Materiale informatico</th>
+                            <th>Accesso con Automezzo</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </section>
-            <section id="visualizza-elenco-visitatori-oggi-section" class="section">
+
+            <!-- Tabella visite di oggi -->
+            <section id="visualizza-elenco-visite-odierne-section" class="section">
                 <h2>Elenco visitatori odierni</h2>
-                <div id="tabella-visitatori-oggi"></div>
+                <table id="tabella-visite-odierne" class="display custom-table">
+                    <thead>
+                        <tr>
+                            <th>Data inizio</th>
+                            <th>Data fine</th>
+                            <th>Ora inizio</th>
+                            <th>Ora fine</th>
+                            <th>Motivo</th>
+                            <th>Visitatore</th>
+                            <th>Responsabile</th>
+                            <th>Flag DPI</th>
+                            <th>Materiale informatico</th>
+                            <th>Accesso con Automezzo</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </section>
+
+
             <section id="visualizza-visite-suo-carico-section" class="section">
                 <h2>Visite a suo carico</h2>
                 <div id="tabella-visite-suo-carico"></div>
@@ -362,18 +474,15 @@
 
             <section id="storico-timbrature-visitatori-section" class="section">
                 <h2>Storico timbrature dei visitatori</h2>
-                <table id="tabella-timbrature-visitatori" class="table table-striped">
+                <table id="tabella-timbrature-visitatori" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Cognome</th>
                             <th>Azienda</th>
-                            <th>Id Badge</th>
                             <th>Codice Badge</th>
-                            <th>Id Timbratura</th>
                             <th>Data Timbratura</th>
                             <th>Ora Timbratura</th>
-                            <th>Id Timbratrice</th>
                             <th>Descrizione</th>
                         </tr>
                     </thead>
@@ -383,18 +492,15 @@
 
             <section id="storico-timbrature-dipendenti-section" class="section">
                 <h2>Storico timbrature dei dipendenti</h2>
-                <table id="tabella-timbrature-dipendenti" class="table table-striped">
+                <table id="tabella-timbrature-dipendenti" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Cognome</th>
                             <th>Azienda</th>
-                            <th>Id Badge</th>
                             <th>Codice Badge</th>
-                            <th>Id Timbratura</th>
                             <th>Data Timbratura</th>
                             <th>Ora Timbratura</th>
-                            <th>Id Timbratrice</th>
                             <th>Descrizione</th>
                         </tr>
                     </thead>
@@ -404,18 +510,15 @@
 
             <section id="storico-timbrature-mensa-section" class="section">
                 <h2>Storico timbrature della mensa</h2>
-                <table id="tabella-timbrature-mensa" class="table table-striped">
+                <table id="tabella-timbrature-mensa" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Cognome</th>
                             <th>Azienda</th>
-                            <th>Id Badge</th>
                             <th>Codice Badge</th>
-                            <th>Id Timbratura</th>
                             <th>Data Timbratura</th>
-                            <th>Ora Timbratura</th>
-                            <th>Id Timbratrice</th>
+                            <th>Ora Timbratura</th> 
                             <th>Descrizione</th>
                         </tr>
                     </thead>
@@ -426,7 +529,7 @@
             <!-- Elenco telefonico dipendenti -->
             <section id="visualizza-elenco-tel-sm-section" class="section">
                 <h2>Elenco telefonico sm</h2>
-                <table id="contactListTable" class="table table-striped">
+                <table id="contactListTable" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
@@ -495,4 +598,5 @@
 </body>
 <script src="script/dataTables.js"></script>
 <script src="script/dashboard.js" defer></script>
+
 </html>

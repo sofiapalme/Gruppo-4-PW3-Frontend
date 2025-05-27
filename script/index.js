@@ -22,8 +22,16 @@ async function login(event) {
                 body: JSON.stringify(requestBody)
             });
 
+        chiudiModalErrore(); // Chiude eventuale modale aperta
+
         if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+            if (response.status === 401 || response.status === 400) {
+                mostraModalErrore();
+                return;
+            } else {
+                mostraModalErrore(`Errore: ${response.status}`);
+                return;
+            }
         }
         const json = await response.json();
 
@@ -33,9 +41,47 @@ async function login(event) {
         roleRedirection();
     }
     catch (error) {
+        mostraModalErrore("Errore di connessione al server.");
         console.error(error);
     }
-};
+}
+
+let modalErroreAperta = false;
+let modalErroreKeydownHandler = null;
+
+function mostraModalErrore(testo) {
+    const overlay = document.getElementById("modal-errore-overlay");
+    const modal = document.getElementById("modal-errore");
+    const text = modal.querySelector(".modal-text");
+    if (testo) text.textContent = testo;
+    overlay.style.display = "flex";
+    modalErroreAperta = true;
+    // Chiudi la modale solo cliccando sull'overlay, non sulla modale
+    overlay.onclick = function(e) {
+        if (e.target === overlay) chiudiModalErrore();
+    };
+    // Blocca input finché la modale è aperta
+    modalErroreKeydownHandler = function(e) {
+        chiudiModalErrore();
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    document.addEventListener("keydown", modalErroreKeydownHandler, true);
+    // Disabilita input nei campi
+    document.body.classList.add("modal-open");
+}
+
+function chiudiModalErrore() {
+    const overlay = document.getElementById("modal-errore-overlay");
+    overlay.style.display = "none";
+    overlay.onclick = null;
+    modalErroreAperta = false;
+    if (modalErroreKeydownHandler) {
+        document.removeEventListener("keydown", modalErroreKeydownHandler, true);
+        modalErroreKeydownHandler = null;
+    }
+    document.body.classList.remove("modal-open");
+}
 
 function roleRedirection() {
     const accessToken = localStorage.getItem("accessToken");

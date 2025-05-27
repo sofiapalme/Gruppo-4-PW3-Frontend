@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/dashboardReceptionist.css" />
+    <link rel="stylesheet" href="css/miniDatatableHome.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
@@ -86,9 +87,75 @@
         </aside>
 
         <main class="content-area">
-            <section id="home-section" class="section">
-                <h2>Home</h2>
-                <p>Benvenuto nella dashboard!</p>
+            <section id="home-section" class="section home active">
+                <div class="container">
+
+                    <div class="top-section">
+                        <div class="top-left"><h1>Home</h1></div>
+                        <div class="top-right">
+                            <div class="big-box">
+                                <div style="font-size:2.5rem;font-weight:bold;line-height:1;">128</div>
+                                <div style="font-size:1rem;">Presenti totali</div>
+                            </div>
+                            
+                            <div class="small-box">
+                                <div style="font-size:1.5rem;font-weight:bold;">85</div>
+                                <div style="font-size:0.9rem;">Dipendenti</div>
+                            </div>
+                            <div class="small-box">
+                                <div style="font-size:1.5rem;font-weight:bold;">43</div>
+                                <div style="font-size:0.9rem;">Visitatori</div>
+                            </div>
+                            <div class="big-box create-user-box">
+                                <div style="font-size:1.3rem;font-weight:bold;margin-bottom:0.5rem;">Crea utente</div>
+                                <button class="action-button mini-link" type="button" onclick="showSection('visitatori-opzione1-section')">Vai</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-section">
+                        <div class="box">
+                            <h3>Visitatori oggi</h3>
+                            <table id="home-table1" class="display mini-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Cognome</th>
+                                        <th>Data inizio</th>
+                                        <th>Ora inizio</th>
+                                        <th>Data fine</th>
+                                        <th>Ora fine</th>
+                                        <th>Dettagli</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="home-table1-body">
+                                    <!-- Popolato dinamicamente -->
+                                </tbody>
+                            </table>
+                            <button class="action-button mini-link" type="button" onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione 1</button>
+                        </div>
+                        <div class="box">
+                            <h3>Visitatori domani</h3>
+                            <table id="home-table2" class="display mini-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Cognome</th>
+                                        <th>Data inizio</th>
+                                        <th>Ora inizio</th>
+                                        <th>Data fine</th>
+                                        <th>Ora fine</th>
+                                        <th>Dettagli</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="home-table2-body">
+                                    <!-- Popolato dinamicamente -->
+                                </tbody>
+                            </table>
+                            <button class="action-button mini-link" type="button" onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione 1</button>
+                        </div>
+                    </div>
+                </div>
             </section>
             <section id="visualizza-opzione1-section" class="section">
                 <h2>Visualizza - Opzione 1</h2>

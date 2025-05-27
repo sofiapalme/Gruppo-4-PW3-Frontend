@@ -71,13 +71,13 @@ function roleRedirection() {
         const decodedToken = jwtDecode(accessToken);
 
         if (decodedToken.groups.indexOf("Admin") >= 0) {
-            window.location.href = "dashboardReceptionist.html";
+            window.location.href = "dashboardAdmin.html";
         }
         else if (decodedToken.groups.indexOf("Requester") >= 0) {
-            window.location.href = "dashboardVisitor.html";
+            window.location.href = "dashboardRequester.html";
         }
         else if (decodedToken.groups.indexOf("Reception") >= 0) {
-            window.location.href = "dashboardVisitor.html";
+            window.location.href = "dashboardReceptionist.html";
         }
         else {
             window.location.href = "index.html";

@@ -58,7 +58,8 @@
     <tr data-id="${visit.id}">
         <td>
             ${visit.personaVisitatore?.nome || ''}
-            <input type="hidden" class="hidden-id-persona-visitatore" value="${visit.personaVisitatore?.idPersona || ''}">
+            <input type="hidden" id="hidden-id-persona-visitatore" value="${visit.personaVisitatore?.idPersona || ''}">
+            <input type="hidden" id="hidden-id-responsabile" value="${visit.responsabile?.idPersona || ''}">
         </td>
         <td>${visit.personaVisitatore?.cognome || ''}</td>
         <td>${visit.dataInizio || ''}</td>
@@ -179,77 +180,78 @@
             $(document).on('click', '#delete-cancel', function () {
                 $('#delete-modal').hide();
             });
-            $(document).on('click', '.action-button:contains("Modifica")', function(e) {
-    e.preventDefault();
-    const row = $(this).closest('tr');
-    const idVisita = row.data('id');
-    const idPersonaVisitatore = row.find('.hidden-id-persona-visitatore').val();
+            $(document).on('click', '.action-button:contains("Modifica")', function (e) {
+                e.preventDefault();
+                const row = $(this).closest('tr');
+                const idVisita = row.data('id');
+                const idPersonaVisitatore = Number(document.getElementById('hidden-id-persona-visitatore').value);
+                const idResponsabile = Number(document.getElementById('hidden-id-responsabile').value);
 
-    $('#modifica-idVisita').val(idVisita);
-    $('#modifica-idPersonaVisitatore').val(idPersonaVisitatore);
+                $('#modifica-idVisita').val(idVisita);
+                $('#modifica-idPersonaVisitatore').val(idPersonaVisitatore);
+                $('#modifica-idResponsabile').val(idResponsabile);
 
-    $('#modifica-nome').val(row.find('td').eq(0).contents().filter(function() {
-        return this.nodeType === 3;
-    }).text().trim());
+                $('#modifica-nome').val(row.find('td').eq(0).contents().filter(function () {
+                    return this.nodeType === 3;
+                }).text().trim());
 
-    $('#modifica-cognome').val(row.find('td').eq(1).text());
-    $('#modifica-dataInizio').val(row.find('td').eq(2).text());
-    $('#modifica-oraInizio').val(row.find('td').eq(3).text());
-    $('#modifica-dataFine').val(row.find('td').eq(4).text());
-    $('#modifica-oraFine').val(row.find('td').eq(5).text());
+                $('#modifica-cognome').val(row.find('td').eq(1).text());
+                $('#modifica-dataInizio').val(row.find('td').eq(2).text());
+                $('#modifica-oraInizio').val(row.find('td').eq(3).text());
+                $('#modifica-dataFine').val(row.find('td').eq(4).text());
+                $('#modifica-oraFine').val(row.find('td').eq(5).text());
 
-    const dettagliBtn = row.find('.dettagli-btn');
-    $('#modifica-azienda').val(dettagliBtn.data('azienda') || '');
-    $('#modifica-motivo').val(dettagliBtn.data('motivo') || '');
-    $('#modifica-dipendente').val(dettagliBtn.data('dipendente') || '');
+                const dettagliBtn = row.find('.dettagli-btn');
+                $('#modifica-azienda').val(dettagliBtn.data('azienda') || '');
+                $('#modifica-motivo').val(dettagliBtn.data('motivo') || '');
+                $('#modifica-dipendente').val(dettagliBtn.data('dipendente') || '');
 
-    $('#modifica-modal').css('display', 'flex');
-});
+                $('#modifica-modal').css('display', 'flex');
+            });
             $(document).on('click', '#close-modifica-modal', function () {
                 $('#modifica-modal').hide();
             });
             $(document).on('click', '#modifica-modal', function (e) {
                 if (e.target === this) $(this).hide();
             });
-            $('#modifica-form').on('submit', function(e) {
-    e.preventDefault();
-    const idVisita = $('#modifica-idVisita').val();
-    const idPersonaVisitatore = $('#modifica-idPersonaVisitatore').val();
+            $('#modifica-form').on('submit', function (e) {
+                e.preventDefault();
+                const idVisita = $('#modifica-idVisita').val();
+                const idPersonaVisitatore = Number(document.getElementById('modifica-idPersonaVisitatore').value);
+                const idResponsabile = Number(document.getElementById('modifica-idResponsabile').value);
+                console.log(idPersonaVisitatore);
 
-    const payload = {
-        nome: $('#modifica-nome').val(),
-        cognome: $('#modifica-cognome').val(),
-        azienda: $('#modifica-azienda').val(),
-        motivo: $('#modifica-motivo').val(),
-        dipendente: $('#modifica-dipendente').val(),
-        dataInizio: $('#modifica-dataInizio').val(),
-        oraInizio: $('#modifica-oraInizio').val(),
-        dataFine: $('#modifica-dataFine').val(),
-        oraFine: $('#modifica-oraFine').val(),
-        idPersonaVisitatore: idPersonaVisitatore
-    };
+                const payload = {
+                    motivo: $('#modifica-motivo').val(),
+                    dataInizio: $('#modifica-dataInizio').val(),
+                    oraInizio: $('#modifica-oraInizio').val(),
+                    dataFine: $('#modifica-dataFine').val(),
+                    oraFine: $('#modifica-oraFine').val(),
+                    idPersonaVisitatore: idPersonaVisitatore,
+                    idResponsabile: idResponsabile
+                };
 
-    console.log('Payload:', payload);
+                console.log('Payload:', payload);
 
-    const accessToken = localStorage.getItem("accessToken");
+                const accessToken = localStorage.getItem("accessToken");
 
-    fetch(`http://localhost:8080/visit/${idVisita}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(res => {
-        if (!res.ok) throw new Error('Errore durante la modifica');
-        $('#modifica-modal').hide();
-        location.reload();
-    })
-    .catch(err => {
-        alert('Errore durante la modifica della visita');
-    });
-});
+                fetch(`http://localhost:8080/visit/${idVisita}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+                    },
+                    body: JSON.stringify(payload)
+                })
+                    .then(res => {
+                        if (!res.ok) throw new Error('Errore durante la modifica');
+                        $('#modifica-modal').hide();
+                        location.reload();
+                    })
+                    .catch(err => {
+                        alert('Errore durante la modifica della visita');
+                    });
+            });
         });
 
     </script>
@@ -359,7 +361,7 @@
                         style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
                         <span id="close-modal"
                             style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
-                        <h3>Dettagli Visitatore</h3>
+                        <h3>Dettagli Visita</h3>
                         <div><b>Azienda:</b> <span id="modal-azienda"></span></div>
                         <div><b>Motivazione:</b> <span id="modal-motivo"></span></div>
                         <div><b>Dipendente:</b> <span id="modal-dipendente"></span></div>
@@ -375,26 +377,11 @@
                         <h3>Modifica Visita</h3>
                         <form id="modifica-form">
                             <input type="hidden" id="modifica-idVisita">
-                            <input type="hidden" id="modifica-IdPersonaVisitatore">
+                            <input type="hidden" id="modifica-idPersonaVisitatore">
+                            <input type="hidden" id="modifica-idResponsabile">
                             <div class="input-group">
-                                <label for="modifica-nome">Nome</label>
-                                <input type="text" id="modifica-nome" name="nome" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="modifica-cognome">Cognome</label>
-                                <input type="text" id="modifica-cognome" name="cognome" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="modifica-azienda">Azienda</label>
-                                <input type="text" id="modifica-azienda" name="azienda" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="modifica-motivo">Motivo visita</label>
+                                <label for="modifica-motivo">Motivo</label>
                                 <input type="text" id="modifica-motivo" name="motivo" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="modifica-dipendente">Responsabile visita</label>
-                                <input type="text" id="modifica-dipendente" name="dipendente" required>
                             </div>
                             <div class="input-group">
                                 <label for="modifica-dataInizio">Data inizio</label>

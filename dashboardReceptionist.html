@@ -59,8 +59,8 @@
                                 alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
-                        <div class="submenu-item" id="storico-timbrature-visi">Storico timbrature visi</div>
-                        <div class="submenu-item" id="storico-timbrature-dip">Storico timbrature dipendenti</div>
+                        <div class="submenu-item" id="storico-timbrature-visitatori">Storico timbrature visite</div>
+                        <div class="submenu-item" id="storico-timbrature-dipendenti">Storico timbrature dipendenti</div>
                         <div class="submenu-item" id="storico-timbrature-mensa">Storico timbrature mensa</div>
                     </div>
                 </div>
@@ -251,10 +251,6 @@
                 <h2>Storico timbrature dipendenti</h2>
                 <div id="tabella-storico-timbrature-dip"></div>
             </section>
-            <section id="storico-timbrature-mensa-section" class="section">
-                <h2>Storico timbrature mensa</h2>
-                <div id="tabella-storico-timbrature-mensa"></div>
-            </section>
 
             <section id="visitatori-opzione1-section" class="section centered">
                 <div class="visitatori-wrapper">
@@ -341,10 +337,6 @@
                 <div id="tab-dip-presenti"></div>
                 <div id="tab-vis-presenti"></div>
             </section>
-            <section id="visualizza-elenco-tel-dip-section" class="section">
-                <h2>Elenco telefonico dipendenti</h2>
-                <div id="tabella-tel-dip"></div>
-            </section>
             <section id="visualizza-elenco-visitatori-futuri-section" class="section">
                 <h2>Elenco visitatori futuri</h2>
                 <div id="tabella-visitatori-futuri"></div>
@@ -364,6 +356,70 @@
             <section id="visualizza-futuri-suo-carico-section" class="section">
                 <h2>Futuri a suo carico</h2>
                 <div id="tabella-futuri-suo-carico"></div>
+            </section>
+
+
+            <section id="storico-timbrature-visitatori-section" class="section">
+                <h2>Storico timbrature dei visitatori</h2>
+                <table id="tabella-timbrature-visitatori" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Azienda</th>
+                            <th>Id Badge</th>
+                            <th>Codice Badge</th>
+                            <th>Id Timbratura</th>
+                            <th>Data Timbratura</th>
+                            <th>Ora Timbratura</th>
+                            <th>Id Timbratrice</th>
+                            <th>Descrizione</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <section id="storico-timbrature-dipendenti-section" class="section">
+                <h2>Storico timbrature dei dipendenti</h2>
+                <table id="tabella-timbrature-dipendenti" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Azienda</th>
+                            <th>Id Badge</th>
+                            <th>Codice Badge</th>
+                            <th>Id Timbratura</th>
+                            <th>Data Timbratura</th>
+                            <th>Ora Timbratura</th>
+                            <th>Id Timbratrice</th>
+                            <th>Descrizione</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+
+            <section id="storico-timbrature-mensa-section" class="section">
+                <h2>Storico timbrature della mensa</h2>
+                <table id="tabella-timbrature-mensa" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Azienda</th>
+                            <th>Id Badge</th>
+                            <th>Codice Badge</th>
+                            <th>Id Timbratura</th>
+                            <th>Data Timbratura</th>
+                            <th>Ora Timbratura</th>
+                            <th>Id Timbratrice</th>
+                            <th>Descrizione</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </section>
 
             <!-- Elenco telefonico dipendenti -->

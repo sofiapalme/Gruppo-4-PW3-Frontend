@@ -18,6 +18,7 @@
 </head>
 
 <body>
+    <div class="dashboard">
     <div id="delete-modal">
         <div class="modal-content">
             <div id="delete-modal-message">Sei sicuro di voler eliminare questa visita?</div>
@@ -28,7 +29,7 @@
             </div>
         </div>
     </div>
-    <div class="dashboard">
+    <div class="dashboardDesktop">
         <aside class="sidebar">
             <img class="logo" src="assets/logo.png" alt="Logo">
             <nav class="menu">
@@ -75,8 +76,6 @@
                     </div>
                 </div>
             </nav>
-
-            <!-- TODO: Sistemare il bug della dimensione della user-box e come fare bene la home-->
             <div class="user-box">
                 <div class="avatar-bg"></div>
                 <img class="avatar" src="assets/utente.png" alt="User Avatar">
@@ -127,7 +126,6 @@
                                         <th>Ora inizio</th>
                                         <th>Data fine</th>
                                         <th>Ora fine</th>
-                                        <th>Dettagli</th>
                                     </tr>
                                 </thead>
                                 <tbody id="home-table1-body">
@@ -149,7 +147,6 @@
                                         <th>Ora inizio</th>
                                         <th>Data fine</th>
                                         <th>Ora fine</th>
-                                        <th>Dettagli</th>
                                     </tr>
                                 </thead>
                                 <tbody id="home-table2-body">
@@ -474,7 +471,7 @@
             <!-- Tabella visite future -->
             <section id="visualizza-elenco-visite-future-section" class="section">
                 <h2>Elenco visitatori futuri</h2>
-                <table id="tabella-visite-future" class="table table-striped">
+                <table id="tabella-visite-future" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Data inizio</th>
@@ -496,7 +493,7 @@
             <!-- Tabella visite di oggi -->
             <section id="visualizza-elenco-visite-odierne-section" class="section">
                 <h2>Elenco visitatori odierni</h2>
-                <table id="tabella-visite-odierne" class="table table-striped">
+                <table id="tabella-visite-odierne" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Data inizio</th>
@@ -532,18 +529,15 @@
 
             <section id="storico-timbrature-visitatori-section" class="section">
                 <h2>Storico timbrature dei visitatori</h2>
-                <table id="tabella-timbrature-visitatori" class="table table-striped">
+                <table id="tabella-timbrature-visitatori" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Cognome</th>
                             <th>Azienda</th>
-                            <th>Id Badge</th>
                             <th>Codice Badge</th>
-                            <th>Id Timbratura</th>
                             <th>Data Timbratura</th>
                             <th>Ora Timbratura</th>
-                            <th>Id Timbratrice</th>
                             <th>Descrizione</th>
                         </tr>
                     </thead>
@@ -553,18 +547,15 @@
 
             <section id="storico-timbrature-dipendenti-section" class="section">
                 <h2>Storico timbrature dei dipendenti</h2>
-                <table id="tabella-timbrature-dipendenti" class="table table-striped">
+                <table id="tabella-timbrature-dipendenti" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Cognome</th>
                             <th>Azienda</th>
-                            <th>Id Badge</th>
                             <th>Codice Badge</th>
-                            <th>Id Timbratura</th>
                             <th>Data Timbratura</th>
                             <th>Ora Timbratura</th>
-                            <th>Id Timbratrice</th>
                             <th>Descrizione</th>
                         </tr>
                     </thead>
@@ -574,18 +565,15 @@
 
             <section id="storico-timbrature-mensa-section" class="section">
                 <h2>Storico timbrature della mensa</h2>
-                <table id="tabella-timbrature-mensa" class="table table-striped">
+                <table id="tabella-timbrature-mensa" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
                             <th>Cognome</th>
                             <th>Azienda</th>
-                            <th>Id Badge</th>
                             <th>Codice Badge</th>
-                            <th>Id Timbratura</th>
                             <th>Data Timbratura</th>
-                            <th>Ora Timbratura</th>
-                            <th>Id Timbratrice</th>
+                            <th>Ora Timbratura</th> 
                             <th>Descrizione</th>
                         </tr>
                     </thead>
@@ -596,7 +584,7 @@
             <!-- Elenco telefonico dipendenti -->
             <section id="visualizza-elenco-tel-sm-section" class="section">
                 <h2>Elenco telefonico sm</h2>
-                <table id="contactListTable" class="table table-striped">
+                <table id="contactListTable" class="display custom-table">
                     <thead>
                         <tr>
                             <th>Nome</th>
@@ -612,6 +600,56 @@
         </main>
 
     </div>
+
+    <div class="dashboardMobile">
+        <h1>dashboard mobile</h1>
+
+        <div class="menu">
+            <div class="menu-item" id="home">
+                <img class="icon" src="assets/home_black_icon.png" alt="Home">
+                <div class="label">Home</div>
+            </div>
+
+            <div class="menu-item" id="visualizza">
+                <img class="icon" src="assets/calendar_black_icon.png" alt="Visualizza">
+                <div class="label">Visualizza</div>
+            </div>
+
+            <div class="menu-item" id="storico">
+                <img class="icon" src="assets/archive_black_icon.png" alt="Storico">
+                <div class="label">Storico</div>
+            </div>
+
+            <div class="menu-item" id="visitatori">
+                <img class="icon" src="assets/users_black_icon.png" alt="Visitatori">
+                <div class="label">Visitatori</div>
+            </div>
+        </div>
+
+        <div class="submenu" id="submenu-visualizza">
+            <div class="submenu-item" id="visualizza-opzione1">Visualizza - Opzione 1 </div>
+            <div class="submenu-item" id="visualizza-visite">Visite</div>
+            <div class="submenu-item" id="visualizza-presenti">Presenti</div>
+            <div class="submenu-item" id="visualizza-elenco-visitatori-futuri">Elenco visitatori futuri</div>
+            <div class="submenu-item" id="visualizza-elenco-visitatori-oggi">Elenco visitatori odierni</div>
+            <div class="submenu-item" id="visualizza-visite-suo-carico">Visite a suo carico</div>
+            <div class="submenu-item" id="visualizza-presenti-suo-carico">Presenti a suo carico</div>
+            <div class="submenu-item" id="visualizza-futuri-suo-carico">Futuri a suo carico</div>
+            <div class="submenu-item" id="visualizza-elenco-tel-sm">Elenco telefonico sm</div>
+        </div>
+
+        <div class="submenu" id="submenu-storico">
+            <div class="submenu-item" id="storico-timbrature-visitatori">Storico timbrature visite</div>
+            <div class="submenu-item" id="storico-timbrature-dipendenti">Storico timbrature dipendenti</div>
+            <div class="submenu-item" id="storico-timbrature-mensa">Storico timbrature mensa</div>
+        </div>
+
+        <div class="submenu" id="submenu-visitatori">
+            <div class="submenu-item" id="visitatori-opzione1">Opzione 1</div>
+            <div class="submenu-item" id="visitatori-opzione2">Opzione 2</div>
+        </div>
+    </div>
+    		
 </body>
 <script src="script/dataTables.js"></script>
 <script src="script/dashboard.js" defer></script>

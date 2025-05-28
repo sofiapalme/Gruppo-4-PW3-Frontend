@@ -182,7 +182,23 @@ async function createVisiteFutureDataTable() {
                 { data: "flagDPI" },
                 { data: "materialeInformatico.id" },
                 { data: "flagAccessoConAutomezzo" }
-            ]
+            ],
+            lengthChange: false,
+            pageLength: 8,
+            autoWidth: false,
+            responsive: true,
+            language: {
+                info: "Pagina _PAGE_ di _PAGES_",
+                infoEmpty: "Nessun elemento disponibile",
+                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                search: "Cerca:",
+                paginate: {
+                    next: ">",
+                    previous: "<"
+                },
+                emptyTable: "Nessun dato presente nella tabella",
+                zeroRecords: "Nessun risultato trovato"
+            }
         });
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
@@ -242,7 +258,23 @@ async function createVisiteOdierneDataTable() {
                 { data: "flagDPI" },
                 { data: "materialeInformatico.id" },
                 { data: "flagAccessoConAutomezzo" }
-            ]
+            ],
+            lengthChange: false,
+            pageLength: 8,
+            autoWidth: false,
+            responsive: true,
+            language: {
+                info: "Pagina _PAGE_ di _PAGES_",
+                infoEmpty: "Nessun elemento disponibile",
+                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                search: "Cerca:",
+                paginate: {
+                    next: ">",
+                    previous: "<"
+                },
+                emptyTable: "Nessun dato presente nella tabella",
+                zeroRecords: "Nessun risultato trovato"
+            }
         });
 
     } catch (error) {
@@ -278,20 +310,23 @@ async function createStrocioTimbratureVisitatoriDataTable() {
         }
 
         contactListTableInstance = new DataTable("#tabella-timbrature-visitatori", {
-            data: data,
             destroy: true,
-            columns: [
-                { data: "nome" },
-                { data: "cognome" },
-                { data: "azienda" },
-                { data: "idBadge" },
-                { data: "codiceBadge" },
-                { data: "idTimbrature" },
-                { data: "dataTimbratura" },
-                { data: "oraTimbrature" },
-                { data: "idTimbratrice" },
-                { data: "descrizioneTimbratrice" }
-            ]
+            lengthChange: false,
+            pageLength: 8,
+            autoWidth: false,
+            responsive: true,
+            language: {
+                info: "Pagina _PAGE_ di _PAGES_",
+                infoEmpty: "Nessun elemento disponibile",
+                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                search: "Cerca:",
+                paginate: {
+                    next: ">",
+                    previous: "<"
+                },
+                emptyTable: "Nessun dato presente nella tabella",
+                zeroRecords: "Nessun risultato trovato"
+            }
         });
 
     } catch (error) {
@@ -340,7 +375,23 @@ async function createStrocioTimbratureDipendentiDataTable() {
                 { data: "oraTimbrature" },
                 { data: "idTimbratrice" },
                 { data: "descrizioneTimbratrice" }
-            ]
+            ],
+            lengthChange: false,
+            pageLength: 8,
+            autoWidth: false,
+            responsive: true,
+            language: {
+                info: "Pagina _PAGE_ di _PAGES_",
+                infoEmpty: "Nessun elemento disponibile",
+                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                search: "Cerca:",
+                paginate: {
+                    next: ">",
+                    previous: "<"
+                },
+                emptyTable: "Nessun dato presente nella tabella",
+                zeroRecords: "Nessun risultato trovato"
+            }
         });
 
     } catch (error) {
@@ -389,7 +440,23 @@ async function createStoricoTimbratureMensaDataTable() {
                 { data: "oraTimbrature" },
                 { data: "idTimbratrice" },
                 { data: "descrizioneTimbratrice" }
-            ]
+            ],
+            lengthChange: false,
+            pageLength: 8,
+            autoWidth: false,
+            responsive: true,
+            language: {
+                info: "Pagina _PAGE_ di _PAGES_",
+                infoEmpty: "Nessun elemento disponibile",
+                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                search: "Cerca:",
+                paginate: {
+                    next: ">",
+                    previous: "<"
+                },
+                emptyTable: "Nessun dato presente nella tabella",
+                zeroRecords: "Nessun risultato trovato"
+            }
         });
 
     } catch (error) {
@@ -433,7 +500,23 @@ async function createContactListDataTable() {
                 { data: "email" },
                 { data: "telefono" },
                 { data: "cellulare" }
-            ]
+            ],
+            lengthChange: false,
+            pageLength: 8,
+            autoWidth: false,
+            responsive: true,
+            language: {
+                info: "Pagina _PAGE_ di _PAGES_",
+                infoEmpty: "Nessun elemento disponibile",
+                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                search: "Cerca:",
+                paginate: {
+                    next: ">",
+                    previous: "<"
+                },
+                emptyTable: "Nessun dato presente nella tabella",
+                zeroRecords: "Nessun risultato trovato"
+            }
         });
 
     } catch (error) {

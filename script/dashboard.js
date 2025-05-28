@@ -11,10 +11,64 @@ function showSection(id) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const mobileQuery = window.matchMedia('(max-width: 480px)');
+  const overlay = document.createElement('div');
+  overlay.id = 'overlay';
+  document.body.appendChild(overlay);
+
+  function closeAll() {
+    document.querySelectorAll('.submenu').forEach(sm => sm.classList.remove('active'));
+    overlay.classList.remove('active');
+  }
+
+  function setupListeners() {
+    if (!mobileQuery.matches) {
+      closeAll();
+      return;
+    }
+
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.onclick = () => {
+        if (item.id === 'home') {
+          closeAll();
+          return;
+        }
+        const submenu = document.getElementById('submenu-' + item.id);
+        if (!submenu) {
+          closeAll();
+          return;
+        }
+        const isActive = submenu.classList.contains('active');
+        closeAll();
+        if (!isActive) {
+          submenu.classList.add('active');
+          overlay.classList.add('active');
+        }
+      };
+    });
+
+    overlay.onclick = () => closeAll();
+  }
+
+  setupListeners();
+  mobileQuery.addEventListener('change', () => {
+    closeAll();
+    setupListeners();
+  });
+});
+
+
 document.querySelectorAll('.menu-item').forEach(item => {
     item.addEventListener('click', function (e) {
         const submenu = this.querySelector('.submenu');
         const arrowImg = this.querySelector('.arrow img');
+
+        document.querySelectorAll('.menu-item, .submenu-item').forEach(el => {
+            el.classList.remove('selected');
+        });
+
+        this.classList.add('selected');
 
         // Se non c'è submenu, mostra la sezione corrispondente
         if (!submenu) {
@@ -52,6 +106,13 @@ document.querySelectorAll('.menu-item').forEach(item => {
 document.querySelectorAll('.submenu-item').forEach(item => {
     item.addEventListener('click', (e) => {
         e.stopPropagation(); // Previene la propagazione al menu-item padre
+        
+        document.querySelectorAll('.menu-item, .submenu-item').forEach(el => {
+            el.classList.remove('selected');
+        });
+        
+        item.classList.add('selected');
+
         const targetId = item.id + '-section';
         showSection(targetId);
     });
@@ -102,7 +163,7 @@ $(document).ready(function () {
         return '<button class="action-button" style="max-width:110px;height:28px;font-size:12px;background:#27ae60;">Assegna Badge</button>';
     }
 
-    // Fetch visite e popola la tabella
+    // Fetch visite e popola la tabella principale e le tabelle della home
     const accessToken = localStorage.getItem("accessToken");
     fetch('http://localhost:8080/visit', {
         method: 'GET',
@@ -119,6 +180,7 @@ $(document).ready(function () {
             data.forEach(visit => {
                 visit.idPersonaVisitatore = visit.personaVisitatore?.idPersona || '';
             });
+            // Popola la tabella principale
             const tbody = $('#table1-body');
             tbody.empty();
             data.forEach(visit => {
@@ -142,6 +204,50 @@ $(document).ready(function () {
 `;
                 tbody.append(row);
             });
+            // Popola la tabella home-table1 (Visitatori oggi)
+            const homeTbody1 = $('#home-table1-body');
+            homeTbody1.empty();
+            data.forEach(visit => {
+                const row = `
+<tr>
+    <td>${visit.personaVisitatore?.nome || ''}</td>
+    <td>${visit.personaVisitatore?.cognome || ''}</td>
+    <td>${visit.dataInizio || ''}</td>
+    <td>${visit.oraInizio || ''}</td>
+    <td>${visit.dataFine || ''}</td>
+    <td>${visit.oraFine || ''}</td>
+</tr>
+`;
+                homeTbody1.append(row);
+            });
+            // Mostra solo le prime 6 righe in home-table1
+            const homeRows1 = homeTbody1.find('tr');
+            homeRows1.show(); // Mostra tutte le righe prima di nascondere
+            if (homeRows1.length > 6) {
+                homeRows1.slice(6).hide();
+            }
+            // Popola la tabella home-table2 (Visitatori domani)
+            const homeTbody2 = $('#home-table2-body');
+            homeTbody2.empty();
+            data.forEach(visit => {
+                const row = `
+<tr>
+    <td>${visit.personaVisitatore?.nome || ''}</td>
+    <td>${visit.personaVisitatore?.cognome || ''}</td>
+    <td>${visit.dataInizio || ''}</td>
+    <td>${visit.oraInizio || ''}</td>
+    <td>${visit.dataFine || ''}</td>
+    <td>${visit.oraFine || ''}</td>
+</tr>
+`;
+                homeTbody2.append(row);
+            });
+            // Mostra solo le prime 6 righe in home-table2
+            const homeRows2 = homeTbody2.find('tr');
+            homeRows2.show();
+            if (homeRows2.length > 6) {
+                homeRows2.slice(6).hide();
+            }
             // Aggiorna DataTable dopo aver popolato
             if ($.fn.DataTable.isDataTable('#table1')) {
                 $('#table1').DataTable().clear().destroy();
@@ -157,7 +263,7 @@ $(document).ready(function () {
                 autoWidth: false,
                 responsive: true,
                 language: {
-                    info: "Elemento _START_ di _TOTAL_",
+                    info: "Pagina _PAGE_ di _PAGES_",
                     infoEmpty: "Nessun elemento disponibile",
                     infoFiltered: "(filtrati da _MAX_ elementi totali)",
                     search: "Cerca:",
@@ -172,8 +278,7 @@ $(document).ready(function () {
         })
         .catch(err => {
             const tbody = $('#table1-body');
-            // Assicura che la riga di errore abbia 10 colonne
-            tbody.html('<tr><td colspan="10">Errore nel caricamento delle visite</td></tr>');
+            tbody.html('<tr><td>Errore nel caricamento delle visite</td></tr>');
             if ($.fn.DataTable.isDataTable('#table1')) {
                 $('#table1').DataTable().clear().destroy();
             }
@@ -183,7 +288,7 @@ $(document).ready(function () {
                 autoWidth: false,
                 responsive: true,
                 language: {
-                    info: "Elemento _START_ di _TOTAL_",
+                    info: "Pagina _PAGE_ di _PAGES_",
                     infoEmpty: "Nessun elemento disponibile",
                     infoFiltered: "(filtrati da _MAX_ elementi totali)",
                     search: "Cerca:",
@@ -319,6 +424,19 @@ $(document).ready(function () {
             .catch(err => {
                 alert('Errore durante la modifica della visita');
             });
+    });
+
+    // === INIZIO: Script per DataTables minimal su home-table1 e home-table2 ===
+    // Inizializza DataTable senza barra di ricerca, paginazione, info, lengthChange
+    $('#home-table1, #home-table2').DataTable({
+        searching: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        ordering: false,
+        language: {
+            emptyTable: "Nessun dato presente nella tabella"
+        }
     });
 });
 // === FINE: Script specifico per DashboardReceptionist ===

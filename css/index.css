@@ -127,22 +127,20 @@ label {
     color: #b30000;
     font-weight: bold;
     user-select: none;
-    pointer-events: none; /* la X non è cliccabile */
+    cursor: pointer;
 }
 .modal-text {
     color: #b30000;
 }
 
-.modal-open *:not(.modal-errore):not(.modal-errore *) {
-    pointer-events: none !important;
-    user-select: none !important;
+/* Quando la modale è aperta, disabilita interazioni con elementi sottostanti */
+.modal-open *:not(.modal-errore-overlay):not(.modal-errore):not(.modal-errore *) {
+    pointer-events: none;
 }
-.modal-open input,
-.modal-open button,
-.modal-open textarea,
-.modal-open select {
-    pointer-events: none !important;
-    user-select: none !important;
+
+/* Assicurati che la modale e i suoi elementi rimangano interattivi */
+.modal-errore-overlay {
+    pointer-events: auto;
 }
 
 @media (max-width: 480px) {

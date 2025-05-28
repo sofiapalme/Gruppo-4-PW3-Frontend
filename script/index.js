@@ -28,6 +28,8 @@ async function login(event) {
             });
 
         if (!response.ok) {
+            // Mostra la modale errore con messaggio personalizzato
+            mostraModalErrore("Email o password errati");
             throw new Error(`Response status: ${response.status}`);
         }
         const json = await response.json();
@@ -37,7 +39,10 @@ async function login(event) {
         roleRedirection();
     }
     catch (error) {
-        alert(error)
+        // Mostra la modale errore solo se non già mostrata
+        if (!modalErroreAperta) {
+            mostraModalErrore("Errore di accesso. Riprova.");
+        }
         console.error(error);
     }
 };
@@ -62,3 +67,55 @@ function roleRedirection() {
         }
     }
 };
+
+let modalErroreAperta = false;
+let modalErroreKeydownHandler = null;
+
+function mostraModalErrore(testo) {
+    const overlay = document.getElementById("modal-errore-overlay");
+    const modal = document.getElementById("modal-errore");
+    const text = modal.querySelector(".modal-text");
+    if (testo) text.textContent = testo;
+    overlay.style.display = "flex";
+    modalErroreAperta = true;
+    
+    // Chiudi la modale cliccando sull'overlay (ma non sulla modale stessa)
+    overlay.onclick = function(e) {
+        if (e.target === overlay) {
+            chiudiModalErrore();
+        }
+    };
+    
+    // Chiudi la modale con qualsiasi tasto
+    modalErroreKeydownHandler = function(e) {
+        chiudiModalErrore();
+        e.preventDefault();
+        e.stopPropagation();
+    };
+    document.addEventListener("keydown", modalErroreKeydownHandler, true);
+    
+    // Chiudi la modale cliccando la X
+    const closeBtn = modal.querySelector('.modal-close');
+    if (closeBtn) {
+        closeBtn.onclick = chiudiModalErrore;
+    }
+    document.body.classList.add("modal-open");
+}
+
+function chiudiModalErrore() {
+    const overlay = document.getElementById("modal-errore-overlay");
+    overlay.style.display = "none";
+    overlay.onclick = null;  // Rimuovi handler click
+    
+    // Rimuovi handler X
+    const modal = document.getElementById("modal-errore");
+    const closeBtn = modal ? modal.querySelector('.modal-close') : null;
+    if (closeBtn) closeBtn.onclick = null;
+    
+    modalErroreAperta = false;
+    if (modalErroreKeydownHandler) {
+        document.removeEventListener("keydown", modalErroreKeydownHandler, true);
+        modalErroreKeydownHandler = null;
+    }
+    document.body.classList.remove("modal-open");
+}

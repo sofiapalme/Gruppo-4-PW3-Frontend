@@ -57,14 +57,14 @@ async function createPersonDataTable() {
             data: peopleList,
             destroy: true,
             columns: [
-                { data: "nome" },
-                { data: "cognome" },
-                { data: "azienda" },
-                { data: "citta" },
-                { data: "mail" },
-                { data: "cellulare" },
-                { data: "luogoNascita" },
-                { data: "dataNascita" }
+                { data: "email" },
+                { data: "role" },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return '<button class="edit-btn">Modifica</button>';
+                    }
+                }
             ],
             lengthChange: false,
             pageLength: 8,

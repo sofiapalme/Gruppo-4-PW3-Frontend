@@ -17,6 +17,7 @@
                 <div class="menu-item" id="admin-visitatori">Gestione Visitatori</div>
                 <div class="menu-item" id="admin-badge">Gestione Badge</div>
                 <div class="menu-item" id="admin-report">Reportistica</div>
+                <div class="menu-item" id="admin-crea-utenti">Crea utenti</div>
             </nav>
             <div class="user-box">
                 <img class="avatar" src="assets/utente.png" alt="User Avatar">
@@ -45,7 +46,39 @@
                 <h2>Reportistica</h2>
                 <div id="area-report"></div>
             </section>
+
+            <!-- Sezione creazione utenti -->
+            <section id="admin-crea-utenti-section" class="section">
+                <h2>Crea utenti</h2>
+
+                <form id="userForm">
+                    <label for="email">
+                        Email:
+                        <input type="email" name="email" id="create-user-email" placeholder="mario.rossi@secondomona.it" required>
+                    </label>
+                    <br>
+
+                    <label for="password">
+                        Password:
+                        <input type="password" name="password" id="create-user-password" required>
+                    </label>
+                    <br>
+
+                    <label for="ruolo">
+                        Ruolo:
+                        <select name="ruolo" id="create-user-ruolo">
+                            <option value=null></option>
+                            <option value="1">Admin</option>
+                            <option value="2">Richiedente</option>
+                            <option value="3">Reception</option>
+                        </select>
+                    </label>
+                    <br>
+                    <button type="submit" onclick="createUser(event)">Invia</button>
+                </form>
+            </section>
         </main>
     </div>
 </body>
+<script src="script/adminScript.js"></script>
 </html>

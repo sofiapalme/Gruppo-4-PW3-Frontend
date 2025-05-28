@@ -162,7 +162,7 @@ function createPerson(event) {
         "primoSoccorso": null,
         "tipoDocumento": tipoDocumento,
         "numeroDocumento": numeroDocumento,
-        "dataScadenzaDoc":dataScadenzaDoc,
+        "dataScadenzaDoc": dataScadenzaDoc,
         "duvri": duvri,
         "numCentriCosto": numCentriCosto,
         "flagDocPrivacy": flagDocPrivacy,

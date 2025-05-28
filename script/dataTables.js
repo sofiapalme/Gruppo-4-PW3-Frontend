@@ -1,15 +1,131 @@
-function getIdoDate(inputDate) {
+function getIsoDate(inputDate) {
     const formattedDate = inputDate.toISOString().split('T')[0];
     return formattedDate;
 }
 
-function convertToItalianDate(isoDate) {
-  const date = new Date(isoDate);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
+function italianDateToISO(italianDate) {
+    const splittedDate = italianDate.split('/');
+    const isoDate = splittedDate[2] + "-" + splittedDate[1] + "-" + splittedDate[0];
+    return isoDate;
 }
+
+function convertToItalianDate(isoDate) {
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+function createPerson(event) {
+    event.preventDefault();
+    const nome = String(document.getElementById("nome-crea-persona").value);
+    const cognome = String(document.getElementById("cognome-crea-persona").value);
+    const azienda = String(document.getElementById("azienda-crea-persona").value);
+    const indirizzo = String(document.getElementById("indirizzo").value);
+    const citta = String(document.getElementById("citta").value);
+    const provincia = String(document.getElementById("provincia").value);
+    const nazione = String(document.getElementById("nazione").value);
+    const telefono = String(document.getElementById("telefono").value);
+    const cellulare = String(document.getElementById("cellulare").value);
+    let fax = String(document.getElementById("fax").value);
+    fax = fax === "" ? null : value;
+
+    let pIva = String(document.getElementById("pIva").value);
+    pIva = pIva === "" ? null : value;
+
+    const cf = String(document.getElementById("cf").value);
+    const mail = String(document.getElementById("mail-crea-persona").value);
+    const dataAssunzione = document.getElementById("dataAssunzione").value; // date string
+    console.log("dataAssunzione: " + dataAssunzione)
+
+    if (dataAssunzione === null) {
+        dataAssunzione = "1970-01-01";
+    }
+
+    const luogoNascita = String(document.getElementById("luogoNascita").value);
+    const dataNascita = document.getElementById("dataNascita").value; // date string
+    const tipoDocumento = String(document.getElementById("tipoDocumento").value);
+    const numeroDocumento = String(document.getElementById("numeroDocumento").value);
+    const dataScadenzaDoc = document.getElementById("dataScadenzaDoc").value; // date string
+    const duvri = String(document.getElementById("duvri").checked);
+    let numCentriCosto = Number(document.getElementById("numCentriCosto").value);
+    numCentriCosto = numCentriCosto === 0 ? null : value;
+
+    const flagDocPrivacy = document.getElementById("flagDocPrivacy").checked;
+    const dataConsegnaDocPrivacy = document.getElementById("dataConsegnaDocPrivacy").value; // date string
+    const idRuolo = Number(document.getElementById("idRuolo").value);
+
+    const requestBody = {
+        "idRuna": null,
+        "nome": nome,
+        "cognome": cognome,
+        "diminutivo": null,
+        "azienda": azienda,
+        "indirizzo": indirizzo,
+        "citta": citta,
+        "provincia": provincia,
+        "nazione": nazione,
+        "telefono": telefono,
+        "cellulare": cellulare,
+        "fax": fax,
+        "pIva": pIva,
+        "cf": cf,
+        "mail": mail,
+        "foto": null,
+        "dataAssunzione": dataAssunzione,
+        "matricola": null,
+        "idFiliale": null,
+        "idMansione": null,
+        "idDeposito": null,
+        "idRiferimento": null,
+        "visitatore": false,
+        "accessNumber": null,
+        "accessCount": null,
+        "accessUpdate": null,
+        "luogoNascita": luogoNascita,
+        "dataNascita": dataNascita,
+        "dataScadCertificato": null,
+        "preposto": null,
+        "antincendio": null,
+        "primoSoccorso": null,
+        "tipoDocumento": tipoDocumento,
+        "numeroDocumento": numeroDocumento,
+        "dataScadenzaDoc":dataScadenzaDoc,
+        "duvri": duvri,
+        "numCentriCosto": numCentriCosto,
+        "flagDocPrivacy": flagDocPrivacy,
+        "dataConsegnaDocPrivacy": dataConsegnaDocPrivacy,
+        "idRuolo": idRuolo
+    }
+
+    console.log(requestBody)
+    createPersonFetch(requestBody);
+}
+
+async function createPersonFetch(requestBody) {
+    const url = "http://localhost:8080/people";
+    const accessToken = localStorage.getItem("accessToken");
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Errore nel recupero dei dati: ${response.status}`);
+        }
+
+        alert("Persona salvata con successo! (forse)")
+    } catch (error) {
+        console.error("Errore nella creazione della tabella:", error.message);
+    }
+};
 
 let contactListTableInstance = null;
 
@@ -42,7 +158,7 @@ async function createVisiteFutureDataTable() {
 
         const futureVisits = new Array;
         const today = getIdoDate(new Date);
-        
+
         data.forEach(visit => {
             if (visit.dataInizio > today) {
                 visit.dataInizio = convertToItalianDate(visit.dataInizio);
@@ -101,8 +217,8 @@ async function createVisiteOdierneDataTable() {
         }
 
         const todayVisits = new Array;
-        const today = getIdoDate(new Date);
-        
+        const today = getIsoDate(new Date);
+
         data.forEach(visit => {
             if (visit.dataInizio === today) {
                 visit.dataInizio = convertToItalianDate(visit.dataInizio);

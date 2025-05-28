@@ -1,4 +1,4 @@
-import { jwtDecode } from "./jwtDecode.js";
+import { jwtDecode } from "./jwtManager.js";
 
 let contactListTableInstance = null;
 

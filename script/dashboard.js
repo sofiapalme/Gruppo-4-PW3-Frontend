@@ -163,11 +163,11 @@ document.querySelectorAll('.menu-item').forEach(item => {
 document.querySelectorAll('.submenu-item').forEach(item => {
     item.addEventListener('click', (e) => {
         e.stopPropagation(); // Previene la propagazione al menu-item padre
-        
+
         document.querySelectorAll('.menu-item, .submenu-item').forEach(el => {
             el.classList.remove('selected');
         });
-        
+
         item.classList.add('selected');
 
         const targetId = item.id + '-section';

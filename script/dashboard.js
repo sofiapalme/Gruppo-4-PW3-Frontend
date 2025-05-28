@@ -15,6 +15,79 @@
     }
 }
 
+
+const accessToken = localStorage.getItem("accessToken");
+
+fetch('http://localhost:8080/visit', {
+    method: 'GET',
+    headers: {
+        'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+    }
+})
+.then(response => {
+    if (!response.ok) throw new Error('Errore nel recupero delle visite');
+    return response.json();
+})
+.then(data => {
+    const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+    const todayVisits = data.filter(visit => visit.dataInizio === today);
+    const tomorrowVisits = data.filter(visit => visit.dataInizio === tomorrow);
+
+    const tbody1 = $('#home-table1-body-mobile');
+    tbody1.empty();
+    todayVisits.forEach(visit => {
+        const row = `
+<tr>
+    <td>${visit.personaVisitatore?.nome || ''}</td>
+    <td>${visit.personaVisitatore?.cognome || ''}</td>
+    <td>${visit.dataInizio || ''}</td>
+    <td>${visit.oraInizio || ''}</td>
+    <td>${visit.dataFine || ''}</td>
+    <td>${visit.oraFine || ''}</td>
+</tr>`;
+        tbody1.append(row);
+    });
+    const rows1 = tbody1.find('tr');
+    rows1.show();
+    if (rows1.length > 2) rows1.slice(2).hide();
+
+    const tbody2 = $('#home-table2-body-mobile');
+    tbody2.empty();
+    tomorrowVisits.forEach(visit => {
+        const row = `
+<tr>
+    <td>${visit.personaVisitatore?.nome || ''}</td>
+    <td>${visit.personaVisitatore?.cognome || ''}</td>
+    <td>${visit.dataInizio || ''}</td>
+    <td>${visit.oraInizio || ''}</td>
+    <td>${visit.dataFine || ''}</td>
+    <td>${visit.oraFine || ''}</td>
+</tr>`;
+        tbody2.append(row);
+    });
+    const rows2 = tbody2.find('tr');
+    rows2.show();
+    if (rows2.length > 2) rows2.slice(2).hide();
+
+    $('#home-table1-mobile, #home-table2-mobile').DataTable({
+        searching: false,
+        paging: false,
+        info: false,
+        lengthChange: false,
+        ordering: false,
+        language: {
+            emptyTable: "Nessun dato presente nella tabella"
+        }
+    });
+})
+.catch(err => {
+    $('#home-table1-body-mobile').html('<tr><td colspan="6">Errore nel caricamento dei visitatori</td></tr>');
+    $('#home-table2-body-mobile').html('<tr><td colspan="6">Errore nel caricamento dei visitatori</td></tr>');
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
   const mobileQuery = window.matchMedia('(max-width: 768px)');
   const overlay = document.getElementById('overlay');
@@ -127,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupMobileListeners();
   mobileQuery.addEventListener('change', setupMobileListeners);
 });
+
 
 
 // === Script specifico per Desktop ===

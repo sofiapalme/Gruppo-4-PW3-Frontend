@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     submenu.classList.remove('active');
     overlay.classList.remove('active');
   }
-
   function showMobileSection(id) {
     document.querySelectorAll('.mobile-section').forEach(section => {
       section.classList.remove('active');
@@ -53,7 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (target) {
       target.classList.add('active');
     } else {
-      document.getElementById('home-mobile-section').classList.add('active');
+      // Se la sezione target non esiste, mostra la home
+      const homeSection = document.getElementById('home-mobile-section');
+      if (homeSection) {
+        homeSection.classList.add('active');
+      }
     }
   }
 
@@ -190,9 +193,49 @@ document.addEventListener('click', function (e) {
     }
 });
 
-// All'avvio mostra la home
+// All'avvio mostra la home per tutte le dashboard
 document.addEventListener('DOMContentLoaded', () => {
-    showSection('home-section');
+    // Nascondi tutte le sezioni
+    document.querySelectorAll('.section').forEach(section => {
+        section.style.display = 'none';
+    });
+
+    // Mostra la home in base alla dashboard
+    const adminHome = document.getElementById('admin-home-section');
+    const requesterHome = document.getElementById('requester-home-section');
+    const receptionHome = document.getElementById('home-section');
+
+    if (adminHome) {
+        adminHome.style.display = 'block';
+    } else if (requesterHome) {
+        requesterHome.style.display = 'block';
+    } else if (receptionHome) {
+        receptionHome.style.display = 'block';
+    }
+});
+
+// Inizializzazione versione mobile per tutte le dashboard
+document.addEventListener('DOMContentLoaded', () => {
+    // Per la versione mobile
+    const mobileSections = document.querySelectorAll('.mobile-section');
+    if (mobileSections) {
+        mobileSections.forEach(section => {
+            section.classList.remove('active');
+        });
+
+        // Cerca la sezione home mobile appropriata
+        const adminHomeMobile = document.getElementById('admin-home-mobile-section');
+        const requesterHomeMobile = document.getElementById('requester-home-mobile-section');
+        const receptionHomeMobile = document.getElementById('home-mobile-section');
+
+        if (adminHomeMobile) {
+            adminHomeMobile.classList.add('active');
+        } else if (requesterHomeMobile) {
+            requesterHomeMobile.classList.add('active');
+        } else if (receptionHomeMobile) {
+            receptionHomeMobile.classList.add('active');
+        }
+    }
 });
 
 // === INIZIO: Script specifico per DashboardReceptionist ===

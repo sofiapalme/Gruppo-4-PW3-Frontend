@@ -1,11 +1,25 @@
 /* =====================
-   DASHBOARD ADMIN BASE
+   RESET E BASE
    ===================== */
-body, html {
-  height: 100%;
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.dashboardDesktop {
+  display: block;
+}
+
+.dashboardMobile {
+  display: none;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
   font-family: Helvetica, Arial, sans-serif;
-  background: #0A1429;
+  background-color: #0A1429;
 }
 .dashboard {
   display: flex;
@@ -34,22 +48,71 @@ body, html {
   font-size: 18px;
   padding: 10px 15px;
   cursor: pointer;
-  border-radius: 8px;
-  transition: background 0.2s;
+  position: relative;
+  width: 100%;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+.menu-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.arrow {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+.arrow img {
+  height: 25px;
+  width: auto;
+  transition: transform 0.3s ease;
 }
 .menu-item:hover {
-  background: #405577;
+  color: #7C8BA6;
+}
+.submenu {
+  display: none;
+  flex-direction: column;
+  padding-left: 20px;
+  margin-top: 10px;
+  width: 100%;
+  position: relative;
+  max-height: 220px; /* Circa 5 elementi da 40-44px ciascuno */
+  overflow-y: auto;
+  transition: max-height 0.2s;
+}
+.submenu.active {
+  display: block;
+  max-height: 500px;
+  padding-top: 10px;
+}
+.submenu-item {
+  padding: 8px 0;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.submenu-item:hover {
+  color: #7C8BA6;
+}
+.menu-item.active .arrow img {
+  transform: rotate(180deg);
 }
 .user-box {
   margin-top: auto;
-  width: 90%;
-  background: #7C8BA6;
+  margin-left: 12.5%;
+  width: 80%;
+  background-color: #7C8BA6;
   border-radius: 16px;
   padding: 20px 10px;
   text-align: center;
+  position: relative;
+  height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 }
 .avatar {
   width: 50px;
@@ -65,18 +128,20 @@ body, html {
   font-weight: bold;
 }
 .action-button {
-  max-width: 120px;
-  height: 35px;
-  font-size: 14px;
-  background: #1b2b48;
-  color: #fff;
-  border: none;
+  width: 100%;
+  max-width: 240px;
+  height: 50px;
   border-radius: 30px;
+  background-color: #1b2b48;
+  color: white;
+  font-size: 16px;
+  border: none;
   cursor: pointer;
-  margin-top: 10px;
+  display: block;
+  margin: 0 auto;
 }
 .action-button:hover {
-  background: #405577;
+  background-color: #405577;
 }
 .content-area {
   flex: 1;
@@ -91,4 +156,21 @@ body, html {
 }
 .section.active {
   display: block;
+}
+
+/* Scrollbar custom per submenu */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  background: #1b2b48;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #405577;
+  border-radius: 8px;
+  min-height: 30px;
 }

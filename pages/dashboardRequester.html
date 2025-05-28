@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/dashboardReceptionist.css" />
+    <script src="/script/requester.js" type="module"></script>
+    <link rel="icon" type="image/png" href="/assets/logo-mona.png">
+    <title>Dashboard Richiedente</title>
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <img class="logo" src="/assets/logo.png" alt="Logo">
+            <nav class="menu">
+                <div class="menu-item" id="requester-home">Home</div>
+                <div class="menu-item" id="requester-visite">Le mie Visite</div>
+                <div class="menu-item" id="requester-badge">Badge Assegnati</div>
+                <div class="menu-item" id="requester-profilo">Profilo</div>
+            </nav>
+            <div class="user-box">
+                <img class="avatar" src="/assets/utente.png" alt="User Avatar">
+                <div class="user-name">Richiedente</div>
+                <button class="action-button">Logout</button>
+            </div>
+        </aside>
+        <main class="content-area">
+            <section id="requester-home-section" class="section active">
+                <h2>Benvenuto Richiedente</h2>
+                <p>Seleziona una voce dal menu per iniziare.</p>
+            </section>
+            <section id="requester-visite-section" class="section">
+                <h2>Le mie Visite</h2>
+                <div id="tabella-mie-visite"></div>
+            </section>
+            <section id="requester-badge-section" class="section">
+                <h2>Badge Assegnati</h2>
+                <div id="tabella-badge-assegnati"></div>
+            </section>
+            <section id="requester-profilo-section" class="section">
+                <h2>Profilo</h2>
+                <div id="area-profilo"></div>
+            </section>
+        </main>
+    </div> 
+    
+<script src="/script/dashboard.js" defer></script>
+</body>
+</html>

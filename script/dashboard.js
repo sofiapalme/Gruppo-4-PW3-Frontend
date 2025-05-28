@@ -15,15 +15,12 @@ function showSection(id) {
 document.addEventListener('DOMContentLoaded', () => {
   const mobileQuery = window.matchMedia('(max-width: 768px)');
   const overlay = document.getElementById('overlay');
-  const submenu = document.getElementById('submenu-container');
-
-  const submenuData = {
+  const submenu = document.getElementById('submenu-container');  const submenuData = {
     'visualizza-section-mobile': [
-      { label: 'Opzione 1', target: 'visualizza-opzione1-mobile-section' },
+      { label: 'Visitatori Oggi', target: 'visualizza-elenco-visitatori-oggi-mobile-section' },
+      { label: 'Visitatori Futuri', target: 'visualizza-elenco-visitatori-futuri-mobile-section' },
       { label: 'Visite', target: 'visualizza-visite-mobile-section' },
       { label: 'Presenti', target: 'visualizza-presenti-mobile-section' },
-      { label: 'Visitatori futuri', target: 'visualizza-elenco-visitatori-futuri-mobile-section' },
-      { label: 'Visitatori odierni', target: 'visualizza-elenco-visitatori-oggi-mobile-section' },
       { label: 'Visite a suo carico', target: 'visualizza-visite-suo-carico-mobile-section' },
       { label: 'Presenti a suo carico', target: 'visualizza-presenti-suo-carico-mobile-section' },
       { label: 'Futuri a suo carico', target: 'visualizza-futuri-suo-carico-mobile-section' },
@@ -43,21 +40,31 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeAllMobile() {
     submenu.classList.remove('active');
     overlay.classList.remove('active');
-  }
-  function showMobileSection(id) {
-    document.querySelectorAll('.mobile-section').forEach(section => {
-      section.classList.remove('active');
-    });
+  }  function showMobileSection(id) {
+    // First remove active class from all sections
+    const currentActive = document.querySelector('.mobile-section.active');
     const target = document.getElementById(id);
-    if (target) {
-      target.classList.add('active');
-    } else {
-      // Se la sezione target non esiste, mostra la home
+
+    if (!target) {
+      console.warn(`Section ${id} not found, returning to home`);
+      // If target doesn't exist, show home
       const homeSection = document.getElementById('home-mobile-section');
-      if (homeSection) {
-        homeSection.classList.add('active');
+      if (homeSection && homeSection !== currentActive) {
+        handleSectionTransition(currentActive, homeSection);
       }
+      return;
     }
+
+    if (target === currentActive) return;
+
+    handleSectionTransition(currentActive, target);
+  }
+  function handleSectionTransition(currentSection, newSection) {
+    if (currentSection) {
+      currentSection.classList.remove('active');
+    }
+    window.scrollTo(0, 0);
+    newSection.classList.add('active');
   }
 
   function generateMobileSubmenu(items) {
@@ -74,33 +81,34 @@ document.addEventListener('DOMContentLoaded', () => {
       submenu.appendChild(div);
     });
   }
-
   function setupMobileListeners() {
     if (!mobileQuery.matches) return;
 
-    closeAllMobile();
-
     document.querySelectorAll('.menu-item-mobile').forEach(item => {
       item.onclick = (e) => {
+        e.preventDefault();
         e.stopPropagation();
+        
         const targetId = item.getAttribute('data-target');
+        const isSubmenuItem = submenuData[targetId];
 
-        if (targetId === 'home-section-mobile') {
-          closeAllMobile();
-          showMobileSection('home-mobile-section');
-          return;
-        }
-
-        if (submenuData[targetId]) {
-          const isActive = submenu.classList.contains('active');
-          closeAllMobile();
-          if (!isActive) {
+        // Handle submenu toggle
+        if (isSubmenuItem) {
+          const wasActive = submenu.classList.contains('active');
+          const currentSubmenuTarget = submenu.getAttribute('data-current-target');
+          
+          // Only close if clicking the same menu item that opened the submenu
+          if (wasActive && currentSubmenuTarget === targetId) {
+            closeAllMobile();
+          } else {
+            // Generate new submenu
             generateMobileSubmenu(submenuData[targetId]);
+            submenu.setAttribute('data-current-target', targetId);
             submenu.classList.add('active');
             overlay.classList.add('active');
           }
-          showMobileSection(targetId);
         } else {
+          // For non-submenu items (like Home), just show the section
           closeAllMobile();
           showMobileSection(targetId);
         }
@@ -124,8 +132,18 @@ document.querySelectorAll('.menu-item').forEach(item => {
         const submenu = this.querySelector('.submenu');
         const arrowImg = this.querySelector('.arrow img');
 
-        document.querySelectorAll('.menu-item, .submenu-item').forEach(el => {
-            el.classList.remove('selected');
+        // Prevent default behavior
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Only remove 'selected' class from siblings
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(mi => {
+            if (mi !== this) {
+                mi.classList.remove('selected');
+                const subItems = mi.querySelectorAll('.submenu-item');
+                subItems.forEach(si => si.classList.remove('selected'));
+            }
         });
 
         this.classList.add('selected');
@@ -165,13 +183,22 @@ document.querySelectorAll('.menu-item').forEach(item => {
 // Gestione click sui sottomenu
 document.querySelectorAll('.submenu-item').forEach(item => {
     item.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation(); // Previene la propagazione al menu-item padre
 
-        document.querySelectorAll('.menu-item, .submenu-item').forEach(el => {
-            el.classList.remove('selected');
-        });
+        // Remove selected only from sibling submenu items
+        const parentSubmenu = item.closest('.submenu');
+        if (parentSubmenu) {
+            parentSubmenu.querySelectorAll('.submenu-item').forEach(si => {
+                if (si !== item) si.classList.remove('selected');
+            });
+        }
 
         item.classList.add('selected');
+        const parentMenuItem = item.closest('.menu-item');
+        if (parentMenuItem) {
+            parentMenuItem.classList.add('selected');
+        }
 
         const targetId = item.id + '-section';
         showSection(targetId);
@@ -215,28 +242,28 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Inizializzazione versione mobile per tutte le dashboard
-document.addEventListener('DOMContentLoaded', () => {
-    // Per la versione mobile
-    const mobileSections = document.querySelectorAll('.mobile-section');
-    if (mobileSections) {
-        mobileSections.forEach(section => {
-            section.classList.remove('active');
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+        // Per la versione mobile
+        const mobileSections = document.querySelectorAll('.mobile-section');
+        if (mobileSections) {
+            mobileSections.forEach(section => {
+                section.classList.remove('active');
+            });
 
-        // Cerca la sezione home mobile appropriata
-        const adminHomeMobile = document.getElementById('admin-home-mobile-section');
-        const requesterHomeMobile = document.getElementById('requester-home-mobile-section');
-        const receptionHomeMobile = document.getElementById('home-mobile-section');
+            // Cerca la sezione home mobile appropriata
+            const adminHomeMobile = document.getElementById('admin-home-mobile-section');
+            const requesterHomeMobile = document.getElementById('requester-home-mobile-section');
+            const receptionHomeMobile = document.getElementById('home-mobile-section');
 
-        if (adminHomeMobile) {
-            adminHomeMobile.classList.add('active');
-        } else if (requesterHomeMobile) {
-            requesterHomeMobile.classList.add('active');
-        } else if (receptionHomeMobile) {
-            receptionHomeMobile.classList.add('active');
+            if (adminHomeMobile) {
+                adminHomeMobile.classList.add('active');
+            } else if (requesterHomeMobile) {
+                requesterHomeMobile.classList.add('active');
+            } else if (receptionHomeMobile) {
+                receptionHomeMobile.classList.add('active');
+            }
         }
-    }
-});
+    });
 
 // === INIZIO: Script specifico per DashboardReceptionist ===
 $(document).ready(function () {

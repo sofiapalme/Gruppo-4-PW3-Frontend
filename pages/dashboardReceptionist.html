@@ -8,679 +8,808 @@
     <link rel="stylesheet" href="/css/miniDatatableHome.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
+    <title>Dashboard</title>
 </head>
 
 <body>
     <div class="dashboard">
-    <div id="delete-modal">
-        <div class="modal-content">
-            <div id="delete-modal-message">Sei sicuro di voler eliminare questa visita?</div>
-            <div class="modal-actions">
-                <button class="action-button" id="delete-confirm"
-                    style="background:#c0392b;color:#fff;">Elimina</button>
-                <button class="action-button" id="delete-cancel">Annulla</button>
+        <div id="delete-modal">
+            <div class="modal-content">
+                <div id="delete-modal-message">Sei sicuro di voler eliminare questa visita?</div>
+                <div class="modal-actions">
+                    <button class="action-button" id="delete-confirm"
+                        style="background:#c0392b;color:#fff;">Elimina</button>
+                    <button class="action-button" id="delete-cancel">Annulla</button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="dashboardDesktop">
-        <aside class="sidebar">
-            <img class="logo" src="/assets/logo.png" alt="Logo">
-            <nav class="menu">
-                <div class="menu-item" id="home">Home</div>
+        <div class="dashboardDesktop">
+            <aside class="sidebar">
+                <img class="logo" src="/assets/logo.png" alt="Logo">
+                <nav class="menu">
+                    <div class="menu-item" id="home">Home</div>
 
-                <div class="menu-item" id="visualizza">
-                    <div class="menu-content">
-                        Visualizza <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
-                                alt="Freccia giù"></span>
+                    <div class="menu-item" id="visualizza">
+                        <div class="menu-content">
+                            Visualizza <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
+                                    alt="Freccia giù"></span>
+                        </div>
+                        <div class="submenu">
+                            <div class="submenu-item" id="visualizza-opzione1">Visualizza - Opzione 1 </div>
+                            <div class="submenu-item" id="visualizza-visite">Visite</div>
+                            <div class="submenu-item" id="visualizza-elenco-persone">Elenco dipendenti e visitatori
+                            </div>
+                            <div class="submenu-item" id="visualizza-presenti">Presenti</div>
+                            <div class="submenu-item" id="visualizza-elenco-visite-future">Elenco visite future</div>
+                            <div class="submenu-item" id="visualizza-elenco-visite-odierne">Elenco visite odierne</div>
+                            <div class="submenu-item" id="visualizza-visite-suo-carico">Visite a suo carico</div>
+                            <div class="submenu-item" id="visualizza-presenti-suo-carico">Presenti a suo carico</div>
+                            <div class="submenu-item" id="visualizza-futuri-suo-carico">Futuri a suo carico</div>
+                            <div class="submenu-item" id="visualizza-elenco-tel-sm">Elenco telefonico sm</div>
+                        </div>
                     </div>
-                    <div class="submenu">
-                        <div class="submenu-item" id="visualizza-opzione1">Visualizza - Opzione 1 </div>
-                        <div class="submenu-item" id="visualizza-visite">Visite</div>
-                        <div class="submenu-item" id="visualizza-elenco-persone">Elenco dipendenti e visitatori</div>
-                        <div class="submenu-item" id="visualizza-presenti">Presenti</div>
-                        <div class="submenu-item" id="visualizza-elenco-visite-future">Elenco visite future</div>
-                        <div class="submenu-item" id="visualizza-elenco-visite-odierne">Elenco visite odierne</div>
-                        <div class="submenu-item" id="visualizza-visite-suo-carico">Visite a suo carico</div>
-                        <div class="submenu-item" id="visualizza-presenti-suo-carico">Presenti a suo carico</div>
-                        <div class="submenu-item" id="visualizza-futuri-suo-carico">Futuri a suo carico</div>
-                        <div class="submenu-item" id="visualizza-elenco-tel-sm">Elenco telefonico sm</div>
+
+                    <div class="menu-item" id="storico">
+                        <div class="menu-content">
+                            Storico <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
+                                    alt="Freccia giù"></span>
+                        </div>
+                        <div class="submenu">
+                            <div class="submenu-item" id="storico-timbrature-visitatori">Storico timbrature visite</div>
+                            <div class="submenu-item" id="storico-timbrature-dipendenti">Storico timbrature dipendenti
+                            </div>
+                            <div class="submenu-item" id="storico-timbrature-mensa">Storico timbrature mensa</div>
+                        </div>
                     </div>
+
+                    <div class="menu-item" id="visitatori">
+                        <div class="menu-content">
+                            Visitatori <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
+                                    alt="Freccia giù"></span>
+                        </div>
+                        <div class="submenu">
+                            <div class="submenu-item" id="visitatori-crea-visite">Crea visite</div>
+                            <div class="submenu-item" id="visitatori-crea-persone">Crea persone</div>
+                            <div class="submenu-item" id="visitatori-crea-utenti">Crea persone</div>
+                        </div>
+                    </div>
+                </nav>
+                <div class="user-box">
+                    <div class="avatar-bg"></div>
+                    <img class="avatar" src="/assets/utente.png" alt="User Avatar">
+                    <div class="user-name">Nome e Cognome</div>
+                    <button class="action-button">Logout</button>
                 </div>
+            </aside>
 
-                <div class="menu-item" id="storico">
-                    <div class="menu-content">
-                        Storico <span class="arrow"><img src="/assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
-                    </div>
-                    <div class="submenu">
-                        <div class="submenu-item" id="storico-timbrature-visitatori">Storico timbrature visite</div>
-                        <div class="submenu-item" id="storico-timbrature-dipendenti">Storico timbrature dipendenti</div>
-                        <div class="submenu-item" id="storico-timbrature-mensa">Storico timbrature mensa</div>
-                    </div>
-                </div>
+            <main class="content-area">
+                <section id="home-section" class="section home active">
+                    <div class="container">
 
-                <div class="menu-item" id="visitatori">
-                    <div class="menu-content">
-                        Visitatori <span class="arrow"><img src="/assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
-                    </div>
-                    <div class="submenu">
-                        <div class="submenu-item" id="visitatori-crea-visite">Crea visite</div>
-                        <div class="submenu-item" id="visitatori-crea-persone">Crea persone</div>
-                        <div class="submenu-item" id="visitatori-crea-utenti">Crea persone</div>
-                    </div>
-                </div>
-            </nav>
-            <div class="user-box">
-                <div class="avatar-bg"></div>
-                <img class="avatar" src="/assets/utente.png" alt="User Avatar">
-                <div class="user-name">Nome e Cognome</div>
-                <button class="action-button">Logout</button>
-            </div>
-        </aside>
+                        <div class="top-section">
+                            <div class="top-left">
+                                <h1>Home</h1>
+                            </div>
+                            <div class="top-right">
+                                <div class="big-box">
+                                    <div style="font-size:2.5rem;font-weight:bold;line-height:1;">128</div>
+                                    <div style="font-size:1rem;">Presenti totali</div>
+                                </div>
 
-        <main class="content-area">
-            <section id="home-section" class="section home active">
-                <div class="container">
+                                <div class="small-box">
+                                    <div style="font-size:1.5rem;font-weight:bold;">85</div>
+                                    <div style="font-size:0.9rem;">Dipendenti</div>
+                                </div>
+                                <div class="small-box">
+                                    <div style="font-size:1.5rem;font-weight:bold;">43</div>
+                                    <div style="font-size:0.9rem;">Visitatori</div>
+                                </div>
+                                <div class="big-box create-user-box">
+                                    <div style="font-size:1.3rem;font-weight:bold;margin-bottom:0.5rem;">Crea utente
+                                    </div>
+                                    <button class="action-button mini-link" type="button"
+                                        onclick="showSection('visitatori-opzione1-section')">Vai</button>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="top-section">
-                        <div class="top-left">
+                        <div class="bottom-section">
+                            <div class="box">
+                                <h3>Visitatori oggi</h3>
+                                <table id="home-table1" class="display mini-datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Cognome</th>
+                                            <th>Data inizio</th>
+                                            <th>Ora inizio</th>
+                                            <th>Data fine</th>
+                                            <th>Ora fine</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="home-table1-body">
+                                        <!-- Popolato dinamicamente -->
+                                    </tbody>
+                                </table> <button class="action-button mini-link" type="button"
+                                    onclick="showSection('visualizza-elenco-visite-odierne-section')">Vai a Visitatori
+                                    Oggi</button>
+                            </div>
+                            <div class="box">
+                                <h3>Visitatori domani</h3>
+                                <table id="home-table2" class="display mini-datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Cognome</th>
+                                            <th>Data inizio</th>
+                                            <th>Ora inizio</th>
+                                            <th>Data fine</th>
+                                            <th>Ora fine</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="home-table2-body">
+                                        <!-- Popolato dinamicamente -->
+                                    </tbody>
+                                </table>
+                                <button class="action-button mini-link" type="button"
+                                    onclick="showSection('visualizza-elenco-visite-future-section')">Vai a Visitatori
+                                    Futuri</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="visualizza-opzione1-section" class="section">
+                    <h2>Visualizza - Opzione 1</h2>
+                    <table id="table1" class="display custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cognome</th>
+                                <th>Data inizio</th>
+                                <th>Ora inizio</th>
+                                <th>Data fine</th>
+                                <th>Ora fine</th>
+                                <th>Dettagli</th>
+                                <th>Elimina</th>
+                                <th>Modifica</th>
+                                <th>Assegna Badge</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table1-body">
+                            <!-- Popolato dinamicamente -->
+                        </tbody>
+                    </table>
+                    <!-- Modale Dettagli -->
+                    <div id="dettagli-modal" class="modal"
+                        style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                        <div class="modal-content"
+                            style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                            <span id="close-modal"
+                                style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                            <h3>Dettagli Visita</h3>
+                            <div><b>Azienda:</b> <span id="modal-azienda"></span></div>
+                            <div><b>Motivazione:</b> <span id="modal-motivo"></span></div>
+                            <div><b>Dipendente:</b> <span id="modal-dipendente"></span></div>
+                        </div>
+                    </div>
+                    <!-- Modale Modifica -->
+                    <div id="modifica-modal" class="modal"
+                        style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                        <div class="modal-content"
+                            style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                            <span id="close-modifica-modal"
+                                style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                            <h3>Modifica Visita</h3>
+                            <form id="modifica-form">
+                                <input type="hidden" id="modifica-idVisita">
+                                <input type="hidden" id="modifica-idPersonaVisitatore">
+                                <input type="hidden" id="modifica-idResponsabile">
+                                <div class="input-group">
+                                    <label for="modifica-motivo">Motivo</label>
+                                    <input type="text" id="modifica-motivo" name="motivo" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="modifica-dataInizio">Data inizio</label>
+                                    <input type="date" id="modifica-dataInizio" name="dataInizio" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="modifica-oraInizio">Ora inizio</label>
+                                    <input type="time" id="modifica-oraInizio" name="oraInizio" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="modifica-dataFine">Data fine</label>
+                                    <input type="date" id="modifica-dataFine" name="dataFine" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="modifica-oraFine">Ora fine</label>
+                                    <input type="time" id="modifica-oraFine" name="oraFine" required>
+                                </div>
+                                <div class="button-container">
+                                    <button type="submit" class="action-button" style="width:100%;">Salva
+                                        modifiche</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <section id="visualizza-opzione2-section" class="section">
+                    <h2>Visualizza - Opzione 2</h2>
+                    <p>Contenuto della sezione Visualizza Opzione 2</p>
+                </section>
+
+                <section id="storico-opzione1-section" class="section">
+                    <h2>Storico - Opzione 1</h2>
+                    <p>Contenuto della sezione Storico Opzione 1</p>
+                </section>
+                <section id="storico-opzione2-section" class="section">
+                    <h2>Storico - Opzione 2</h2>
+                    <p>Contenuto della sezione Storico Opzione 2</p>
+                </section>
+                <section id="storico-timbrature-visi-section" class="section">
+                    <h2>Storico timbrature visi</h2>
+                    <div id="tabella-storico-timbrature-visi"></div>
+                </section>
+                <section id="storico-timbrature-dip-section" class="section">
+                    <h2>Storico timbrature dipendenti</h2>
+                    <div id="tabella-storico-timbrature-dip"></div>
+                </section>
+
+                <section id="visitatori-crea-visite-section" class="section centered">
+                    <div class="visitatori-wrapper">
+                        <h2>Prenota visita</h2>
+                        <div class="form-sezione">
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="prima-visita">
+                                <label for="prima-visita">Prima visita</label>
+                            </div>
+
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" id="nome" name="nome">
+                                </div>
+                                <div class="input-group">
+                                    <label for="cognome">Cognome</label>
+                                    <input type="text" id="cognome" name="cognome">
+                                </div>
+                                <div class="input-group">
+                                    <label for="azienda">Azienda</label>
+                                    <input type="text" id="azienda" name="azienda">
+                                </div>
+                            </div>
+
+                            <div class="input-row left-align">
+                                <div class="input-group">
+                                    <label for="data-inizio">Data inizio</label>
+                                    <input type="date" id="data-inizio" name="data-inizio">
+                                </div>
+                                <div class="input-group">
+                                    <label for="data-fine">Data fine</label>
+                                    <input type="date" id="data-fine" name="data-fine">
+                                </div>
+                            </div>
+
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label for="responsabile">Responsabile visita</label>
+                                    <input type="text" id="responsabile" name="responsabile">
+                                </div>
+                                <div class="input-group">
+                                    <label for="motivo">Motivo visita</label>
+                                    <input type="text" id="motivo" name="motivo">
+                                </div>
+                                <div class="input-group">
+                                    <label for="materiale">Materiale informatico</label>
+                                    <input type="text" id="materiale" name="materiale">
+                                </div>
+                            </div>
+
+                            <div class="checkbox-group">
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="automezzo">
+                                    <label for="automezzo">Accesso automezzo</label>
+                                </div>
+                                <div class="checkbox-row">
+                                    <input type="checkbox" id="dpi">
+                                    <label for="dpi">Richiesta DPI</label>
+                                </div>
+                            </div>
+
+                            <div class="button-container">
+                                <button class="action-button">Prenota</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sezione creazione persone -->
+                <section id="visitatori-crea-persone-section" class="section">
+                    <h2>Crea Persone</h2>
+
+                    <form id="personForm">
+                        <label>
+                            Nome:
+                            <input type="text" name="nome" id="nome-crea-persona" placeholder="Nome" required />
+                        </label>
+                        <br />
+                        <label>
+                            Cognome:
+                            <input type="text" name="cognome" id="cognome-crea-persona" placeholder="Cognome"
+                                required />
+                        </label>
+                        <br />
+                        <label>
+                            Azienda:
+                            <input type="text" name="azienda" id="azienda-crea-persona" placeholder="Azienda"
+                                required />
+                        </label>
+                        <br />
+                        <label>
+                            Indirizzo:
+                            <input type="text" name="indirizzo" id="indirizzo" placeholder="Indirizzo" required />
+                        </label>
+                        <br />
+                        <label>
+                            Città:
+                            <input type="text" name="citta" id="citta" placeholder="Città" required />
+                        </label>
+                        <br />
+                        <label>
+                            Provincia:
+                            <input type="text" name="provincia" id="provincia" placeholder="Provincia" required />
+                        </label>
+                        <br />
+                        <label>
+                            Nazione:
+                            <input type="text" name="nazione" id="nazione" placeholder="Nazione" required />
+                        </label>
+                        <br />
+                        <label>
+                            Telefono:
+                            <input type="tel" name="telefono" id="telefono" placeholder="Telefono" />
+                        </label>
+                        <br />
+                        <label>
+                            Cellulare:
+                            <input type="tel" name="cellulare" id="cellulare" placeholder="Cellulare" required />
+                        </label>
+                        <br />
+                        <label>
+                            Fax:
+                            <input type="text" name="fax" id="fax" placeholder="Fax" />
+                        </label>
+                        <br />
+                        <label>
+                            Partita IVA:
+                            <input type="text" name="pIva" id="pIva" placeholder="Partita IVA" />
+                        </label>
+                        <br />
+                        <label>Codice Fiscale:
+                            <input type="text" name="cf" id="cf" placeholder="Codice Fiscale" />
+                        </label>
+                        <br />
+                        <label>
+                            Email:
+                            <input type="email" name="mail" id="mail-crea-persona" placeholder="Email" required />
+                        </label>
+                        <br />
+                        <label>
+                            Data Assunzione:
+                            <input type="date" name="dataAssunzione" id="dataAssunzione" />
+                        </label>
+                        <br />
+                        <label>
+                            Luogo Nascita:
+                            <input type="text" name="luogoNascita" id="luogoNascita" placeholder="Luogo di Nascita"
+                                required />
+                        </label>
+                        <br />
+                        <label>Data Nascita:
+                            <input type="date" name="dataNascita" id="dataNascita" required />
+                        </label>
+                        <br />
+                        <label>
+                            Tipo Documento:
+                            <select name="tipoDocumento" id="tipoDocumento" required>
+                                <option value="C.I.">Carta d'identità</option>
+                                <option value="PATENTE">Patente</option>
+                                <option value="PASSAPORTO">Passaporto</option>
+                            </select>
+                        </label>
+                        <br />
+                        <label>
+                            Numero Documento:
+                            <input type="text" name="numeroDocumento" id="numeroDocumento"
+                                placeholder="Numero Documento" required />
+                        </label>
+                        <br />
+                        <label>
+                            Data Scadenza Documento:
+                            <input type="date" name="dataScadenzaDoc" id="dataScadenzaDoc" required />
+                        </label>
+                        <br />
+                        <label>DUVRI:
+                            <input type="checkbox" name="duvri" id="duvri" />
+                        </label>
+                        <br />
+                        <label>
+                            Numero Centri Costo:
+                            <input type="number" name="numCentriCosto" id="numCentriCosto"
+                                placeholder="Numero Centri Costo" />
+                        </label>
+                        <br />
+                        <label>
+                            Flag Doc Privacy:
+                            <input type="checkbox" name="flagDocPrivacy" id="flagDocPrivacy" required />
+                        </label>
+                        <br />
+                        <label>Data Consegna Doc Privacy:
+                            <input type="date" name="dataConsegnaDocPrivacy" id="dataConsegnaDocPrivacy" required />
+                        </label>
+                        <br />
+                        <label>Ruolo:
+                            <select name="idRuolo" id="idRuolo">
+                                <option>Dipendente</option>
+                                <option value="4">Visitatore</option>
+                                <option value="5">Manutenzione</option>
+                            </select>
+                        </label>
+                        <br />
+
+                        <button type="submit" onclick="createPerson(event)">Invia</button>
+                    </form>
+                </section>
+
+                <!-- Sezione creazione visite -->
+                <section id="visualizza-visite-section" class="section">
+                    <h2>Crea una visita</h2>
+                    <button class="action-button" id="stampa-visite-oggi">Stampa visite di oggi</button>
+                    <div id="tabella-visite"></div>
+                </section>
+
+                <section id="visualizza-presenti-section" class="section">
+                    <h2>Presenti</h2>
+                    <div id="indicatori-presenti"></div>
+                    <div id="tab-dip-presenti"></div>
+                    <div id="tab-vis-presenti"></div>
+                </section>
+
+                <!-- Tabella Elenco Persone -->
+                <section id="visualizza-elenco-persone-section" class="section">
+                    <h2>Elenco dipendenti e visitatori</h2>
+                    <table id="tabella-persone" class="display custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cognome</th>
+                                <th>Azienda</th>
+                                <th>Città</th>
+                                <th>Email</th>
+                                <th>Cellulare</th>
+                                <th>Luogo di Nascita</th>
+                                <th>Data di nascita</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+
+                <!-- Tabella visite future -->
+                <section id="visualizza-elenco-visite-future-section" class="section">
+                    <h2>Elenco visitatori futuri</h2>
+                    <table id="tabella-visite-future" class="display custom-table">
+                        <thead>
+                            <tr>
+                                <th>Data inizio</th>
+                                <th>Data fine</th>
+                                <th>Ora inizio</th>
+                                <th>Ora fine</th>
+                                <th>Motivo</th>
+                                <th>Visitatore</th>
+                                <th>Responsabile</th>
+                                <th>Flag DPI</th>
+                                <th>Materiale informatico</th>
+                                <th>Accesso con Automezzo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+
+                <!-- Tabella visite di oggi -->
+                <section id="visualizza-elenco-visite-odierne-section" class="section">
+                    <h2>Elenco visitatori odierni</h2>
+                    <table id="tabella-visite-odierne" class="display custom-table">
+                        <thead>
+                            <tr>
+                                <th>Data inizio</th>
+                                <th>Data fine</th>
+                                <th>Ora inizio</th>
+                                <th>Ora fine</th>
+                                <th>Motivo</th>
+                                <th>Visitatore</th>
+                                <th>Responsabile</th>
+                                <th>Flag DPI</th>
+                                <th>Materiale informatico</th>
+                                <th>Accesso con Automezzo</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+
+
+                <section id="visualizza-visite-suo-carico-section" class="section">
+                    <h2>Visite a suo carico</h2>
+                    <div id="tabella-visite-suo-carico"></div>
+                </section>
+                <section id="visualizza-presenti-suo-carico-section" class="section">
+                    <h2>Presenti a suo carico</h2>
+                    <div id="tabella-presenti-suo-carico"></div>
+                </section>
+                <section id="visualizza-futuri-suo-carico-section" class="section">
+                    <h2>Futuri a suo carico</h2>
+                    <div id="tabella-futuri-suo-carico"></div>
+                </section>
+
+
+                <section id="storico-timbrature-visitatori-section" class="section">
+                    <h2>Storico timbrature dei visitatori</h2>
+                    <table id="tabella-timbrature-visitatori" class="display custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cognome</th>
+                                <th>Azienda</th>
+                                <th>Codice Badge</th>
+                                <th>Data Timbratura</th>
+                                <th>Ora Timbratura</th>
+                                <th>Descrizione</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+
+                <section id="storico-timbrature-dipendenti-section" class="section">
+                    <h2>Storico timbrature dei dipendenti</h2>
+                    <table id="tabella-timbrature-dipendenti" class="display custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cognome</th>
+                                <th>Azienda</th>
+                                <th>Codice Badge</th>
+                                <th>Data Timbratura</th>
+                                <th>Ora Timbratura</th>
+                                <th>Descrizione</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+
+                <section id="storico-timbrature-mensa-section" class="section">
+                    <h2>Storico timbrature della mensa</h2>
+                    <table id="tabella-timbrature-mensa" class="display custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cognome</th>
+                                <th>Azienda</th>
+                                <th>Codice Badge</th>
+                                <th>Data Timbratura</th>
+                                <th>Ora Timbratura</th>
+                                <th>Descrizione</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+
+                <!-- Elenco telefonico dipendenti -->
+                <section id="visualizza-elenco-tel-sm-section" class="section">
+                    <h2>Elenco telefonico sm</h2>
+                    <table id="contactListTable" class="display custom-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cognome</th>
+                                <th>Email</th>
+                                <th>Telefono</th>
+                                <th>Cellulare</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+            </main>
+
+        </div>
+
+        <div class="dashboardM">
+            <main class="mobile-content-area">
+                <section id="home-mobile-section" class="mobile-section active">
+                    <div class="container-mobile">
+                        <div class="header-section-mobile">
                             <h1>Home</h1>
                         </div>
-                        <div class="top-right">
-                            <div class="big-box">
-                                <div style="font-size:2.5rem;font-weight:bold;line-height:1;">128</div>
-                                <div style="font-size:1rem;">Presenti totali</div>
+
+                        <div class="stats-bar-mobile">
+                            <div class="stat-box-mobile main-stat">
+                                <div class="stat-number">128</div>
+                                <div class="stat-label">Presenti totali</div>
+                            </div>
+                            <div class="stat-box-mobile">
+                                <div class="stat-number">85</div>
+                                <div class="stat-label">Dipendenti</div>
+                            </div>
+                            <div class="stat-box-mobile">
+                                <div class="stat-number">43</div>
+                                <div class="stat-label">Visitatori</div>
+                            </div>
+                        </div>
+
+                        <div class="content-grid-mobile">
+                            <div class="left-column-mobile">
+                                <div class="box-mobile visitors-table">
+                                    <h3>Visitatori oggi</h3>
+                                    <div class="table-container-mobile">
+                                        <table id="home-table1-mobile" class="display mini-datatable-mobile">
+                                            <thead></thead>
+                                            <tbody id="home-table1-body-mobile"></tbody>
+                                        </table>
+                                    </div>
+                                    <button class="action-button-mobile mini-link" type="button"
+                                        onclick="showMobileSection('visitatori-oggi-mobile-section')">
+                                        Vai a Visitatori Oggi
+                                    </button>
+                                </div>
                             </div>
 
-                            <div class="small-box">
-                                <div style="font-size:1.5rem;font-weight:bold;">85</div>
-                                <div style="font-size:0.9rem;">Dipendenti</div>
-                            </div>
-                            <div class="small-box">
-                                <div style="font-size:1.5rem;font-weight:bold;">43</div>
-                                <div style="font-size:0.9rem;">Visitatori</div>
-                            </div>
-                            <div class="big-box create-user-box">
-                                <div style="font-size:1.3rem;font-weight:bold;margin-bottom:0.5rem;">Crea utente</div>
-                                <button class="action-button mini-link" type="button"
-                                    onclick="showSection('visitatori-opzione1-section')">Vai</button>
+                            <div class="right-column-mobile">
+                                <div class="box-mobile visitors-table">
+                                    <h3>Visitatori domani</h3>
+                                    <div class="table-container-mobile">
+                                        <table id="home-table2-mobile" class="display mini-datatable-mobile">
+                                            <thead></thead>
+                                            <tbody id="home-table2-body-mobile"></tbody>
+                                        </table>
+                                    </div>
+                                    <button class="action-button-mobile mini-link" type="button"
+                                        onclick="showMobileSection('visitatori-domani-mobile-section')">
+                                        Vai a Visitatori Futuri
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </section>
 
-                    <div class="bottom-section">
-                        <div class="box">
-                            <h3>Visitatori oggi</h3>
-                            <table id="home-table1" class="display mini-datatable">
-                                <thead>
-                                    <tr>
-                                        <th>Nome</th>
-                                        <th>Cognome</th>
-                                        <th>Data inizio</th>
-                                        <th>Ora inizio</th>
-                                        <th>Data fine</th>
-                                        <th>Ora fine</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="home-table1-body">
-                                    <!-- Popolato dinamicamente -->
-                                </tbody>
-                            </table>
-                            <button class="action-button mini-link" type="button"
-                                onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione
-                                1</button>
+
+                <section id="visualizza-mobile-section" class="mobile-section">
+                    <h1>Visualizza</h1>
+                    <p>Contenuto visualizza.</p>
+                </section>
+
+                <section id="storico-mobile-section" class="mobile-section">
+                    <h1>Storico</h1>
+                    <p>Contenuto storico.</p>
+                </section>
+
+                <section id="visitatori-mobile-section" class="mobile-section">
+                    <h1>Visitatori</h1>
+                    <p>Contenuto visitatori.</p>
+                </section>
+
+                <section id="visualizza-opzione1-mobile-section" class="mobile-section">
+                    <div class="container-mobile">
+                        <div class="header-section-mobile">
+                            <h1>Visitatori Oggi</h1>
                         </div>
-                        <div class="box">
-                            <h3>Visitatori domani</h3>
-                            <table id="home-table2" class="display mini-datatable">
-                                <thead>
-                                    <tr>
-                                        <th>Nome</th>
-                                        <th>Cognome</th>
-                                        <th>Data inizio</th>
-                                        <th>Ora inizio</th>
-                                        <th>Data fine</th>
-                                        <th>Ora fine</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="home-table2-body">
-                                    <!-- Popolato dinamicamente -->
-                                </tbody>
-                            </table>
-                            <button class="action-button mini-link" type="button"
-                                onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione
-                                1</button>
+                        <div class="content-area-mobile">
+                            <div class="table-container-mobile">
+                                <table id="visualizza-table1-mobile" class="display mini-datatable-mobile">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Cognome</th>
+                                            <th>Data inizio</th>
+                                            <th>Ora inizio</th>
+                                            <th>Data fine</th>
+                                            <th>Ora fine</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+                </section>
+                <section id="visualizza-visite-mobile-section" class="mobile-section">
+                    <h1>Visite</h1>
+                    <p>Contenuto Visite.</p>
+                </section>
+                <section id="visualizza-presenti-mobile-section" class="mobile-section">
+                    <h1>Presenti</h1>
+                    <p>Contenuto Presenti.</p>
+                </section>
+                <section id="visualizza-elenco-visitatori-futuri-mobile-section" class="mobile-section">
+                    <h1>Elenco visitatori futuri</h1>
+                    <p>Contenuto Elenco visitatori futuri.</p>
+                </section>
+                <section id="visualizza-elenco-visitatori-oggi-mobile-section" class="mobile-section">
+                    <h1>Elenco visitatori odierni</h1>
+                    <p>Contenuto Elenco visitatori odierni.</p>
+                </section>
+                <section id="visualizza-visite-suo-carico-mobile-section" class="mobile-section">
+                    <h1>Visite a suo carico</h1>
+                    <p>Contenuto Visite a suo carico.</p>
+                </section>
+                <section id="visualizza-presenti-suo-carico-mobile-section" class="mobile-section">
+                    <h1>Presenti a suo carico</h1>
+                    <p>Contenuto Presenti a suo carico.</p>
+                </section>
+                <section id="visualizza-futuri-suo-carico-mobile-section" class="mobile-section">
+                    <h1>Futuri a suo carico</h1>
+                    <p>Contenuto Futuri a suo carico.</p>
+                </section>
+                <section id="visualizza-elenco-tel-sm-mobile-section" class="mobile-section">
+                    <h1>Elenco telefonico sm</h1>
+                    <p>Contenuto Elenco telefonico sm.</p>
+                </section>
+                <section id="storico-timbrature-visitatori-mobile-section" class="mobile-section">
+                    <h1>Storico timbrature visite</h1>
+                    <p>Contenuto Storico timbrature visite.</p>
+                </section>
+                <section id="storico-timbrature-dipendenti-mobile-section" class="mobile-section">
+                    <h1>Storico timbrature dipendenti</h1>
+                    <p>Contenuto Storico timbrature dipendenti.</p>
+                </section>
+                <section id="storico-timbrature-mensa-mobile-section" class="mobile-section">
+                    <h1>Storico timbrature mensa</h1>
+                    <p>Contenuto Storico timbrature mensa.</p>
+                </section>
+                <section id="visitatori-opzione1-mobile-section" class="mobile-section">
+                    <h1>Opzione 1</h1>
+                    <p>Contenuto Opzione 1.</p>
+                </section>
+                <section id="visitatori-opzione2-mobile-section" class="mobile-section">
+                    <h1>Opzione 2</h1>
+                    <p>Contenuto Opzione 2.</p>
+                </section>
+            </main>
+
+            <nav class="menuM">
+                <div class="menu-item-mobile" data-target="home-section-mobile">
+                    <img class="iconM" src="/assets/home_black_icon.png" alt="Home">
+                    <div class="labelM">Home</div>
                 </div>
-            </section>
-            <section id="visualizza-opzione1-section" class="section">
-                <h2>Visualizza - Opzione 1</h2>
-                <table id="table1" class="display custom-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Cognome</th>
-                            <th>Data inizio</th>
-                            <th>Ora inizio</th>
-                            <th>Data fine</th>
-                            <th>Ora fine</th>
-                            <th>Dettagli</th>
-                            <th>Elimina</th>
-                            <th>Modifica</th>
-                            <th>Assegna Badge</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table1-body">
-                        <!-- Popolato dinamicamente -->
-                    </tbody>
-                </table>
-                <!-- Modale Dettagli -->
-                <div id="dettagli-modal" class="modal"
-                    style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
-                    <div class="modal-content"
-                        style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
-                        <span id="close-modal"
-                            style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
-                        <h3>Dettagli Visita</h3>
-                        <div><b>Azienda:</b> <span id="modal-azienda"></span></div>
-                        <div><b>Motivazione:</b> <span id="modal-motivo"></span></div>
-                        <div><b>Dipendente:</b> <span id="modal-dipendente"></span></div>
-                    </div>
+                <div class="menu-item-mobile" data-target="visualizza-section-mobile">
+                    <img class="iconM" src="/assets/calendar_black_icon.png" alt="Visualizza">
+                    <div class="labelM">Visualizza</div>
                 </div>
-                <!-- Modale Modifica -->
-                <div id="modifica-modal" class="modal"
-                    style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
-                    <div class="modal-content"
-                        style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
-                        <span id="close-modifica-modal"
-                            style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
-                        <h3>Modifica Visita</h3>
-                        <form id="modifica-form">
-                            <input type="hidden" id="modifica-idVisita">
-                            <input type="hidden" id="modifica-idPersonaVisitatore">
-                            <input type="hidden" id="modifica-idResponsabile">
-                            <div class="input-group">
-                                <label for="modifica-motivo">Motivo</label>
-                                <input type="text" id="modifica-motivo" name="motivo" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="modifica-dataInizio">Data inizio</label>
-                                <input type="date" id="modifica-dataInizio" name="dataInizio" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="modifica-oraInizio">Ora inizio</label>
-                                <input type="time" id="modifica-oraInizio" name="oraInizio" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="modifica-dataFine">Data fine</label>
-                                <input type="date" id="modifica-dataFine" name="dataFine" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="modifica-oraFine">Ora fine</label>
-                                <input type="time" id="modifica-oraFine" name="oraFine" required>
-                            </div>
-                            <div class="button-container">
-                                <button type="submit" class="action-button" style="width:100%;">Salva modifiche</button>
-                            </div>
-                        </form>
-                    </div>
+                <div class="menu-item-mobile" data-target="storico-section-mobile">
+                    <img class="iconM" src="/assets/archive_black_icon.png" alt="Storico">
+                    <div class="labelM">Storico</div>
                 </div>
-            </section>
-            <section id="visualizza-opzione2-section" class="section">
-                <h2>Visualizza - Opzione 2</h2>
-                <p>Contenuto della sezione Visualizza Opzione 2</p>
-            </section>
-
-            <section id="storico-opzione1-section" class="section">
-                <h2>Storico - Opzione 1</h2>
-                <p>Contenuto della sezione Storico Opzione 1</p>
-            </section>
-            <section id="storico-opzione2-section" class="section">
-                <h2>Storico - Opzione 2</h2>
-                <p>Contenuto della sezione Storico Opzione 2</p>
-            </section>
-            <section id="storico-timbrature-visi-section" class="section">
-                <h2>Storico timbrature visi</h2>
-                <div id="tabella-storico-timbrature-visi"></div>
-            </section>
-            <section id="storico-timbrature-dip-section" class="section">
-                <h2>Storico timbrature dipendenti</h2>
-                <div id="tabella-storico-timbrature-dip"></div>
-            </section>
-
-            <section id="visitatori-crea-visite-section" class="section centered">
-                <div class="visitatori-wrapper">
-                    <h2>Prenota visita</h2>
-                    <div class="form-sezione">
-                        <div class="checkbox-row">
-                            <input type="checkbox" id="prima-visita">
-                            <label for="prima-visita">Prima visita</label>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label for="nome">Nome</label>
-                                <input type="text" id="nome" name="nome">
-                            </div>
-                            <div class="input-group">
-                                <label for="cognome">Cognome</label>
-                                <input type="text" id="cognome" name="cognome">
-                            </div>
-                            <div class="input-group">
-                                <label for="azienda">Azienda</label>
-                                <input type="text" id="azienda" name="azienda">
-                            </div>
-                        </div>
-
-                        <div class="input-row left-align">
-                            <div class="input-group">
-                                <label for="data-inizio">Data inizio</label>
-                                <input type="date" id="data-inizio" name="data-inizio">
-                            </div>
-                            <div class="input-group">
-                                <label for="data-fine">Data fine</label>
-                                <input type="date" id="data-fine" name="data-fine">
-                            </div>
-                        </div>
-
-                        <div class="input-row">
-                            <div class="input-group">
-                                <label for="responsabile">Responsabile visita</label>
-                                <input type="text" id="responsabile" name="responsabile">
-                            </div>
-                            <div class="input-group">
-                                <label for="motivo">Motivo visita</label>
-                                <input type="text" id="motivo" name="motivo">
-                            </div>
-                            <div class="input-group">
-                                <label for="materiale">Materiale informatico</label>
-                                <input type="text" id="materiale" name="materiale">
-                            </div>
-                        </div>
-
-                        <div class="checkbox-group">
-                            <div class="checkbox-row">
-                                <input type="checkbox" id="automezzo">
-                                <label for="automezzo">Accesso automezzo</label>
-                            </div>
-                            <div class="checkbox-row">
-                                <input type="checkbox" id="dpi">
-                                <label for="dpi">Richiesta DPI</label>
-                            </div>
-                        </div>
-
-                        <div class="button-container">
-                            <button class="action-button">Prenota</button>
-                        </div>
-
-                    </div>
+                <div class="menu-item-mobile" data-target="visitatori-section-mobile">
+                    <img class="iconM" src="/assets/users_black_icon.png" alt="Visitatori">
+                    <div class="labelM">Visitatori</div>
                 </div>
-            </section>
+            </nav>
 
-            <!-- Sezione creazione persone -->
-            <section id="visitatori-crea-persone-section" class="section">
-                <h2>Crea Persone</h2>
+            <div id="submenu-container" class="submenuM"></div>
+            <div id="overlay"></div>
 
-                <form id="personForm">
-                    <label>
-                        Nome:
-                        <input type="text" name="nome" id="nome-crea-persona" placeholder="Nome" required />
-                    </label>
-                    <br />
-                    <label>
-                        Cognome:
-                        <input type="text" name="cognome" id="cognome-crea-persona" placeholder="Cognome" required />
-                    </label>
-                    <br />
-                    <label>
-                        Azienda:
-                        <input type="text" name="azienda" id="azienda-crea-persona" placeholder="Azienda" required />
-                    </label>
-                    <br />
-                    <label>
-                        Indirizzo:
-                        <input type="text" name="indirizzo" id="indirizzo" placeholder="Indirizzo" required />
-                    </label>
-                    <br />
-                    <label>
-                        Città:
-                        <input type="text" name="citta" id="citta" placeholder="Città" required />
-                    </label>
-                    <br />
-                    <label>
-                        Provincia:
-                        <input type="text" name="provincia" id="provincia" placeholder="Provincia" required />
-                    </label>
-                    <br />
-                    <label>
-                        Nazione:
-                        <input type="text" name="nazione" id="nazione" placeholder="Nazione" required />
-                    </label>
-                    <br />
-                    <label>
-                        Telefono:
-                        <input type="tel" name="telefono" id="telefono" placeholder="Telefono" />
-                    </label>
-                    <br />
-                    <label>
-                        Cellulare:
-                        <input type="tel" name="cellulare" id="cellulare" placeholder="Cellulare" required />
-                    </label>
-                    <br />
-                    <label>
-                        Fax: 
-                        <input type="text" name="fax" id="fax" placeholder="Fax" />
-                    </label>
-                    <br />
-                    <label>
-                        Partita IVA:
-                        <input type="text" name="pIva" id="pIva" placeholder="Partita IVA" />
-                    </label>
-                    <br />
-                    <label>Codice Fiscale:
-                        <input type="text" name="cf" id="cf" placeholder="Codice Fiscale"/>
-                    </label>
-                    <br />
-                    <label>
-                        Email:
-                        <input type="email" name="mail" id="mail-crea-persona" placeholder="Email" required />
-                    </label>
-                    <br />
-                    <label>
-                        Data Assunzione:
-                        <input type="date" name="dataAssunzione" id="dataAssunzione" />
-                    </label>
-                    <br />
-                    <label>
-                        Luogo Nascita: 
-                        <input type="text" name="luogoNascita" id="luogoNascita" placeholder="Luogo di Nascita" required/>
-                    </label>
-                    <br />
-                    <label>Data Nascita:
-                        <input type="date" name="dataNascita" id="dataNascita" required />
-                    </label>
-                    <br />
-                    <label>
-                        Tipo Documento:
-                        <select name="tipoDocumento" id="tipoDocumento" required>
-                            <option value="C.I.">Carta d'identità</option>
-                            <option value="PATENTE">Patente</option>
-                            <option value="PASSAPORTO">Passaporto</option>
-                        </select>
-                    </label>
-                    <br />
-                    <label>
-                        Numero Documento:
-                        <input type="text" name="numeroDocumento" id="numeroDocumento" placeholder="Numero Documento" required/>
-                    </label>
-                    <br />
-                    <label>
-                        Data Scadenza Documento:
-                        <input type="date" name="dataScadenzaDoc" id="dataScadenzaDoc" required />
-                    </label>
-                    <br />
-                    <label>DUVRI:
-                        <input type="checkbox" name="duvri" id="duvri" />
-                    </label>
-                    <br />
-                    <label>
-                        Numero Centri Costo:
-                        <input type="number" name="numCentriCosto" id="numCentriCosto" placeholder="Numero Centri Costo" />
-                    </label>
-                    <br />
-                    <label>
-                        Flag Doc Privacy:
-                        <input type="checkbox" name="flagDocPrivacy" id="flagDocPrivacy" required />
-                    </label>
-                    <br />
-                    <label>Data Consegna Doc Privacy:
-                        <input type="date" name="dataConsegnaDocPrivacy" id="dataConsegnaDocPrivacy" required />
-                    </label>
-                    <br />
-                    <label>Ruolo:
-                        <select name="idRuolo" id="idRuolo">
-                            <option>Dipendente</option>
-                            <option value="4">Visitatore</option>
-                            <option value="5">Manutenzione</option>
-                        </select>
-                    </label>
-                    <br />
+        </div>
 
-                    <button type="submit" onclick="createPerson(event)">Invia</button>
-                </form>
-            </section>
-
-            <!-- Sezione creazione visite -->
-            <section id="visualizza-visite-section" class="section">
-                <h2>Crea una visita</h2>
-                <button class="action-button" id="stampa-visite-oggi">Stampa visite di oggi</button>
-                <div id="tabella-visite"></div>
-            </section>
-
-            <section id="visualizza-presenti-section" class="section">
-                <h2>Presenti</h2>
-                <div id="indicatori-presenti"></div>
-                <div id="tab-dip-presenti"></div>
-                <div id="tab-vis-presenti"></div>
-            </section>
-
-            <!-- Tabella Elenco Persone -->
-            <section id="visualizza-elenco-persone-section" class="section">
-                <h2>Elenco dipendenti e visitatori</h2>
-                <table id="tabella-persone" class="display custom-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Cognome</th>
-                            <th>Azienda</th>
-                            <th>Città</th>
-                            <th>Email</th>
-                            <th>Cellulare</th>
-                            <th>Luogo di Nascita</th>
-                            <th>Data di nascita</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-
-            <!-- Tabella visite future -->
-            <section id="visualizza-elenco-visite-future-section" class="section">
-                <h2>Elenco visitatori futuri</h2>
-                <table id="tabella-visite-future" class="display custom-table">
-                    <thead>
-                        <tr>
-                            <th>Data inizio</th>
-                            <th>Data fine</th>
-                            <th>Ora inizio</th>
-                            <th>Ora fine</th>
-                            <th>Motivo</th>
-                            <th>Visitatore</th>
-                            <th>Responsabile</th>
-                            <th>Flag DPI</th>
-                            <th>Materiale informatico</th>
-                            <th>Accesso con Automezzo</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-
-            <!-- Tabella visite di oggi -->
-            <section id="visualizza-elenco-visite-odierne-section" class="section">
-                <h2>Elenco visitatori odierni</h2>
-                <table id="tabella-visite-odierne" class="display custom-table">
-                    <thead>
-                        <tr>
-                            <th>Data inizio</th>
-                            <th>Data fine</th>
-                            <th>Ora inizio</th>
-                            <th>Ora fine</th>
-                            <th>Motivo</th>
-                            <th>Visitatore</th>
-                            <th>Responsabile</th>
-                            <th>Flag DPI</th>
-                            <th>Materiale informatico</th>
-                            <th>Accesso con Automezzo</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-
-
-            <section id="visualizza-visite-suo-carico-section" class="section">
-                <h2>Visite a suo carico</h2>
-                <div id="tabella-visite-suo-carico"></div>
-            </section>
-            <section id="visualizza-presenti-suo-carico-section" class="section">
-                <h2>Presenti a suo carico</h2>
-                <div id="tabella-presenti-suo-carico"></div>
-            </section>
-            <section id="visualizza-futuri-suo-carico-section" class="section">
-                <h2>Futuri a suo carico</h2>
-                <div id="tabella-futuri-suo-carico"></div>
-            </section>
-
-
-            <section id="storico-timbrature-visitatori-section" class="section">
-                <h2>Storico timbrature dei visitatori</h2>
-                <table id="tabella-timbrature-visitatori" class="display custom-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Cognome</th>
-                            <th>Azienda</th>
-                            <th>Codice Badge</th>
-                            <th>Data Timbratura</th>
-                            <th>Ora Timbratura</th>
-                            <th>Descrizione</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-
-            <section id="storico-timbrature-dipendenti-section" class="section">
-                <h2>Storico timbrature dei dipendenti</h2>
-                <table id="tabella-timbrature-dipendenti" class="display custom-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Cognome</th>
-                            <th>Azienda</th>
-                            <th>Codice Badge</th>
-                            <th>Data Timbratura</th>
-                            <th>Ora Timbratura</th>
-                            <th>Descrizione</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-
-            <section id="storico-timbrature-mensa-section" class="section">
-                <h2>Storico timbrature della mensa</h2>
-                <table id="tabella-timbrature-mensa" class="display custom-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Cognome</th>
-                            <th>Azienda</th>
-                            <th>Codice Badge</th>
-                            <th>Data Timbratura</th>
-                            <th>Ora Timbratura</th> 
-                            <th>Descrizione</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-
-            <!-- Elenco telefonico dipendenti -->
-            <section id="visualizza-elenco-tel-sm-section" class="section">
-                <h2>Elenco telefonico sm</h2>
-                <table id="contactListTable" class="display custom-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Cognome</th>
-                            <th>Email</th>
-                            <th>Telefono</th>
-                            <th>Cellulare</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </section>
-        </main>
-
-    </div>
-
-    <div class="dashboardM">
-        <main class="mobile-content-area">
-            <section id="home-mobile-section" class="mobile-section active">
-                <h1>Home</h1>
-                <p>Benvenuto nella dashboard home.</p>
-            </section>
-
-            <section id="visualizza-mobile-section" class="mobile-section">
-                <h1>Visualizza</h1>
-                <p>Contenuto visualizza.</p>
-            </section>
-
-            <section id="storico-mobile-section" class="mobile-section">
-                <h1>Storico</h1>
-                <p>Contenuto storico.</p>
-            </section>
-
-            <section id="visitatori-mobile-section" class="mobile-section">
-                <h1>Visitatori</h1>
-                <p>Contenuto visitatori.</p>
-            </section>
-
-            <section id="visualizza-opzione1-mobile-section" class="mobile-section"><h1>Visualizza - Opzione 1</h1><p>Contenuto Visualizza - Opzione 1.</p></section>
-            <section id="visualizza-visite-mobile-section" class="mobile-section"><h1>Visite</h1><p>Contenuto Visite.</p></section>
-            <section id="visualizza-presenti-mobile-section" class="mobile-section"><h1>Presenti</h1><p>Contenuto Presenti.</p></section>
-            <section id="visualizza-elenco-visitatori-futuri-mobile-section" class="mobile-section"><h1>Elenco visitatori futuri</h1><p>Contenuto Elenco visitatori futuri.</p></section>
-            <section id="visualizza-elenco-visitatori-oggi-mobile-section" class="mobile-section"><h1>Elenco visitatori odierni</h1><p>Contenuto Elenco visitatori odierni.</p></section>
-            <section id="visualizza-visite-suo-carico-mobile-section" class="mobile-section"><h1>Visite a suo carico</h1><p>Contenuto Visite a suo carico.</p></section>
-            <section id="visualizza-presenti-suo-carico-mobile-section" class="mobile-section"><h1>Presenti a suo carico</h1><p>Contenuto Presenti a suo carico.</p></section>
-            <section id="visualizza-futuri-suo-carico-mobile-section" class="mobile-section"><h1>Futuri a suo carico</h1><p>Contenuto Futuri a suo carico.</p></section>
-            <section id="visualizza-elenco-tel-sm-mobile-section" class="mobile-section"><h1>Elenco telefonico sm</h1><p>Contenuto Elenco telefonico sm.</p></section>
-            <section id="storico-timbrature-visitatori-mobile-section" class="mobile-section"><h1>Storico timbrature visite</h1><p>Contenuto Storico timbrature visite.</p></section>
-            <section id="storico-timbrature-dipendenti-mobile-section" class="mobile-section"><h1>Storico timbrature dipendenti</h1><p>Contenuto Storico timbrature dipendenti.</p></section>
-            <section id="storico-timbrature-mensa-mobile-section" class="mobile-section"><h1>Storico timbrature mensa</h1><p>Contenuto Storico timbrature mensa.</p></section>
-            <section id="visitatori-opzione1-mobile-section" class="mobile-section"><h1>Opzione 1</h1><p>Contenuto Opzione 1.</p></section>
-            <section id="visitatori-opzione2-mobile-section" class="mobile-section"><h1>Opzione 2</h1><p>Contenuto Opzione 2.</p></section>
-        </main>
-
-        <nav class="menuM">
-            <div class="menu-item-mobile" data-target="home-section-mobile">
-                <img class="iconM" src="/assets/home_black_icon.png" alt="Home">
-                <div class="labelM">Home</div>
-            </div>
-            <div class="menu-item-mobile" data-target="visualizza-section-mobile">
-                <img class="iconM" src="/assets/calendar_black_icon.png" alt="Visualizza">
-                <div class="labelM">Visualizza</div>
-            </div>
-            <div class="menu-item-mobile" data-target="storico-section-mobile">
-                <img class="iconM" src="/assets/archive_black_icon.png" alt="Storico">
-                <div class="labelM">Storico</div>
-            </div>
-            <div class="menu-item-mobile" data-target="visitatori-section-mobile">
-                <img class="iconM" src="/assets/users_black_icon.png" alt="Visitatori">
-                <div class="labelM">Visitatori</div>
-            </div>
-        </nav>
-
-        <div id="submenu-container" class="submenuM"></div>
-        <div id="overlay"></div>
-    
-    </div>
-    		
 </body>
 <script src="/script/dataTables.js" type="module"></script>
 <script src="/script/dashboard.js" defer></script>
+
 </html>

@@ -43,6 +43,7 @@
                     <div class="submenu">
                         <div class="submenu-item" id="visualizza-opzione1">Visualizza - Opzione 1 </div>
                         <div class="submenu-item" id="visualizza-visite">Visite</div>
+                        <div class="submenu-item" id="visualizza-elenco-persone">Elenco dipendenti e visitatori</div>
                         <div class="submenu-item" id="visualizza-presenti">Presenti</div>
                         <div class="submenu-item" id="visualizza-elenco-visite-future">Elenco visite future</div>
                         <div class="submenu-item" id="visualizza-elenco-visite-odierne">Elenco visite odierne</div>
@@ -329,76 +330,131 @@
 
                 <form id="personForm">
                     <label>
-                        Nome: 
-                        <input type="text" name="nome" placeholder="Nome" required />
-                    </label
-                    ><br />
-                    <label>
-                        Cognome: 
-                        <input type="text" name="cognome" placeholder="Cognome" required />
+                        Nome:
+                        <input type="text" name="nome" id="nome-crea-persona" placeholder="Nome" required />
                     </label>
                     <br />
                     <label>
-                        Azienda: 
-                        <input type="text" name="azienda" placeholder="Azienda" required />
+                        Cognome:
+                        <input type="text" name="cognome" id="cognome-crea-persona" placeholder="Cognome" required />
                     </label>
                     <br />
                     <label>
-                        Indirizzo: 
-                        <input type="text" name="indirizzo" placeholder="Indirizzo" required />
+                        Azienda:
+                        <input type="text" name="azienda" id="azienda-crea-persona" placeholder="Azienda" required />
                     </label>
                     <br />
-                    <label>Città: <input type="text" name="citta" placeholder="Città" required /></label><br />
-                    <label>Provincia: <input type="text" name="provincia" placeholder="Provincia"
-                            required /></label><br />
-                    <label>Nazione: <input type="text" name="nazione" placeholder="Nazione" required /></label><br />
-                    <label>Telefono: <input type="tel" name="telefono" placeholder="Telefono" /></label><br />
-                    <label>Cellulare: <input type="tel" name="cellulare" placeholder="Cellulare" /></label><br />
-                    <label>Fax: <input type="text" name="fax" placeholder="Fax" /></label><br />
-                    <label>Partita IVA: <input type="text" name="pIva" placeholder="Partita IVA" /></label><br />
-                    <label>Codice Fiscale: <input type="text" name="cf" placeholder="Codice Fiscale"
-                            required /></label><br />
-                    <label>Email: <input type="email" name="mail" placeholder="Email" required /></label><br />
-                    <label>Foto: <input type="checkbox" name="foto" /></label> Foto presente<br />
-                    <label>Data Assunzione: <input type="date" name="dataAssunzione" /></label><br />
-                    <label>Matricola: <input type="text" name="matricola" placeholder="Matricola" /></label><br />
-                    <label>ID Filiale: <input type="number" name="idFiliale" placeholder="ID Filiale" /></label><br />
-                    <label>ID Mansione: <input type="number" name="idMansione"
-                            placeholder="ID Mansione" /></label><br />
-                    <label>ID Deposito: <input type="number" name="idDeposito"
-                            placeholder="ID Deposito" /></label><br />
-                    <label>ID Riferimento: <input type="number" name="idRiferimento"
-                            placeholder="ID Riferimento" /></label><br />
-                    <label>Visitatore: <input type="checkbox" name="visitatore" /></label> È un visitatore?<br />
-                    <label>Access Number: <input type="number" name="accessNumber"
-                            placeholder="Access Number" /></label><br />
-                    <label>Access Count: <input type="number" name="accessCount"
-                            placeholder="Access Count" /></label><br />
-                    <label>Access Update: <input type="date" name="accessUpdate" /></label><br />
-                    <label>Luogo Nascita: <input type="text" name="luogoNascita"
-                            placeholder="Luogo di Nascita" /></label><br />
-                    <label>Data Nascita: <input type="date" name="dataNascita" /></label><br />
-                    <label>Data Scadenza Certificato: <input type="date" name="dataScadCertificato" /></label><br />
-                    <label>Preposto: <input type="checkbox" name="preposto" /></label> Preposto?<br />
-                    <label>Antincendio: <input type="checkbox" name="antincendio" /></label> Addetto Antincendio?<br />
-                    <label>Primo Soccorso: <input type="checkbox" name="primoSoccorso" /></label> Addetto Primo
-                    Soccorso?<br />
-                    <label>Tipo Documento: <input type="text" name="tipoDocumento"
-                            placeholder="Tipo Documento (es. PATENTE)" /></label><br />
-                    <label>Numero Documento: <input type="text" name="numeroDocumento"
-                            placeholder="Numero Documento" /></label><br />
-                    <label>Data Scadenza Documento: <input type="date" name="dataScadenzaDoc" /></label><br />
-                    <label>DUVRI: <input type="text" name="duvri" placeholder="DUVRI" /></label><br />
-                    <label>Numero Centri Costo: <input type="number" name="numCentriCosto"
-                            placeholder="Numero Centri Costo" /></label><br />
-                    <label>Flag Doc Privacy: <input type="checkbox" name="flagDocPrivacy" /></label> Documento Privacy
-                    Concesso?<br />
-                    <label>Data Consegna Doc Privacy: <input type="date" name="dataConsegnaDocPrivacy" /></label><br />
-                    <label>ID Ruolo: <input type="number" name="idRuolo" placeholder="ID Ruolo" /></label><br />
+                    <label>
+                        Indirizzo:
+                        <input type="text" name="indirizzo" id="indirizzo" placeholder="Indirizzo" required />
+                    </label>
+                    <br />
+                    <label>
+                        Città:
+                        <input type="text" name="citta" id="citta" placeholder="Città" required />
+                    </label>
+                    <br />
+                    <label>
+                        Provincia:
+                        <input type="text" name="provincia" id="provincia" placeholder="Provincia" required />
+                    </label>
+                    <br />
+                    <label>
+                        Nazione:
+                        <input type="text" name="nazione" id="nazione" placeholder="Nazione" required />
+                    </label>
+                    <br />
+                    <label>
+                        Telefono:
+                        <input type="tel" name="telefono" id="telefono" placeholder="Telefono" />
+                    </label>
+                    <br />
+                    <label>
+                        Cellulare:
+                        <input type="tel" name="cellulare" id="cellulare" placeholder="Cellulare" required />
+                    </label>
+                    <br />
+                    <label>
+                        Fax: 
+                        <input type="text" name="fax" id="fax" placeholder="Fax" />
+                    </label>
+                    <br />
+                    <label>
+                        Partita IVA:
+                        <input type="text" name="pIva" id="pIva" placeholder="Partita IVA" />
+                    </label>
+                    <br />
+                    <label>Codice Fiscale:
+                        <input type="text" name="cf" id="cf" placeholder="Codice Fiscale"/>
+                    </label>
+                    <br />
+                    <label>
+                        Email:
+                        <input type="email" name="mail" id="mail-crea-persona" placeholder="Email" required />
+                    </label>
+                    <br />
+                    <label>
+                        Data Assunzione:
+                        <input type="date" name="dataAssunzione" id="dataAssunzione" />
+                    </label>
+                    <br />
+                    <label>
+                        Luogo Nascita: 
+                        <input type="text" name="luogoNascita" id="luogoNascita" placeholder="Luogo di Nascita" required/>
+                    </label>
+                    <br />
+                    <label>Data Nascita:
+                        <input type="date" name="dataNascita" id="dataNascita" required />
+                    </label>
+                    <br />
+                    <label>
+                        Tipo Documento:
+                        <select name="tipoDocumento" id="tipoDocumento" required>
+                            <option value="C.I.">Carta d'identità</option>
+                            <option value="PATENTE">Patente</option>
+                            <option value="PASSAPORTO">Passaporto</option>
+                        </select>
+                    </label>
+                    <br />
+                    <label>
+                        Numero Documento:
+                        <input type="text" name="numeroDocumento" id="numeroDocumento" placeholder="Numero Documento" required/>
+                    </label>
+                    <br />
+                    <label>
+                        Data Scadenza Documento:
+                        <input type="date" name="dataScadenzaDoc" id="dataScadenzaDoc" required />
+                    </label>
+                    <br />
+                    <label>DUVRI:
+                        <input type="checkbox" name="duvri" id="duvri" />
+                    </label>
+                    <br />
+                    <label>
+                        Numero Centri Costo:
+                        <input type="number" name="numCentriCosto" id="numCentriCosto" placeholder="Numero Centri Costo" />
+                    </label>
+                    <br />
+                    <label>
+                        Flag Doc Privacy:
+                        <input type="checkbox" name="flagDocPrivacy" id="flagDocPrivacy" required />
+                    </label>
+                    <br />
+                    <label>Data Consegna Doc Privacy:
+                        <input type="date" name="dataConsegnaDocPrivacy" id="dataConsegnaDocPrivacy" required />
+                    </label>
+                    <br />
+                    <label>Ruolo:
+                        <select name="idRuolo" id="idRuolo">
+                            <option>Dipendente</option>
+                            <option value="4">Visitatore</option>
+                            <option value="5">Manutenzione</option>
+                        </select>
+                    </label>
+                    <br />
 
-                    <button type="submit">Invia</button>
+                    <button type="submit" onclick="createPerson(event)">Invia</button>
                 </form>
-
             </section>
 
             <section id="visualizza-visite-section" class="section">
@@ -411,6 +467,26 @@
                 <div id="indicatori-presenti"></div>
                 <div id="tab-dip-presenti"></div>
                 <div id="tab-vis-presenti"></div>
+            </section>
+
+            <!-- Tabella Elenco Persone -->
+            <section id="visualizza-elenco-persone-section" class="section">
+                <h2>Elenco dipendenti e visitatori</h2>
+                <table id="tabella-persone" class="display custom-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Cognome</th>
+                            <th>Azienda</th>
+                            <th>Città</th>
+                            <th>Email</th>
+                            <th>Cellulare</th>
+                            <th>Luogo di Nascita</th>
+                            <th>Data di nascita</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </section>
 
             <!-- Tabella visite future -->

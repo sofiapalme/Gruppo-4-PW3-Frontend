@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileQuery = window.matchMedia('(max-width: 768px)');
   const overlay = document.getElementById('overlay');
   const submenu = document.getElementById('submenu-container');  const submenuData = {
-    'visualizza-section-mobile': [
+    'visualizza-mobile-section': [
       { label: 'Visitatori Oggi', target: 'visualizza-elenco-visitatori-oggi-mobile-section' },
       { label: 'Visitatori Futuri', target: 'visualizza-elenco-visitatori-futuri-mobile-section' },
       { label: 'Visite', target: 'visualizza-visite-mobile-section' },

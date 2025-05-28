@@ -49,4 +49,56 @@ export function jwtDecode(e, r) {
     } catch (e) {
         throw new InvalidTokenError(`Invalid token specified: invalid json for part #${o + 1} (${e.message})`)
     }
-}
+};
+
+export async function refreshJwt() {
+    const accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+        const decodedAccessToken = jwtDecode(accessToken);
+        const now = Math.floor(Date.now() / 1000);
+
+        if (now > decodedAccessToken.exp) {
+            const refreshToken = localStorage.getItem("refreshToken");
+
+            if (refreshToken) {
+                const decodedRefreshToken = jwtDecode(refreshToken);
+
+                if (now < decodedRefreshToken.exp) {
+                     refreshLogin(refreshToken);
+                } 
+                else {
+                    window.location.href = "/index.html";
+                }
+            } 
+            else {
+                window.location.href = "/index.html";
+            }
+        } else {
+            return;
+        }
+    } else {
+        window.location.href = "/index.html";
+    }
+};
+
+async function refreshLogin(refreshToken) {
+    const url = "http://localhost:8080/auth/refresh";
+
+    const response = await fetch(url,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + refreshToken
+            },
+        });
+
+    if (!response.ok) {
+        window.location.href = "index.html"
+    }
+    else {
+        const json = await response.json();
+        localStorage.setItem("accessToken", json.accessToken);
+    }
+};

@@ -1,0 +1,5 @@
+PER ESEGUIRE IL FRONTEND
+npm install -> SOLO LA PRIMA VOLTA
+
+PER RUNNARE
+npm run dev

@@ -44,13 +44,13 @@ function roleRedirection() {
         const decodedToken = jwtDecode(accessToken);
 
         if (decodedToken.groups.indexOf("Admin") >= 0) {
-            window.location.href = "dashboardAdmin.html";
+            window.location.href = "/pages/dashboardAdmin.html";
         }
         else if (decodedToken.groups.indexOf("Requester") >= 0) {
-            window.location.href = "dashboardRequester.html";
+            window.location.href = "/pages/dashboardRequester.html";
         }
         else if (decodedToken.groups.indexOf("Reception") >= 0) {
-            window.location.href = "dashboardReceptionist.html";
+            window.location.href = "/pages/dashboardReceptionist.html";
         }
         else {
             window.location.href = "index.html";

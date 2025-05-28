@@ -1,3 +1,5 @@
+let contactListTableInstance = null;
+
 function getIsoDate(inputDate) {
     const formattedDate = inputDate.toISOString().split('T')[0];
     return formattedDate;
@@ -15,6 +17,75 @@ function convertToItalianDate(isoDate) {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
+}
+
+const visualizzaPersoneNavElement = document.getElementById("visualizza-elenco-persone");
+visualizzaPersoneNavElement.addEventListener("click", createPersonDataTable);
+
+async function createPersonDataTable() {
+    const url = "http://localhost:8080/people";
+    const accessToken = localStorage.getItem("accessToken");
+
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Errore nel recupero dei dati: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (contactListTableInstance) {
+            contactListTableInstance.destroy();
+            contactListTableInstance = null;
+        }
+
+        const peopleList = new Array;
+
+        data.forEach(person => {
+            person.dataNascita = convertToItalianDate(person.dataNascita);
+            peopleList.push(person)
+        });
+
+        contactListTableInstance = new DataTable("#tabella-persone", {
+            data: peopleList,
+            destroy: true,
+            columns: [
+                { data: "nome" },
+                { data: "cognome" },
+                { data: "azienda" },
+                { data: "citta" },
+                { data: "mail" },
+                { data: "cellulare" },
+                { data: "luogoNascita" },
+                { data: "dataNascita" }
+            ],
+            lengthChange: false,
+            pageLength: 8,
+            autoWidth: false,
+            responsive: true,
+            language: {
+                info: "Pagina _PAGE_ di _PAGES_",
+                infoEmpty: "Nessun elemento disponibile",
+                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                search: "Cerca:",
+                paginate: {
+                    next: ">",
+                    previous: "<"
+                },
+                emptyTable: "Nessun dato presente nella tabella",
+                zeroRecords: "Nessun risultato trovato"
+            }
+        });
+    } catch (error) {
+        console.error("Errore nella creazione della tabella:", error.message);
+    }
 }
 
 function createPerson(event) {
@@ -126,8 +197,6 @@ async function createPersonFetch(requestBody) {
         console.error("Errore nella creazione della tabella:", error.message);
     }
 };
-
-let contactListTableInstance = null;
 
 const visiteFutureNavList = document.getElementById("visualizza-elenco-visite-future");
 visiteFutureNavList.addEventListener("click", createVisiteFutureDataTable);

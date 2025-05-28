@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/dashboardReceptionist.css" />
-    <link rel="stylesheet" href="css/miniDatatableHome.css" />
+    <link rel="stylesheet" href="/css/dashboardReceptionist.css" />
+    <link rel="stylesheet" href="/css/miniDatatableHome.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
@@ -31,13 +31,13 @@
     </div>
     <div class="dashboardDesktop">
         <aside class="sidebar">
-            <img class="logo" src="assets/logo.png" alt="Logo">
+            <img class="logo" src="/assets/logo.png" alt="Logo">
             <nav class="menu">
                 <div class="menu-item" id="home">Home</div>
 
                 <div class="menu-item" id="visualizza">
                     <div class="menu-content">
-                        Visualizza <span class="arrow"><img src="assets/down_arrow_white_icon.png"
+                        Visualizza <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
                                 alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
@@ -56,8 +56,7 @@
 
                 <div class="menu-item" id="storico">
                     <div class="menu-content">
-                        Storico <span class="arrow"><img src="assets/down_arrow_white_icon.png"
-                                alt="Freccia giù"></span>
+                        Storico <span class="arrow"><img src="/assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
                         <div class="submenu-item" id="storico-timbrature-visitatori">Storico timbrature visite</div>
@@ -68,8 +67,7 @@
 
                 <div class="menu-item" id="visitatori">
                     <div class="menu-content">
-                        Visitatori <span class="arrow"><img src="assets/down_arrow_white_icon.png"
-                                alt="Freccia giù"></span>
+                        Visitatori <span class="arrow"><img src="/assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
                         <div class="submenu-item" id="visitatori-crea-visite">Crea visite</div>
@@ -80,7 +78,7 @@
             </nav>
             <div class="user-box">
                 <div class="avatar-bg"></div>
-                <img class="avatar" src="assets/utente.png" alt="User Avatar">
+                <img class="avatar" src="/assets/utente.png" alt="User Avatar">
                 <div class="user-name">Nome e Cognome</div>
                 <button class="action-button">Logout</button>
             </div>
@@ -631,22 +629,22 @@
 
         <div class="menu">
             <div class="menu-item" id="home">
-                <img class="icon" src="assets/home_black_icon.png" alt="Home">
+                <img class="icon" src="/assets/home_black_icon.png" alt="Home">
                 <div class="label">Home</div>
             </div>
 
             <div class="menu-item" id="visualizza">
-                <img class="icon" src="assets/calendar_black_icon.png" alt="Visualizza">
+                <img class="icon" src="/assets/calendar_black_icon.png" alt="Visualizza">
                 <div class="label">Visualizza</div>
             </div>
 
             <div class="menu-item" id="storico">
-                <img class="icon" src="assets/archive_black_icon.png" alt="Storico">
+                <img class="icon" src="/assets/archive_black_icon.png" alt="Storico">
                 <div class="label">Storico</div>
             </div>
 
             <div class="menu-item" id="visitatori">
-                <img class="icon" src="assets/users_black_icon.png" alt="Visitatori">
+                <img class="icon" src="/assets/users_black_icon.png" alt="Visitatori">
                 <div class="label">Visitatori</div>
             </div>
         </div>
@@ -676,7 +674,6 @@
     </div>
     		
 </body>
-<script src="script/dataTables.js"></script>
-<script src="script/dashboard.js" defer></script>
-
+<script src="/script/dataTables.js" type="module"></script>
+<script src="/script/dashboard.js" defer></script>
 </html>

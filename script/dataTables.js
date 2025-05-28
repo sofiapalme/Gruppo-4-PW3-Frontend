@@ -1,3 +1,5 @@
+import { refreshJwt } from "./jwtManager"
+
 let contactListTableInstance = null;
 
 function getIsoDate(inputDate) {
@@ -23,6 +25,7 @@ const visualizzaPersoneNavElement = document.getElementById("visualizza-elenco-p
 visualizzaPersoneNavElement.addEventListener("click", createPersonDataTable);
 
 async function createPersonDataTable() {
+    await refreshJwt();
     const url = "http://localhost:8080/people";
     const accessToken = localStorage.getItem("accessToken");
 
@@ -175,6 +178,7 @@ function createPerson(event) {
 }
 
 async function createPersonFetch(requestBody) {
+    await refreshJwt();
     const url = "http://localhost:8080/people";
     const accessToken = localStorage.getItem("accessToken");
 
@@ -202,6 +206,7 @@ const visiteFutureNavList = document.getElementById("visualizza-elenco-visite-fu
 visiteFutureNavList.addEventListener("click", createVisiteFutureDataTable);
 
 async function createVisiteFutureDataTable() {
+    await refreshJwt();
     const url = "http://localhost:8080/visit";
     const accessToken = localStorage.getItem("accessToken");
 
@@ -278,6 +283,7 @@ const visiteOrdierneNavList = document.getElementById("visualizza-elenco-visite-
 visiteOrdierneNavList.addEventListener("click", createVisiteOdierneDataTable);
 
 async function createVisiteOdierneDataTable() {
+    await refreshJwt();
     const url = "http://localhost:8080/visit";
     const accessToken = localStorage.getItem("accessToken");
 
@@ -355,6 +361,7 @@ const storicoTimbratureVisitatoriNavList = document.getElementById("storico-timb
 storicoTimbratureVisitatoriNavList.addEventListener("click", createStrocioTimbratureVisitatoriDataTable);
 
 async function createStrocioTimbratureVisitatoriDataTable() {
+    await refreshJwt();
     const url = "http://localhost:8080/badge-record-history/visitors";
     const accessToken = localStorage.getItem("accessToken");
 
@@ -407,6 +414,7 @@ const storicoTimbratureDipendentiNavList = document.getElementById("storico-timb
 storicoTimbratureDipendentiNavList.addEventListener("click", createStrocioTimbratureDipendentiDataTable);
 
 async function createStrocioTimbratureDipendentiDataTable() {
+    await refreshJwt();
     const url = "http://localhost:8080/badge-record-history/secondo-mona";
     const accessToken = localStorage.getItem("accessToken");
 
@@ -472,6 +480,7 @@ const storicoTimbratureMensaNavList = document.getElementById("storico-timbratur
 storicoTimbratureMensaNavList.addEventListener("click", createStoricoTimbratureMensaDataTable);
 
 async function createStoricoTimbratureMensaDataTable() {
+    await refreshJwt();
     const url = "http://localhost:8080/badge-record-history/lunch-area";
     const accessToken = localStorage.getItem("accessToken");
 
@@ -537,6 +546,7 @@ const contactListnavElement = document.getElementById("visualizza-elenco-tel-sm"
 contactListnavElement.addEventListener('click', createContactListDataTable);
 
 async function createContactListDataTable() {
+    await refreshJwt();
     const url = "http://localhost:8080/employee-contact-list";
     const accessToken = localStorage.getItem("accessToken");
 
@@ -591,4 +601,4 @@ async function createContactListDataTable() {
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
     }
-}
+};

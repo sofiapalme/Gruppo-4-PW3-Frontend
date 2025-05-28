@@ -84,7 +84,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
 
         document.querySelectorAll('.arrow img').forEach(img => {
             if (img !== arrowImg) {
-                img.src = 'assets/down_arrow_white_icon.png';
+                img.src = '/assets/down_arrow_white_icon.png';
                 img.alt = 'Freccia giù';
             }
         });
@@ -93,7 +93,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
             const isActive = submenu.classList.contains('active');
             submenu.classList.toggle('active');
             if (arrowImg) {
-                arrowImg.src = isActive ? 'assets/down_arrow_white_icon.png' : 'assets/up_arrow_white_icon.png';
+                arrowImg.src = isActive ? '/assets/down_arrow_white_icon.png' : '/assets/up_arrow_white_icon.png';
                 arrowImg.alt = isActive ? 'Freccia giù' : 'Freccia su';
             }
         }

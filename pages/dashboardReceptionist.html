@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/dashboardReceptionist.css" />
-    <link rel="stylesheet" href="css/miniDatatableHome.css" />
+    <link rel="stylesheet" href="/css/dashboardReceptionist.css" />
+    <link rel="stylesheet" href="/css/miniDatatableHome.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
@@ -31,13 +31,13 @@
     </div>
     <div class="dashboardDesktop">
         <aside class="sidebar">
-            <img class="logo" src="assets/logo.png" alt="Logo">
+            <img class="logo" src="/assets/logo.png" alt="Logo">
             <nav class="menu">
                 <div class="menu-item" id="home">Home</div>
 
                 <div class="menu-item" id="visualizza">
                     <div class="menu-content">
-                        Visualizza <span class="arrow"><img src="assets/down_arrow_white_icon.png"
+                        Visualizza <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
                                 alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
@@ -56,7 +56,7 @@
 
                 <div class="menu-item" id="storico">
                     <div class="menu-content">
-                        Storico <span class="arrow"><img src="assets/down_arrow_white_icon.png"
+                        Storico <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
                                 alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
@@ -68,7 +68,7 @@
 
                 <div class="menu-item" id="visitatori">
                     <div class="menu-content">
-                        Visitatori <span class="arrow"><img src="assets/down_arrow_white_icon.png"
+                        Visitatori <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
                                 alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
@@ -79,7 +79,7 @@
             </nav>
             <div class="user-box">
                 <div class="avatar-bg"></div>
-                <img class="avatar" src="assets/utente.png" alt="User Avatar">
+                <img class="avatar" src="/assets/utente.png" alt="User Avatar">
                 <div class="user-name">Nome e Cognome</div>
                 <button class="action-button">Logout</button>
             </div>
@@ -622,57 +622,70 @@
 
     </div>
 
-    <div class="dashboardMobile">
-        <h1>dashboard mobile</h1>
+    <div class="dashboardM">
+        <main class="mobile-content-area">
+            <section id="home-mobile-section" class="mobile-section active">
+                <h1>Home</h1>
+                <p>Benvenuto nella dashboard home.</p>
+            </section>
 
-        <div class="menu">
-            <div class="menu-item" id="home">
-                <img class="icon" src="assets/home_black_icon.png" alt="Home">
-                <div class="label">Home</div>
+            <section id="visualizza-mobile-section" class="mobile-section">
+                <h1>Visualizza</h1>
+                <p>Contenuto visualizza.</p>
+            </section>
+
+            <section id="storico-mobile-section" class="mobile-section">
+                <h1>Storico</h1>
+                <p>Contenuto storico.</p>
+            </section>
+
+            <section id="visitatori-mobile-section" class="mobile-section">
+                <h1>Visitatori</h1>
+                <p>Contenuto visitatori.</p>
+            </section>
+
+            <section id="visualizza-opzione1-mobile-section" class="mobile-section"><h1>Visualizza - Opzione 1</h1><p>Contenuto Visualizza - Opzione 1.</p></section>
+            <section id="visualizza-visite-mobile-section" class="mobile-section"><h1>Visite</h1><p>Contenuto Visite.</p></section>
+            <section id="visualizza-presenti-mobile-section" class="mobile-section"><h1>Presenti</h1><p>Contenuto Presenti.</p></section>
+            <section id="visualizza-elenco-visitatori-futuri-mobile-section" class="mobile-section"><h1>Elenco visitatori futuri</h1><p>Contenuto Elenco visitatori futuri.</p></section>
+            <section id="visualizza-elenco-visitatori-oggi-mobile-section" class="mobile-section"><h1>Elenco visitatori odierni</h1><p>Contenuto Elenco visitatori odierni.</p></section>
+            <section id="visualizza-visite-suo-carico-mobile-section" class="mobile-section"><h1>Visite a suo carico</h1><p>Contenuto Visite a suo carico.</p></section>
+            <section id="visualizza-presenti-suo-carico-mobile-section" class="mobile-section"><h1>Presenti a suo carico</h1><p>Contenuto Presenti a suo carico.</p></section>
+            <section id="visualizza-futuri-suo-carico-mobile-section" class="mobile-section"><h1>Futuri a suo carico</h1><p>Contenuto Futuri a suo carico.</p></section>
+            <section id="visualizza-elenco-tel-sm-mobile-section" class="mobile-section"><h1>Elenco telefonico sm</h1><p>Contenuto Elenco telefonico sm.</p></section>
+            <section id="storico-timbrature-visitatori-mobile-section" class="mobile-section"><h1>Storico timbrature visite</h1><p>Contenuto Storico timbrature visite.</p></section>
+            <section id="storico-timbrature-dipendenti-mobile-section" class="mobile-section"><h1>Storico timbrature dipendenti</h1><p>Contenuto Storico timbrature dipendenti.</p></section>
+            <section id="storico-timbrature-mensa-mobile-section" class="mobile-section"><h1>Storico timbrature mensa</h1><p>Contenuto Storico timbrature mensa.</p></section>
+            <section id="visitatori-opzione1-mobile-section" class="mobile-section"><h1>Opzione 1</h1><p>Contenuto Opzione 1.</p></section>
+            <section id="visitatori-opzione2-mobile-section" class="mobile-section"><h1>Opzione 2</h1><p>Contenuto Opzione 2.</p></section>
+        </main>
+
+        <nav class="menuM">
+            <div class="menu-item-mobile" data-target="home-section-mobile">
+                <img class="iconM" src="/assets/home_black_icon.png" alt="Home">
+                <div class="labelM">Home</div>
             </div>
-
-            <div class="menu-item" id="visualizza">
-                <img class="icon" src="assets/calendar_black_icon.png" alt="Visualizza">
-                <div class="label">Visualizza</div>
+            <div class="menu-item-mobile" data-target="visualizza-section-mobile">
+                <img class="iconM" src="/assets/calendar_black_icon.png" alt="Visualizza">
+                <div class="labelM">Visualizza</div>
             </div>
-
-            <div class="menu-item" id="storico">
-                <img class="icon" src="assets/archive_black_icon.png" alt="Storico">
-                <div class="label">Storico</div>
+            <div class="menu-item-mobile" data-target="storico-section-mobile">
+                <img class="iconM" src="/assets/archive_black_icon.png" alt="Storico">
+                <div class="labelM">Storico</div>
             </div>
-
-            <div class="menu-item" id="visitatori">
-                <img class="icon" src="assets/users_black_icon.png" alt="Visitatori">
-                <div class="label">Visitatori</div>
+            <div class="menu-item-mobile" data-target="visitatori-section-mobile">
+                <img class="iconM" src="/assets/users_black_icon.png" alt="Visitatori">
+                <div class="labelM">Visitatori</div>
             </div>
-        </div>
+        </nav>
 
-        <div class="submenu" id="submenu-visualizza">
-            <div class="submenu-item" id="visualizza-opzione1">Visualizza - Opzione 1 </div>
-            <div class="submenu-item" id="visualizza-visite">Visite</div>
-            <div class="submenu-item" id="visualizza-presenti">Presenti</div>
-            <div class="submenu-item" id="visualizza-elenco-visitatori-futuri">Elenco visitatori futuri</div>
-            <div class="submenu-item" id="visualizza-elenco-visitatori-oggi">Elenco visitatori odierni</div>
-            <div class="submenu-item" id="visualizza-visite-suo-carico">Visite a suo carico</div>
-            <div class="submenu-item" id="visualizza-presenti-suo-carico">Presenti a suo carico</div>
-            <div class="submenu-item" id="visualizza-futuri-suo-carico">Futuri a suo carico</div>
-            <div class="submenu-item" id="visualizza-elenco-tel-sm">Elenco telefonico sm</div>
-        </div>
-
-        <div class="submenu" id="submenu-storico">
-            <div class="submenu-item" id="storico-timbrature-visitatori">Storico timbrature visite</div>
-            <div class="submenu-item" id="storico-timbrature-dipendenti">Storico timbrature dipendenti</div>
-            <div class="submenu-item" id="storico-timbrature-mensa">Storico timbrature mensa</div>
-        </div>
-
-        <div class="submenu" id="submenu-visitatori">
-            <div class="submenu-item" id="visitatori-opzione1">Opzione 1</div>
-            <div class="submenu-item" id="visitatori-opzione2">Opzione 2</div>
-        </div>
+        <div id="submenu-container" class="submenuM"></div>
+        <div id="overlay"></div>
+    
     </div>
     		
 </body>
-<script src="script/dataTables.js"></script>
-<script src="script/dashboard.js" defer></script>
+<script src="/script/dataTables.js"></script>
+<script src="/script/dashboard.js" defer></script>
 
 </html>

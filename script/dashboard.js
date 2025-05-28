@@ -11,54 +11,111 @@ function showSection(id) {
     }
 }
 
+// === Script specifico per Mobile ===
 document.addEventListener('DOMContentLoaded', () => {
-  const mobileQuery = window.matchMedia('(max-width: 480px)');
-  const overlay = document.createElement('div');
-  overlay.id = 'overlay';
-  document.body.appendChild(overlay);
+  const mobileQuery = window.matchMedia('(max-width: 768px)');
+  const overlay = document.getElementById('overlay');
+  const submenu = document.getElementById('submenu-container');
 
-  function closeAll() {
-    document.querySelectorAll('.submenu').forEach(sm => sm.classList.remove('active'));
+  const submenuData = {
+    'visualizza-section-mobile': [
+      { label: 'Opzione 1', target: 'visualizza-opzione1-mobile-section' },
+      { label: 'Visite', target: 'visualizza-visite-mobile-section' },
+      { label: 'Presenti', target: 'visualizza-presenti-mobile-section' },
+      { label: 'Visitatori futuri', target: 'visualizza-elenco-visitatori-futuri-mobile-section' },
+      { label: 'Visitatori odierni', target: 'visualizza-elenco-visitatori-oggi-mobile-section' },
+      { label: 'Visite a suo carico', target: 'visualizza-visite-suo-carico-mobile-section' },
+      { label: 'Presenti a suo carico', target: 'visualizza-presenti-suo-carico-mobile-section' },
+      { label: 'Futuri a suo carico', target: 'visualizza-futuri-suo-carico-mobile-section' },
+      { label: 'Elenco telefonico SM', target: 'visualizza-elenco-tel-sm-mobile-section' }
+    ],
+    'storico-section-mobile': [
+      { label: 'Timbrature visitatori', target: 'storico-timbrature-visitatori-mobile-section' },
+      { label: 'Timbrature dipendenti', target: 'storico-timbrature-dipendenti-mobile-section' },
+      { label: 'Timbrature mensa', target: 'storico-timbrature-mensa-mobile-section' }
+    ],
+    'visitatori-section-mobile': [
+      { label: 'Opzione 1', target: 'visitatori-opzione1-mobile-section' },
+      { label: 'Opzione 2', target: 'visitatori-opzione2-mobile-section' }
+    ]
+  };
+
+  function closeAllMobile() {
+    submenu.classList.remove('active');
     overlay.classList.remove('active');
   }
 
-  function setupListeners() {
-    if (!mobileQuery.matches) {
-      closeAll();
-      return;
+  function showMobileSection(id) {
+    document.querySelectorAll('.mobile-section').forEach(section => {
+      section.classList.remove('active');
+    });
+    const target = document.getElementById(id);
+    if (target) {
+      target.classList.add('active');
+    } else {
+      document.getElementById('home-mobile-section').classList.add('active');
     }
+  }
 
-    document.querySelectorAll('.menu-item').forEach(item => {
-      item.onclick = () => {
-        if (item.id === 'home') {
-          closeAll();
+  function generateMobileSubmenu(items) {
+    submenu.innerHTML = '';
+    items.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'submenu-item-mobile';
+      div.textContent = item.label;
+      div.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeAllMobile();
+        showMobileSection(item.target);
+      });
+      submenu.appendChild(div);
+    });
+  }
+
+  function setupMobileListeners() {
+    if (!mobileQuery.matches) return;
+
+    closeAllMobile();
+
+    document.querySelectorAll('.menu-item-mobile').forEach(item => {
+      item.onclick = (e) => {
+        e.stopPropagation();
+        const targetId = item.getAttribute('data-target');
+
+        if (targetId === 'home-section-mobile') {
+          closeAllMobile();
+          showMobileSection('home-mobile-section');
           return;
         }
-        const submenu = document.getElementById('submenu-' + item.id);
-        if (!submenu) {
-          closeAll();
-          return;
-        }
-        const isActive = submenu.classList.contains('active');
-        closeAll();
-        if (!isActive) {
-          submenu.classList.add('active');
-          overlay.classList.add('active');
+
+        if (submenuData[targetId]) {
+          const isActive = submenu.classList.contains('active');
+          closeAllMobile();
+          if (!isActive) {
+            generateMobileSubmenu(submenuData[targetId]);
+            submenu.classList.add('active');
+            overlay.classList.add('active');
+          }
+          showMobileSection(targetId);
+        } else {
+          closeAllMobile();
+          showMobileSection(targetId);
         }
       };
     });
 
-    overlay.onclick = () => closeAll();
+    overlay.onclick = () => {
+      closeAllMobile();
+    };
   }
 
-  setupListeners();
-  mobileQuery.addEventListener('change', () => {
-    closeAll();
-    setupListeners();
-  });
+  showMobileSection('home-mobile-section');
+  setupMobileListeners();
+  mobileQuery.addEventListener('change', setupMobileListeners);
 });
 
 
+// === Script specifico per Desktop ===
 document.querySelectorAll('.menu-item').forEach(item => {
     item.addEventListener('click', function (e) {
         const submenu = this.querySelector('.submenu');
@@ -84,7 +141,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
 
         document.querySelectorAll('.arrow img').forEach(img => {
             if (img !== arrowImg) {
-                img.src = 'assets/down_arrow_white_icon.png';
+                img.src = '/assets/down_arrow_white_icon.png';
                 img.alt = 'Freccia giù';
             }
         });
@@ -93,7 +150,7 @@ document.querySelectorAll('.menu-item').forEach(item => {
             const isActive = submenu.classList.contains('active');
             submenu.classList.toggle('active');
             if (arrowImg) {
-                arrowImg.src = isActive ? 'assets/down_arrow_white_icon.png' : 'assets/up_arrow_white_icon.png';
+                arrowImg.src = isActive ? '/assets/down_arrow_white_icon.png' : '/assets/up_arrow_white_icon.png';
                 arrowImg.alt = isActive ? 'Freccia giù' : 'Freccia su';
             }
         }
@@ -127,7 +184,7 @@ document.addEventListener('click', function (e) {
         });
 
         document.querySelectorAll('.arrow img').forEach(img => {
-            img.src = 'assets/down_arrow_white_icon.png';
+            img.src = '/assets/down_arrow_white_icon.png';
             img.alt = 'Freccia giù';
         });
     }

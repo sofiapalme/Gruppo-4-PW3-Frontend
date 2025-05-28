@@ -1,17 +1,20 @@
-function showSection(id) {
-    // Nascondi tutte le sezioni
-    document.querySelectorAll('.section').forEach(section => {
-        section.style.display = 'none';
+// === Script specifico per Mobile ===
+ function showMobileSection(id) {
+    // Rimuove 'active' da tutte le sezioni
+    document.querySelectorAll('.mobile-section').forEach(section => {
+        section.classList.remove('active');
     });
 
-    // Mostra solo la sezione richiesta
-    const sectionToShow = document.getElementById(id);
-    if (sectionToShow) {
-        sectionToShow.style.display = 'block';
+    // Aggiunge 'active' solo alla sezione richiesta
+    const target = document.getElementById(id);
+    if (target) {
+        target.classList.add('active');
+    } else {
+        // fallback alla home se non trova la sezione
+        document.getElementById('home-mobile-section').classList.add('active');
     }
 }
 
-// === Script specifico per Mobile ===
 document.addEventListener('DOMContentLoaded', () => {
   const mobileQuery = window.matchMedia('(max-width: 768px)');
   const overlay = document.getElementById('overlay');
@@ -26,12 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
       { label: 'Futuri a suo carico', target: 'visualizza-futuri-suo-carico-mobile-section' },
       { label: 'Elenco telefonico SM', target: 'visualizza-elenco-tel-sm-mobile-section' }
     ],
-    'storico-section-mobile': [
+    'storico-mobile-section': [
       { label: 'Timbrature visitatori', target: 'storico-timbrature-visitatori-mobile-section' },
       { label: 'Timbrature dipendenti', target: 'storico-timbrature-dipendenti-mobile-section' },
       { label: 'Timbrature mensa', target: 'storico-timbrature-mensa-mobile-section' }
     ],
-    'visitatori-section-mobile': [
+    'visitatori-mobile-section': [
       { label: 'Opzione 1', target: 'visitatori-opzione1-mobile-section' },
       { label: 'Opzione 2', target: 'visitatori-opzione2-mobile-section' }
     ]
@@ -127,6 +130,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // === Script specifico per Desktop ===
+function showSection(id) {
+    // Nascondi tutte le sezioni
+    document.querySelectorAll('.section').forEach(section => {
+        section.style.display = 'none';
+    });
+
+    // Mostra solo la sezione richiesta
+    const sectionToShow = document.getElementById(id);
+    if (sectionToShow) {
+        sectionToShow.style.display = 'block';
+    }
+}
+
 document.querySelectorAll('.menu-item').forEach(item => {
     item.addEventListener('click', function (e) {
         const submenu = this.querySelector('.submenu');

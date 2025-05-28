@@ -834,7 +834,7 @@ table.dataTable.custom-table .action-button {
     width: 100%;
     height: 100%;
     font-family: sans-serif;
-    background-color: #fff;
+    background-color: #dddddd;
     overflow-x: hidden;
     box-sizing: border-box;
   }
@@ -965,6 +965,123 @@ table.dataTable.custom-table .action-button {
   .mobile-section.active {
     display: block;
   }
+
+
+
+
+
+
+
+
+
+
+  
+
+.mobile-container {
+    padding: 1rem;
+    font-family: Arial, sans-serif;
+}
+
+/* Sezione top con nome e logout affiancati */
+.mobile-top-section {
+    display: flex;
+    justify-content: space-between; /* nome a sinistra, icona a destra */
+    align-items: stretch; /* fa sì che i riquadri abbiano la stessa altezza */
+    margin-bottom: 1rem;
+    gap: 1rem; /* distanza tra i due box */
+}
+
+.mobile-top-name {
+    background-color: white;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center; 
+    min-width: 0; 
+}
+
+.mobile-top-name h1 {
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #333;
+}
+
+.logout-mobile-icon {
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.logout-mobile-icon img {
+  width: 24px;
+    height: 24px;
+  filter: brightness(0) saturate(100%) invert(12%) sepia(100%) 
+            saturate(7481%) hue-rotate(357deg) brightness(97%) contrast(108%);
+}
+
+
+
+
+
+
+
+
+
+
+
+.mobile-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.mobile-box {
+    flex: 1 1 calc(50% - 0.5rem);
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.create-user-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.action-button.mini-link {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.action-button.mini-link:hover {
+    background-color: #0056b3;
+}
+
 }
 
 /* =====================

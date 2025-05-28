@@ -99,7 +99,6 @@ async function refreshLogin(refreshToken) {
     }
     else {
         const json = await response.json();
-        alert(json.accessToken);
         localStorage.setItem("accessToken", json.accessToken);
     }
 };

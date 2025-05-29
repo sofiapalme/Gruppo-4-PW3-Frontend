@@ -383,10 +383,18 @@ async function createStrocioTimbratureVisitatoriDataTable() {
         if (contactListTableInstance) {
             contactListTableInstance.destroy();
             contactListTableInstance = null;
-        }
-
-        contactListTableInstance = new DataTable("#tabella-timbrature-visitatori", {
+        }        contactListTableInstance = new DataTable("#tabella-timbrature-visitatori", {
+            data: data,
             destroy: true,
+            columns: [
+                { data: "nome" },
+                { data: "cognome" },
+                { data: "azienda" },
+                { data: "codiceBadge" },
+                { data: "dataTimbratura" },
+                { data: "oraTimbrature" },
+                { data: "descrizioneTimbratrice" }
+            ],
             lengthChange: false,
             pageLength: 8,
             autoWidth: false,
@@ -596,3 +604,12 @@ async function createContactListDataTable() {
         console.error("Errore nella creazione della tabella:", error.message);
     }
 };
+
+// Make functions globally accessible for showSection calls
+window.createVisiteFutureDataTable = createVisiteFutureDataTable;
+window.createVisiteOdierneDataTable = createVisiteOdierneDataTable;
+window.createPersonDataTable = createPersonDataTable;
+window.createContactListDataTable = createContactListDataTable;
+window.createStrocioTimbratureVisitatoriDataTable = createStrocioTimbratureVisitatoriDataTable;
+window.createStrocioTimbratureDipendentiDataTable = createStrocioTimbratureDipendentiDataTable;
+window.createStoricoTimbratureMensaDataTable = createStoricoTimbratureMensaDataTable;

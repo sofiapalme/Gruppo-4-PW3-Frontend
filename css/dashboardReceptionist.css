@@ -1191,3 +1191,115 @@ table.dataTable.custom-table .action-button {
     padding: 0.5rem 1rem;
   }
 }
+/* =====================
+   UNIFORMAZIONE TABELLE MOBILE (responsive-table-mobile) ALLO STILE DESKTOP (custom-table)
+   ===================== */
+.responsive-table-mobile {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  font-size: 1rem;
+  border-radius: 15px;
+  margin-bottom: 1.5em;
+  box-shadow: none;
+  table-layout: auto !important;
+}
+.responsive-table-mobile thead tr {
+  background-color: #405577;
+  color: #fff;
+  border-radius: 15px;
+  box-shadow: none;
+}
+.responsive-table-mobile thead th {
+  padding: 12px 16px;
+  font-size: 16px;
+  text-align: left;
+  background-color: #405577;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-bottom: none;
+  box-shadow: none;
+}
+.responsive-table-mobile thead th:first-child {
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+.responsive-table-mobile thead th:last-child {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+.responsive-table-mobile tbody tr {
+  background-color: #d9d9d9;
+  border-radius: 15px;
+  box-shadow: none;
+  transition: background-color 0.3s ease;
+}
+.responsive-table-mobile tbody tr:hover {
+  background-color: #c5c5c5;
+}
+.responsive-table-mobile tbody td {
+  padding: 12px 16px;
+  font-size: 16px;
+  background-color: #d9d9d9;
+  border: none;
+  box-shadow: none;
+  border-top: none;
+}
+.responsive-table-mobile tbody tr:hover td {
+  background-color: #c5c5c5;
+}
+.responsive-table-mobile tbody td:first-child {
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+.responsive-table-mobile tbody td:last-child {
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+@media (max-width: 600px) {
+  .responsive-table-mobile thead th, .responsive-table-mobile tbody td {
+    font-size: 0.98rem;
+    padding: 8px 4px;
+  }
+}
+@media (max-width: 768px) {
+  .responsive-table-mobile {
+    border-spacing: 0 10px !important;
+  }
+  .responsive-table-mobile tbody tr {
+    background-color: #d9d9d9;
+    border-radius: 15px;
+    box-shadow: none;
+    transition: background-color 0.3s ease;
+  }
+  .responsive-table-mobile tbody td {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+    background-clip: padding-box;
+    background-color: #d9d9d9;
+    border-top: none !important;
+  }
+}
+
+
+/* Uniforma bottone dettagli mobile a quello desktop */
+.action-button-mobile.dettagli-btn-mobile {
+  width: 100%;
+  max-width: 240px;
+  height: 50px;
+  border-radius: 30px;
+  background-color: #1b2b48;
+  color: white;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  transition: background-color 0.3s;
+  font-weight: 500;
+}
+.action-button-mobile.dettagli-btn-mobile:hover,
+.action-button-mobile.dettagli-btn-mobile:active {
+  background-color: #405577;
+}

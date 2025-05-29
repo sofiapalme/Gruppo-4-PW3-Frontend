@@ -1,20 +1,4 @@
 // === Script specifico per Mobile ===
- function showMobileSection(id) {
-    // Rimuove 'active' da tutte le sezioni
-    document.querySelectorAll('.mobile-section').forEach(section => {
-        section.classList.remove('active');
-    });
-
-    // Aggiunge 'active' solo alla sezione richiesta
-    const target = document.getElementById(id);
-    if (target) {
-        target.classList.add('active');
-    } else {
-        // fallback alla home se non trova la sezione
-        document.getElementById('home-mobile-section').classList.add('active');
-    }
-}
-
 
 const accessToken = localStorage.getItem("accessToken");
 
@@ -88,6 +72,36 @@ fetch('http://localhost:8080/visit', {
 });
 
 
+// Mappatura tra sezioni mobile e desktop
+const sectionMapping = {
+  // Mobile => Desktop
+  'home-mobile-section': 'home-section',
+  'visualizza-opzione1-mobile-section': 'visualizza-opzione1-section',
+  'visualizza-visite-mobile-section': 'visualizza-visite-section',
+  'visualizza-presenti-mobile-section': 'visualizza-presenti-section',
+  'visualizza-elenco-visitatori-futuri-mobile-section': 'visualizza-elenco-visite-future-section',
+  'visualizza-elenco-visitatori-oggi-mobile-section': 'visualizza-elenco-visite-odierne-section',
+  'visualizza-visite-suo-carico-mobile-section': 'visualizza-visite-suo-carico-section',
+  'visualizza-presenti-suo-carico-mobile-section': 'visualizza-presenti-suo-carico-section',
+  'visualizza-futuri-suo-carico-mobile-section': 'visualizza-futuri-suo-carico-section',
+  'visualizza-elenco-tel-sm-mobile-section': 'visualizza-elenco-tel-sm-section',
+  'storico-timbrature-visitatori-mobile-section': 'storico-timbrature-visitatori-section',
+  'storico-timbrature-dipendenti-mobile-section': 'storico-timbrature-dipendenti-section',
+  'storico-timbrature-mensa-mobile-section': 'storico-timbrature-mensa-section',
+  'visitatori-opzione1-mobile-section': 'visitatori-crea-visite-section',
+  'visitatori-opzione2-mobile-section': 'visitatori-crea-persone-section'
+};
+
+// Mappatura inversa Desktop => Mobile
+const desktopToMobileMapping = {};
+Object.keys(sectionMapping).forEach(mobile => {
+  const desktop = sectionMapping[mobile];
+  desktopToMobileMapping[desktop] = mobile;
+});
+
+// Variabile per tenere traccia della sezione attiva corrente
+let currentActiveSection = null;
+
 document.addEventListener('DOMContentLoaded', () => {
   const mobileQuery = window.matchMedia('(max-width: 768px)');
   const overlay = document.getElementById('overlay');
@@ -116,7 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeAllMobile() {
     submenu.classList.remove('active');
     overlay.classList.remove('active');
-  }  function showMobileSection(id) {
+  }  // Rende showMobileSection accessibile globalmente
+  window.showMobileSection = function(id) {
+    console.log('📱 showMobileSection called with:', id);
+    
     // First remove active class from all sections
     const currentActive = document.querySelector('.mobile-section.active');
     const target = document.getElementById(id);
@@ -127,6 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const homeSection = document.getElementById('home-mobile-section');
       if (homeSection && homeSection !== currentActive) {
         handleSectionTransition(currentActive, homeSection);
+        currentActiveSection = 'home-mobile-section'; // Aggiorna la sezione corrente
+        console.log('📱 Updated currentActiveSection to:', currentActiveSection);
       }
       return;
     }
@@ -134,15 +153,33 @@ document.addEventListener('DOMContentLoaded', () => {
     if (target === currentActive) return;
 
     handleSectionTransition(currentActive, target);
-  }
-  function handleSectionTransition(currentSection, newSection) {
+    currentActiveSection = id; // Aggiorna la sezione corrente
+    console.log('📱 Updated currentActiveSection to:', currentActiveSection);
+    
+    // Call appropriate populate function for storico sections when directly navigating
+    if (id === 'storico-timbrature-visitatori-mobile-section') {
+      console.log('Loading storico timbrature visitatori mobile data...');
+      if (window.populateStoricoTimbratureVisitatoriMobile) {
+        window.populateStoricoTimbratureVisitatoriMobile();
+      }
+    } else if (id === 'storico-timbrature-dipendenti-mobile-section') {
+      console.log('Loading storico timbrature dipendenti mobile data...');
+      if (window.populateStoricoTimbratureDipendentiMobile) {
+        window.populateStoricoTimbratureDipendentiMobile();
+      }
+    } else if (id === 'storico-timbrature-mensa-mobile-section') {
+      console.log('Loading storico timbrature mensa mobile data...');
+      if (window.populateStoricoTimbratureMensaMobile) {
+        window.populateStoricoTimbratureMensaMobile();
+      }
+    }
+  };  window.handleSectionTransition = function(currentSection, newSection) {
     if (currentSection) {
       currentSection.classList.remove('active');
     }
     window.scrollTo(0, 0);
     newSection.classList.add('active');
-  }
-
+  };
   function generateMobileSubmenu(items) {
     submenu.innerHTML = '';
     items.forEach(item => {
@@ -150,9 +187,25 @@ document.addEventListener('DOMContentLoaded', () => {
       div.className = 'submenu-item-mobile';
       div.textContent = item.label;
       div.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeAllMobile();
-        showMobileSection(item.target);
+        e.stopPropagation();        closeAllMobile();
+        window.showMobileSection(item.target);
+          // Call appropriate populate function for storico sections
+        if (item.target === 'storico-timbrature-visitatori-mobile-section') {
+          console.log('Calling populateStoricoTimbratureVisitatoriMobile from submenu...');
+          if (window.populateStoricoTimbratureVisitatoriMobile) {
+            window.populateStoricoTimbratureVisitatoriMobile();
+          }
+        } else if (item.target === 'storico-timbrature-dipendenti-mobile-section') {
+          console.log('Calling populateStoricoTimbratureDipendentiMobile from submenu...');
+          if (window.populateStoricoTimbratureDipendentiMobile) {
+            window.populateStoricoTimbratureDipendentiMobile();
+          }
+        } else if (item.target === 'storico-timbrature-mensa-mobile-section') {
+          console.log('Calling populateStoricoTimbratureMensaMobile from submenu...');
+          if (window.populateStoricoTimbratureMensaMobile) {
+            window.populateStoricoTimbratureMensaMobile();
+          }
+        }
       });
       submenu.appendChild(div);
     });
@@ -183,10 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
             submenu.classList.add('active');
             overlay.classList.add('active');
           }
-        } else {
-          // For non-submenu items (like Home), just show the section
+        } else {          // For non-submenu items (like Home), just show the section
           closeAllMobile();
-          showMobileSection(targetId);
+          window.showMobileSection(targetId);
         }
       };
     });
@@ -194,17 +246,56 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.onclick = () => {
       closeAllMobile();
     };
+  }  // Funzione per sincronizzare le sezioni tra mobile e desktop
+  function syncSections() {
+    console.log('🔄 syncSections called - currentActiveSection:', currentActiveSection);
+    console.log('📱 mobileQuery.matches:', mobileQuery.matches);
+    
+    if (!currentActiveSection) {
+      console.log('⚠️ No active section to sync');
+      return;
+    }
+    
+    if (mobileQuery.matches) {
+      // Cambio da desktop a mobile
+      console.log('📱 Switching from desktop to mobile');
+      const mobileSection = desktopToMobileMapping[currentActiveSection];
+      console.log('🔍 Looking for mobile section:', mobileSection);      if (mobileSection) {
+        console.log('✅ Found mobile section, switching to:', mobileSection);
+        window.showMobileSection(mobileSection);
+      } else {
+        console.log('❌ No mobile mapping found, going to home');
+        window.showMobileSection('home-mobile-section');
+      }
+    } else {
+      // Cambio da mobile a desktop
+      console.log('🖥️ Switching from mobile to desktop');
+      const desktopSection = sectionMapping[currentActiveSection];
+      console.log('🔍 Looking for desktop section:', desktopSection);
+      if (desktopSection) {
+        console.log('✅ Found desktop section, switching to:', desktopSection);
+        showSection(desktopSection);
+      } else {
+        console.log('❌ No desktop mapping found, going to home');
+        showSection('home-section');
+      }
+    }
   }
 
-  showMobileSection('home-mobile-section');
+  window.showMobileSection('home-mobile-section');
   setupMobileListeners();
-  mobileQuery.addEventListener('change', setupMobileListeners);
+  mobileQuery.addEventListener('change', () => {
+    setupMobileListeners();
+    syncSections(); // Sincronizza le sezioni quando cambia la viewport
+  });
 });
 
 
 
 // === Script specifico per Desktop ===
 function showSection(id) {
+    console.log('🖥️ showSection called with:', id);
+    
     // Nascondi tutte le sezioni
     document.querySelectorAll('.section').forEach(section => {
         section.style.display = 'none';
@@ -214,6 +305,66 @@ function showSection(id) {
     const sectionToShow = document.getElementById(id);
     if (sectionToShow) {
         sectionToShow.style.display = 'block';
+        currentActiveSection = id; // Aggiorna la sezione corrente
+        console.log('🖥️ Updated currentActiveSection to:', currentActiveSection);
+        
+        // Trigger data loading for specific sections
+        triggerSectionDataLoading(id);
+    } else {
+        console.warn('🖥️ Section not found:', id);
+    }
+}
+
+// Function to trigger data loading for specific sections
+function triggerSectionDataLoading(sectionId) {
+    console.log('🔄 Triggering data loading for section:', sectionId);
+    
+    switch(sectionId) {
+        case 'visualizza-elenco-visite-future-section':
+            if (window.createVisiteFutureDataTable) {
+                console.log('📊 Loading future visits data...');
+                window.createVisiteFutureDataTable();
+            }
+            break;
+        case 'visualizza-elenco-visite-odierne-section':
+            if (window.createVisiteOdierneDataTable) {
+                console.log('📊 Loading today visits data...');
+                window.createVisiteOdierneDataTable();
+            }
+            break;
+        case 'visualizza-elenco-persone-section':
+            if (window.createPersonDataTable) {
+                console.log('📊 Loading people data...');
+                window.createPersonDataTable();
+            }
+            break;
+        case 'visualizza-elenco-tel-sm-section':
+            if (window.createContactListDataTable) {
+                console.log('📊 Loading contact list data...');
+                window.createContactListDataTable();
+            }
+            break;
+        case 'storico-timbrature-visitatori-section':
+            if (window.createStrocioTimbratureVisitatoriDataTable) {
+                console.log('📊 Loading visitor timestamps data...');
+                window.createStrocioTimbratureVisitatoriDataTable();
+            }
+            break;
+        case 'storico-timbrature-dipendenti-section':
+            if (window.createStrocioTimbratureDipendentiDataTable) {
+                console.log('📊 Loading employee timestamps data...');
+                window.createStrocioTimbratureDipendentiDataTable();
+            }
+            break;
+        case 'storico-timbrature-mensa-section':
+            if (window.createStoricoTimbratureMensaDataTable) {
+                console.log('📊 Loading cafeteria timestamps data...');
+                window.createStoricoTimbratureMensaDataTable();
+            }
+            break;
+        default:
+            console.log('ℹ️ No data loading needed for section:', sectionId);
+            break;
     }
 }
 
@@ -312,48 +463,63 @@ document.addEventListener('click', function (e) {
 
 // All'avvio mostra la home per tutte le dashboard
 document.addEventListener('DOMContentLoaded', () => {
-    // Nascondi tutte le sezioni
-    document.querySelectorAll('.section').forEach(section => {
-        section.style.display = 'none';
-    });
+    console.log('🚀 Dashboard initializing...');
+    
+    const mobileQuery = window.matchMedia('(max-width: 768px)');
+    console.log('📱 Is mobile viewport:', mobileQuery.matches);
+    
+    if (mobileQuery.matches) {
+        // Inizializzazione mobile
+        console.log('📱 Initializing mobile dashboard');
+        document.querySelectorAll('.mobile-section').forEach(section => {
+            section.classList.remove('active');
+        });
 
-    // Mostra la home in base alla dashboard
-    const adminHome = document.getElementById('admin-home-section');
-    const requesterHome = document.getElementById('requester-home-section');
-    const receptionHome = document.getElementById('home-section');
+        // Cerca la sezione home mobile appropriata
+        const adminHomeMobile = document.getElementById('admin-home-mobile-section');
+        const requesterHomeMobile = document.getElementById('requester-home-mobile-section');
+        const receptionHomeMobile = document.getElementById('home-mobile-section');
 
-    if (adminHome) {
-        adminHome.style.display = 'block';
-    } else if (requesterHome) {
-        requesterHome.style.display = 'block';
-    } else if (receptionHome) {
-        receptionHome.style.display = 'block';
+        if (adminHomeMobile) {
+            adminHomeMobile.classList.add('active');
+            currentActiveSection = 'admin-home-mobile-section';
+            console.log('📱 Set initial mobile section:', currentActiveSection);
+        } else if (requesterHomeMobile) {
+            requesterHomeMobile.classList.add('active');
+            currentActiveSection = 'requester-home-mobile-section';
+            console.log('📱 Set initial mobile section:', currentActiveSection);
+        } else if (receptionHomeMobile) {
+            receptionHomeMobile.classList.add('active');
+            currentActiveSection = 'home-mobile-section';
+            console.log('📱 Set initial mobile section:', currentActiveSection);
+        }
+    } else {
+        // Inizializzazione desktop
+        console.log('🖥️ Initializing desktop dashboard');
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // Mostra la home in base alla dashboard
+        const adminHome = document.getElementById('admin-home-section');
+        const requesterHome = document.getElementById('requester-home-section');
+        const receptionHome = document.getElementById('home-section');
+
+        if (adminHome) {
+            adminHome.style.display = 'block';
+            currentActiveSection = 'admin-home-section';
+            console.log('🖥️ Set initial desktop section:', currentActiveSection);
+        } else if (requesterHome) {
+            requesterHome.style.display = 'block';
+            currentActiveSection = 'requester-home-section';
+            console.log('🖥️ Set initial desktop section:', currentActiveSection);
+        } else if (receptionHome) {
+            receptionHome.style.display = 'block';
+            currentActiveSection = 'home-section';
+            console.log('🖥️ Set initial desktop section:', currentActiveSection);
+        }
     }
 });
-
-// Inizializzazione versione mobile per tutte le dashboard
-    document.addEventListener('DOMContentLoaded', () => {
-        // Per la versione mobile
-        const mobileSections = document.querySelectorAll('.mobile-section');
-        if (mobileSections) {
-            mobileSections.forEach(section => {
-                section.classList.remove('active');
-            });
-
-            // Cerca la sezione home mobile appropriata
-            const adminHomeMobile = document.getElementById('admin-home-mobile-section');
-            const requesterHomeMobile = document.getElementById('requester-home-mobile-section');
-            const receptionHomeMobile = document.getElementById('home-mobile-section');
-
-            if (adminHomeMobile) {
-                adminHomeMobile.classList.add('active');
-            } else if (requesterHomeMobile) {
-                requesterHomeMobile.classList.add('active');
-            } else if (receptionHomeMobile) {
-                receptionHomeMobile.classList.add('active');
-            }
-        }
-    });
 
 // === INIZIO: Script specifico per DashboardReceptionist ===
 $(document).ready(function () {
@@ -657,3 +823,220 @@ $(document).ready(function () {
     });
 });
 // === FINE: Script specifico per DashboardReceptionist ===
+
+// === Funzioni di popolamento storico mobile ===
+window.populateStoricoTimbratureVisitatoriMobile = async function() {
+    const accessToken = localStorage.getItem("accessToken");
+    const url = "http://localhost:8080/badge-record-history/visitors";
+    const tableId = '#tabella-timbrature-visitatori-mobile';
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+            }
+        });
+        if (!response.ok) throw new Error('Errore nel recupero dei dati');
+        const data = await response.json();
+        // Destroy previous DataTable if exists
+        if ($.fn.DataTable.isDataTable(tableId)) {
+            $(tableId).DataTable().clear().destroy();
+        }
+        // Prepare data for DataTable (Nome, Cognome, Dettagli)
+        const tableData = data.map(row => ({
+            nome: row.nome || '',
+            cognome: row.cognome || '',
+            dettagli: row // pass full row for button
+        }));
+        $(tableId).DataTable({
+            data: tableData,
+            destroy: true,
+            columns: [
+                { data: 'nome' },
+                { data: 'cognome' },
+                {
+                    data: 'dettagli',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return `<button class='action-button-mobile dettagli-btn-mobile' data-row='${JSON.stringify(data).replace(/'/g, "&apos;")}' style='font-size:12px;'>Dettagli</button>`;
+                    }
+                }
+            ],
+            lengthChange: false,
+            pageLength: 4,
+            autoWidth: false,
+            responsive: true,
+            searching: true, // Abilita la barra di ricerca
+            info: true,      // Mostra info paginazione
+            language: {
+                paginate: { next: '>', previous: '<' },
+                emptyTable: 'Nessun dato presente nella tabella',
+                zeroRecords: 'Nessun risultato trovato',
+                info: 'Pagina _PAGE_ di _PAGES_',
+                infoEmpty: 'Nessun elemento disponibile',
+                search: 'Cerca:',
+            }
+        });
+    } catch (err) {
+        const tbody = document.querySelector(tableId + ' tbody');
+        if (tbody) tbody.innerHTML = '<tr><td colspan="3">Errore nel caricamento</td></tr>';
+    }
+};
+
+window.populateStoricoTimbratureDipendentiMobile = async function() {
+    const accessToken = localStorage.getItem("accessToken");
+    const url = "http://localhost:8080/badge-record-history/secondo-mona";
+    const tableId = '#tabella-timbrature-dipendenti-mobile';
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+            }
+        });
+        if (!response.ok) throw new Error('Errore nel recupero dei dati');
+        const data = await response.json();
+        if ($.fn.DataTable.isDataTable(tableId)) {
+            $(tableId).DataTable().clear().destroy();
+        }
+        const tableData = data.map(row => ({
+            nome: row.nome || '',
+            cognome: row.cognome || '',
+            dettagli: row
+        }));
+        $(tableId).DataTable({
+            data: tableData,
+            destroy: true,
+            columns: [
+                { data: 'nome' },
+                { data: 'cognome' },
+                {
+                    data: 'dettagli',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return `<button class='action-button-mobile dettagli-btn-mobile' data-row='${JSON.stringify(data).replace(/'/g, "&apos;")}' style='font-size:12px;'>Dettagli</button>`;
+                    }
+                }
+            ],
+            lengthChange: false,
+            pageLength: 4,
+            autoWidth: false,
+            responsive: true,
+            searching: true, // Abilita la barra di ricerca
+            info: true,      // Mostra info paginazione
+            language: {
+                paginate: { next: '>', previous: '<' },
+                emptyTable: 'Nessun dato presente nella tabella',
+                zeroRecords: 'Nessun risultato trovato',
+                info: 'Pagina _PAGE_ di _PAGES_',
+                infoEmpty: 'Nessun elemento disponibile',
+                search: 'Cerca:',
+            }
+        });
+    } catch (err) {
+        const tbody = document.querySelector(tableId + ' tbody');
+        if (tbody) tbody.innerHTML = '<tr><td colspan="3">Errore nel caricamento</td></tr>';
+    }
+};
+
+window.populateStoricoTimbratureMensaMobile = async function() {
+    const accessToken = localStorage.getItem("accessToken");
+    const url = "http://localhost:8080/badge-record-history/lunch-area";
+    const tableId = '#tabella-timbrature-mensa-mobile';
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+            }
+        });
+        if (!response.ok) throw new Error('Errore nel recupero dei dati');
+        const data = await response.json();
+        if ($.fn.DataTable.isDataTable(tableId)) {
+            $(tableId).DataTable().clear().destroy();
+        }
+        const tableData = data.map(row => ({
+            nome: row.nome || '',
+            cognome: row.cognome || '',
+            dettagli: row
+        }));
+        $(tableId).DataTable({
+            data: tableData,
+            destroy: true,
+            columns: [
+                { data: 'nome' },
+                { data: 'cognome' },
+                {
+                    data: 'dettagli',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return `<button class='action-button-mobile dettagli-btn-mobile' data-row='${JSON.stringify(data).replace(/'/g, "&apos;")}' style='font-size:12px;'>Dettagli</button>`;
+                    }
+                }
+            ],
+            lengthChange: false,
+            pageLength: 4,
+            autoWidth: false,
+            responsive: true,
+            searching: true, // Abilita la barra di ricerca
+            info: true,      // Mostra info paginazione
+            language: {
+                paginate: { next: '>', previous: '<' },
+                emptyTable: 'Nessun dato presente nella tabella',
+                zeroRecords: 'Nessun risultato trovato',
+                info: 'Pagina _PAGE_ di _PAGES_',
+                infoEmpty: 'Nessun elemento disponibile',
+                search: 'Cerca:',
+            }
+        });
+    } catch (err) {
+        const tbody = document.querySelector(tableId + ' tbody');
+        if (tbody) tbody.innerHTML = '<tr><td colspan="3">Errore nel caricamento</td></tr>';
+    }
+};
+
+// Gestione apertura modale dettagli mobile
+$(document).on('click', '.dettagli-btn-mobile', function (e) {
+    e.preventDefault();
+    const rowData = $(this).data('row');
+    let dati = rowData;
+    if (typeof rowData === 'string') {
+        try { dati = JSON.parse(rowData.replace(/&apos;/g, "'")); } catch { dati = {}; }
+    }
+    // Solo i campi richiesti, con label chiari e ordine corretto
+    const campi = [
+        { key: 'azienda', label: 'Azienda' },
+        { key: 'codiceBadge', label: 'Codice Badge' },
+        { key: 'dataTimbratura', label: 'Data Timbratura' },
+        { key: 'oraTimbratura', label: 'Ora Timbratura', alt: 'oraTimbrature' },
+        { key: 'descrizione', label: 'Descrizione', alt: 'descrizioneTimbratrice' }
+    ];
+    let html = '<div style="padding:1em">';
+    campi.forEach(campo => {
+        let value = dati[campo.key];
+        if ((!value || value === undefined) && campo.alt) value = dati[campo.alt];
+        html += `<div style='margin-bottom:10px'><b>${campo.label}:</b> ${value ? value : '-'}</div>`;
+    });
+    html += '</div>';
+    // Usa una modale generica già presente o creane una se serve
+    let modal = document.getElementById('dettagli-modal-mobile');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'dettagli-modal-mobile';
+        modal.className = 'modal';
+        modal.style = 'display:flex;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;';
+        modal.innerHTML = `<div class='modal-content' style='background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;'><span id='close-modal-mobile' style='position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;'>&times;</span><h3>Dettagli</h3><div id='dettagli-modal-mobile-content'></div></div>`;
+        document.body.appendChild(modal);
+    }
+    document.getElementById('dettagli-modal-mobile-content').innerHTML = html;
+    modal.style.display = 'flex';
+});
+$(document).on('click', '#close-modal-mobile', function () {
+    $('#dettagli-modal-mobile').hide();
+});
+$(document).on('click', '#dettagli-modal-mobile', function (e) {
+    if (e.target === this) $(this).hide();
+});

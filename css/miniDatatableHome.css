@@ -138,7 +138,6 @@ div.dt-container.dt-empty-footer tbody > tr:last-child > * {
     display: table-row-group;
     max-height: 180px;
     overflow-y: auto;
-    display: block;
   }
 
   .left-column-mobile .box-mobile .table-container-mobile,
@@ -153,9 +152,6 @@ div.dt-container.dt-empty-footer tbody > tr:last-child > * {
     margin-bottom: 8px;
     box-shadow: none;
     overflow: hidden;
-    display: table;
-    table-layout: fixed;
-    width: 100%;
   }
 
   .left-column-mobile .box-mobile .mini-datatable tbody tr:nth-child(even),

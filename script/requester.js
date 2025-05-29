@@ -2,6 +2,22 @@ import { jwtDecode } from "./jwtManager.js";
 
 let contactListTableInstance = null;
 
+// Funzione per formattare le ore
+function formatTime(timeString) {
+    if (!timeString) return '';
+    // Se è già nel formato HH:MM, restituiscilo così com'è
+    if (timeString.match(/^\d{2}:\d{2}$/)) return timeString;
+    // Se è nel formato HH:MM:SS, rimuovi i secondi
+    if (timeString.match(/^\d{2}:\d{2}:\d{2}$/)) {
+        return timeString.substring(0, 5);
+    }
+    // Se è nel formato HH:MM:SS.sss (con millisecondi), rimuovi secondi e millisecondi
+    if (timeString.match(/^\d{2}:\d{2}:\d{2}\.\d+$/)) {
+        return timeString.substring(0, 5);
+    }
+    return timeString;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const accessToken = localStorage.getItem('accessToken');
     const decodetoken = jwtDecode(accessToken, { header: true });
@@ -25,13 +41,12 @@ document.addEventListener('DOMContentLoaded', function () {
             let html = '<table class="display custom-table"><thead><tr>' +
                 '<th>Nome</th><th>Cognome</th><th>Data inizio</th><th>Ora inizio</th><th>Data fine</th><th>Ora fine</th><th>Motivo</th></tr></thead><tbody>';
             data.forEach(visit => {
-                html += `<tr>
-                <td>${visit.personaVisitatore?.nome || ''}</td>
+                html += `<tr>                <td>${visit.personaVisitatore?.nome || ''}</td>
                 <td>${visit.personaVisitatore?.cognome || ''}</td>
                 <td>${visit.dataInizio || ''}</td>
-                <td>${visit.oraInizio || ''}</td>
+                <td>${formatTime(visit.oraInizio || '')}</td>
                 <td>${visit.dataFine || ''}</td>
-                <td>${visit.oraFine || ''}</td>
+                <td>${formatTime(visit.oraFine || '')}</td>
                 <td>${visit.motivo || ''}</td>
             </tr>`;
             });

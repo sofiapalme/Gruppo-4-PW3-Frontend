@@ -2,73 +2,237 @@
 
 const accessToken = localStorage.getItem("accessToken");
 
+// Funzione per caricare i dati del count e aggiornare la dashboard
+function loadCountData() {
+    console.log('🔄 Loading count data...');
+    console.log('📋 Access token:', accessToken ? 'Present' : 'Missing');
+    
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+    
+    // Aggiungi l'header Authorization solo se il token esiste
+    if (accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+    
+    console.log('📤 Sending request to: http://localhost:8080/list/count');
+    console.log('📤 Headers:', headers);
+    
+    fetch('http://localhost:8080/list/count', {
+        method: 'GET',
+        headers: headers
+    })    .then(response => {
+        console.log('📥 Response status:', response.status);
+        console.log('📥 Response ok:', response.ok);
+        if (!response.ok) {
+            console.error('❌ Response not ok. Status:', response.status, 'StatusText:', response.statusText);
+            throw new Error(`Errore nel recupero dei dati count: ${response.status} - ${response.statusText}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Count data received:', data);
+        
+        // Calcola il totale dei presenti (dipendenti + visitatori)
+        const totalPresenti = (data.Employees || 0) + (data.Visitors || 0);
+        
+        // Aggiorna i valori nella dashboard desktop
+        const totalDesktopElement = document.getElementById('total-presenti-desktop');
+        const employeesDesktopElement = document.getElementById('dipendenti-count-desktop');
+        const visitorsDesktopElement = document.getElementById('visitatori-count-desktop');
+        
+        if (totalDesktopElement) totalDesktopElement.textContent = totalPresenti;
+        if (employeesDesktopElement) employeesDesktopElement.textContent = data.Employees || 0;
+        if (visitorsDesktopElement) visitorsDesktopElement.textContent = data.Visitors || 0;
+        
+        // Aggiorna i valori nella dashboard mobile
+        const totalMobileElement = document.getElementById('total-presenti-mobile');
+        const employeesMobileElement = document.getElementById('dipendenti-count-mobile');
+        const visitorsMobileElement = document.getElementById('visitatori-count-mobile');
+        
+        if (totalMobileElement) totalMobileElement.textContent = totalPresenti;
+        if (employeesMobileElement) employeesMobileElement.textContent = data.Employees || 0;
+        if (visitorsMobileElement) visitorsMobileElement.textContent = data.Visitors || 0;
+    })    .catch(err => {
+        console.error('❌ Errore nel caricamento dei dati count:', err);
+        console.error('❌ Stack trace:', err.stack);
+        // In caso di errore, mantieni i valori di default o mostra 0
+        const elements = [
+            'total-presenti-desktop', 'dipendenti-count-desktop', 'visitatori-count-desktop',
+            'total-presenti-mobile', 'dipendenti-count-mobile', 'visitatori-count-mobile'
+        ];
+        elements.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = '0';
+        });
+    });
+}
+
+const visitHeaders = {};
+if (accessToken) {
+    visitHeaders['Authorization'] = `Bearer ${accessToken}`;
+}
+
 fetch('http://localhost:8080/visit', {
     method: 'GET',
-    headers: {
-        'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
-    }
+    headers: visitHeaders
 })
 .then(response => {
     if (!response.ok) throw new Error('Errore nel recupero delle visite');
     return response.json();
 })
 .then(data => {
+    console.log('📊 Visit data received:', data);
+    
     const today = new Date().toISOString().split('T')[0];
-    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
-
+    
+    // Filtra visite odierne e future
     const todayVisits = data.filter(visit => visit.dataInizio === today);
-    const tomorrowVisits = data.filter(visit => visit.dataInizio === tomorrow);
-
-    const tbody1 = $('#home-table1-body-mobile');
-    tbody1.empty();
-    todayVisits.forEach(visit => {
-        const row = `
-<tr>
-    <td>${visit.personaVisitatore?.nome || ''}</td>
-    <td>${visit.personaVisitatore?.cognome || ''}</td>
-    <td>${visit.dataInizio || ''}</td>
-    <td>${visit.oraInizio || ''}</td>
-    <td>${visit.dataFine || ''}</td>
-    <td>${visit.oraFine || ''}</td>
-</tr>`;
-        tbody1.append(row);
-    });
-    const rows1 = tbody1.find('tr');
-    rows1.show();
-    if (rows1.length > 2) rows1.slice(2).hide();
-
-    const tbody2 = $('#home-table2-body-mobile');
-    tbody2.empty();
-    tomorrowVisits.forEach(visit => {
-        const row = `
-<tr>
-    <td>${visit.personaVisitatore?.nome || ''}</td>
-    <td>${visit.personaVisitatore?.cognome || ''}</td>
-    <td>${visit.dataInizio || ''}</td>
-    <td>${visit.oraInizio || ''}</td>
-    <td>${visit.dataFine || ''}</td>
-    <td>${visit.oraFine || ''}</td>
-</tr>`;
-        tbody2.append(row);
-    });
-    const rows2 = tbody2.find('tr');
-    rows2.show();
-    if (rows2.length > 2) rows2.slice(2).hide();
-
-    $('#home-table1-mobile, #home-table2-mobile').DataTable({
-        searching: false,
-        paging: false,
-        info: false,
-        lengthChange: false,
-        ordering: false,
-        language: {
-            emptyTable: "Nessun dato presente nella tabella"
+    const futureVisits = data.filter(visit => visit.dataInizio > today);
+      console.log('📅 Today visits:', todayVisits.length);
+    console.log('🔮 Future visits:', futureVisits.length);
+      // Funzione per formattare le ore
+    function formatTime(timeString) {
+        if (!timeString) return '';
+        // Se è già nel formato HH:MM, restituiscilo così com'è
+        if (timeString.match(/^\d{2}:\d{2}$/)) return timeString;
+        // Se è nel formato HH:MM:SS, rimuovi i secondi
+        if (timeString.match(/^\d{2}:\d{2}:\d{2}$/)) {
+            return timeString.substring(0, 5);
         }
-    });
+        // Se è nel formato HH:MM:SS.sss (con millisecondi), rimuovi secondi e millisecondi
+        if (timeString.match(/^\d{2}:\d{2}:\d{2}\.\d+$/)) {
+            return timeString.substring(0, 5);
+        }
+        return timeString;
+    }
+    
+    // Funzione per creare una riga della tabella desktop (con motivo e responsabile)
+    function createDesktopVisitRow(visit) {
+        return `
+<tr>
+    <td>${visit.personaVisitatore?.nome || ''}</td>
+    <td>${visit.personaVisitatore?.cognome || ''}</td>
+    <td>${visit.dataInizio || ''}</td>
+    <td>${formatTime(visit.oraInizio)}</td>
+    <td>${visit.motivo || ''}</td>
+    <td>${visit.responsabile?.nome || ''} ${visit.responsabile?.cognome || ''}</td>
+</tr>`;
+    }
+    
+    // Funzione per creare una riga della tabella mobile (con data/ora fine)
+    function createMobileVisitRow(visit) {
+        return `
+<tr>
+    <td>${visit.personaVisitatore?.nome || ''}</td>
+    <td>${visit.personaVisitatore?.cognome || ''}</td>
+    <td>${visit.dataInizio || ''}</td>
+    <td>${formatTime(visit.oraInizio)}</td>
+    <td>${visit.dataFine || ''}</td>
+    <td>${formatTime(visit.oraFine)}</td>
+</tr>`;
+    }
+      // Popola tabelle DESKTOP
+    const desktopTbody1 = $('#home-table1-body');
+    const desktopTbody2 = $('#home-table2-body');
+    
+    if (desktopTbody1.length) {
+        desktopTbody1.empty();
+        todayVisits.slice(0, 6).forEach(visit => {
+            desktopTbody1.append(createDesktopVisitRow(visit));
+        });
+    }
+    
+    if (desktopTbody2.length) {
+        desktopTbody2.empty();
+        futureVisits.slice(0, 6).forEach(visit => {
+            desktopTbody2.append(createDesktopVisitRow(visit));
+        });
+    }
+      // Popola tabelle MOBILE
+    const mobileTbody1 = $('#home-table1-body-mobile');
+    const mobileTbody2 = $('#home-table2-body-mobile');
+    
+    if (mobileTbody1.length) {
+        mobileTbody1.empty();
+        todayVisits.slice(0, 2).forEach(visit => {
+            mobileTbody1.append(createMobileVisitRow(visit));
+        });
+    }
+    
+    if (mobileTbody2.length) {
+        mobileTbody2.empty();
+        futureVisits.slice(0, 2).forEach(visit => {
+            mobileTbody2.append(createMobileVisitRow(visit));
+        });
+    }
+    
+    // Inizializza DataTables per le tabelle desktop
+    if ($('#home-table1').length && !$.fn.DataTable.isDataTable('#home-table1')) {
+        $('#home-table1').DataTable({
+            searching: false,
+            paging: false,
+            info: false,
+            lengthChange: false,
+            ordering: false,
+            language: {
+                emptyTable: "Nessuna visita odierna"
+            }
+        });
+    }
+    
+    if ($('#home-table2').length && !$.fn.DataTable.isDataTable('#home-table2')) {
+        $('#home-table2').DataTable({
+            searching: false,
+            paging: false,
+            info: false,
+            lengthChange: false,
+            ordering: false,
+            language: {
+                emptyTable: "Nessuna visita futura"
+            }
+        });
+    }
+    
+    // Inizializza DataTables per le tabelle mobile
+    if ($('#home-table1-mobile').length && !$.fn.DataTable.isDataTable('#home-table1-mobile')) {
+        $('#home-table1-mobile').DataTable({
+            searching: false,
+            paging: false,
+            info: false,
+            lengthChange: false,
+            ordering: false,
+            language: {
+                emptyTable: "Nessuna visita odierna"
+            }
+        });
+    }
+    
+    if ($('#home-table2-mobile').length && !$.fn.DataTable.isDataTable('#home-table2-mobile')) {
+        $('#home-table2-mobile').DataTable({
+            searching: false,
+            paging: false,
+            info: false,
+            lengthChange: false,
+            ordering: false,
+            language: {
+                emptyTable: "Nessuna visita futura"
+            }
+        });
+    }
 })
 .catch(err => {
-    $('#home-table1-body-mobile').html('<tr><td colspan="6">Errore nel caricamento dei visitatori</td></tr>');
-    $('#home-table2-body-mobile').html('<tr><td colspan="6">Errore nel caricamento dei visitatori</td></tr>');
+    console.error('❌ Error loading visits:', err);
+    const errorMessage = '<tr><td colspan="6">Errore nel caricamento dei visitatori</td></tr>';
+    
+    // Gestione errori per tabelle desktop
+    $('#home-table1-body').html(errorMessage);
+    $('#home-table2-body').html(errorMessage);
+    
+    // Gestione errori per tabelle mobile
+    $('#home-table1-body-mobile').html(errorMessage);
+    $('#home-table2-body-mobile').html(errorMessage);
 });
 
 
@@ -103,6 +267,9 @@ Object.keys(sectionMapping).forEach(mobile => {
 let currentActiveSection = null;
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Carica i dati del count quando la pagina si carica
+  loadCountData();
+  
   const mobileQuery = window.matchMedia('(max-width: 768px)');
   const overlay = document.getElementById('overlay');
   const submenu = document.getElementById('submenu-container');  const submenuData = {
@@ -519,6 +686,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('🖥️ Set initial desktop section:', currentActiveSection);
         }
     }
+
+    // Carica i dati del count all'avvio
+    loadCountData();
 });
 
 // === INIZIO: Script specifico per DashboardReceptionist ===
@@ -573,64 +743,19 @@ $(document).ready(function () {
         ${visit.personaVisitatore?.nome || ''}
         <input type="hidden" id="hidden-id-persona-visitatore" value="${visit.personaVisitatore?.idPersona || ''}">
         <input type="hidden" id="hidden-id-responsabile" value="${visit.responsabile?.idPersona || ''}">
-    </td>
-    <td>${visit.personaVisitatore?.cognome || ''}</td>
+    </td>    <td>${visit.personaVisitatore?.cognome || ''}</td>
     <td>${visit.dataInizio || ''}</td>
-    <td>${visit.oraInizio || ''}</td>
+    <td>${formatTime(visit.oraInizio || '')}</td>
     <td>${visit.dataFine || ''}</td>
-    <td>${visit.oraFine || ''}</td>
+    <td>${formatTime(visit.oraFine || '')}</td>
     <td>${getActionButtons(visit.personaVisitatore?.azienda || '', visit.motivo || '', visit.responsabile?.nome + ' ' + visit.responsabile?.cognome || '')}</td>
     <td>${getEliminaButton()}</td>
     <td>${getModificaButton()}</td>
     <td>${getAssegnaBadgeButton()}</td>
 </tr>
 `;
-                tbody.append(row);
-            });
-            // Popola la tabella home-table1 (Visitatori oggi)
-            const homeTbody1 = $('#home-table1-body');
-            homeTbody1.empty();
-            data.forEach(visit => {
-                const row = `
-<tr>
-    <td>${visit.personaVisitatore?.nome || ''}</td>
-    <td>${visit.personaVisitatore?.cognome || ''}</td>
-    <td>${visit.dataInizio || ''}</td>
-    <td>${visit.oraInizio || ''}</td>
-    <td>${visit.dataFine || ''}</td>
-    <td>${visit.oraFine || ''}</td>
-</tr>
-`;
-                homeTbody1.append(row);
-            });
-            // Mostra solo le prime 6 righe in home-table1
-            const homeRows1 = homeTbody1.find('tr');
-            homeRows1.show(); // Mostra tutte le righe prima di nascondere
-            if (homeRows1.length > 6) {
-                homeRows1.slice(6).hide();
-            }
-            // Popola la tabella home-table2 (Visitatori domani)
-            const homeTbody2 = $('#home-table2-body');
-            homeTbody2.empty();
-            data.forEach(visit => {
-                const row = `
-<tr>
-    <td>${visit.personaVisitatore?.nome || ''}</td>
-    <td>${visit.personaVisitatore?.cognome || ''}</td>
-    <td>${visit.dataInizio || ''}</td>
-    <td>${visit.oraInizio || ''}</td>
-    <td>${visit.dataFine || ''}</td>
-    <td>${visit.oraFine || ''}</td>
-</tr>
-`;
-                homeTbody2.append(row);
-            });
-            // Mostra solo le prime 6 righe in home-table2
-            const homeRows2 = homeTbody2.find('tr');
-            homeRows2.show();
-            if (homeRows2.length > 6) {
-                homeRows2.slice(6).hide();
-            }
+                tbody.append(row);            });
+            
             // Aggiorna DataTable dopo aver popolato
             if ($.fn.DataTable.isDataTable('#table1')) {
                 $('#table1').DataTable().clear().destroy();
@@ -698,20 +823,31 @@ $(document).ready(function () {
     });
     $(document).on('click', '#dettagli-modal', function (e) {
         if (e.target === this) $(this).hide();
-    });
-
-    // Gestione elimina visita
-    let visitIdToDelete = null;
-    let rowToDelete = null;
+    });    // Gestione elimina visita (tabella table1 - retrocompatibilità)
     $(document).on('click', '.elimina-btn', function (e) {
-        rowToDelete = $(this).closest('tr');
-        visitIdToDelete = rowToDelete.data('id');
-        if (!visitIdToDelete) return;
+        const row = $(this).closest('tr');
+        const visitId = row.data('id');
+        if (!visitId) return;
+        
+        // Usa le variabili globali per coerenza con dataTables.js
+        window.visitIdToDelete = visitId;
+        window.rowToDelete = row;
+        window.tableToUpdate = '#table1';
+        document.getElementById('delete-modal-message').textContent = 'Sei sicuro di voler eliminare questa visita?';
         $('#delete-modal').css('display', 'flex');
-    });
-    $(document).on('click', '#delete-confirm', function () {
+    });$(document).on('click', '#delete-confirm', function () {
+        // Usa le variabili globali impostate in dataTables.js
+        const visitId = window.visitIdToDelete;
+        const rowElement = window.rowToDelete;
+        const tableSelector = window.tableToUpdate;
+        
+        if (!visitId) {
+            $('#delete-modal-message').text('Errore: ID visita non trovato');
+            return;
+        }
+        
         const accessToken = localStorage.getItem("accessToken");
-        fetch(`http://localhost:8080/visit/${visitIdToDelete}`, {
+        fetch(`http://localhost:8080/visit/${visitId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
@@ -719,11 +855,23 @@ $(document).ready(function () {
         })
             .then(response => {
                 if (!response.ok) throw new Error('Errore durante l\'eliminazione');
-                if ($.fn.DataTable.isDataTable('#table1')) {
+                
+                // Gestione rimozione riga per le diverse tabelle
+                if (tableSelector && $.fn.DataTable.isDataTable(tableSelector)) {
+                    // Per le tabelle DataTable (visite odierne e future)
+                    $(tableSelector).DataTable().row(rowElement).remove().draw();
+                } else if ($.fn.DataTable.isDataTable('#table1')) {
+                    // Per la vecchia tabella table1 (retrocompatibilità)
                     $('#table1').DataTable().row(rowToDelete).remove().draw();
-                } else {
-                    rowToDelete.remove();
+                } else if (rowElement) {
+                    // Fallback: rimozione diretta dell'elemento DOM
+                    $(rowElement).remove();
                 }
+                
+                // Reset delle variabili globali
+                window.visitIdToDelete = null;
+                window.rowToDelete = null;
+                window.tableToUpdate = null;
             })
             .catch(err => {
                 // Mostra errore nella modale
@@ -732,8 +880,11 @@ $(document).ready(function () {
             .finally(() => {
                 $('#delete-modal').hide();
             });
-    });
-    $(document).on('click', '#delete-cancel', function () {
+    });    $(document).on('click', '#delete-cancel', function () {
+        // Reset delle variabili globali
+        window.visitIdToDelete = null;
+        window.rowToDelete = null;
+        window.tableToUpdate = null;
         $('#delete-modal').hide();
     });
     $(document).on('click', '.action-button:contains("Modifica")', function (e) {

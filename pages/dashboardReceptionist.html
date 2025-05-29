@@ -657,7 +657,7 @@
                             </div>
                             <div class="big-box-mobile create-user-box">
                                     <button class="action-button mini-link" type="button"
-                                        onclick="showMobileSection('visitatori-opzione1-mobile-section')">Crea utente</button>
+                                        onclick="showMobileSection('visitatori-crea-utente-mobile-section')">Crea utente</button>
                             </div>
                         </div>
 
@@ -805,12 +805,76 @@
                     <h1>Storico timbrature mensa</h1>
                     <p>Contenuto Storico timbrature mensa.</p>
                 </section>
-                <section id="visitatori-opzione1-mobile-section" class="mobile-section">
-                    <h1>Opzione 1</h1>
-                    <p>Contenuto Opzione 1.</p>
+                <section id="visitatori-nuova-visita-mobile-section" class="mobile-section">
+                    <div class="visitatori-mobile-wrapper">
+                        <h2>Prenota visita</h2>
+                        <div class="form-sezione-mobile">
+                            <div class="checkbox-row-mobile">
+                                <input type="checkbox" id="prima-visita-mobile">
+                                <label for="prima-visita">Prima visita</label>
+                            </div>
+
+                            <div class="input-row-mobile">
+                                <div class="input-group-mobile">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" id="nome" name="nome">
+                                </div>
+                                <div class="input-group-mobile">
+                                    <label for="cognome">Cognome</label>
+                                    <input type="text" id="cognome" name="cognome">
+                                </div>
+                                <div class="input-group-mobile">
+                                    <label for="azienda">Azienda</label>
+                                    <input type="text" id="azienda" name="azienda">
+                                </div>
+                            </div>
+
+                            <div class="input-row left-align-mobile">
+                                <div class="input-group-mobile">
+                                    <label for="data-inizio">Data inizio</label>
+                                    <input type="date" id="data-inizio" name="data-inizio">
+                                </div>
+                                <div class="input-group-mobile">
+                                    <label for="data-fine">Data fine</label>
+                                    <input type="date" id="data-fine" name="data-fine">
+                                </div>
+                            </div>
+
+                            <div class="input-row-mobile">
+                                <div class="input-group-mobile">
+                                    <label for="responsabile">Responsabile visita</label>
+                                    <input type="text" id="responsabile" name="responsabile">
+                                </div>
+                                <div class="input-group-mobile">
+                                    <label for="motivo">Motivo visita</label>
+                                    <input type="text" id="motivo" name="motivo">
+                                </div>
+                                <div class="input-group-mobile">
+                                    <label for="materiale">Materiale informatico</label>
+                                    <input type="text" id="materiale" name="materiale">
+                                </div>
+                            </div>
+
+                            <div class="checkbox-group-mobile">
+                                <div class="checkbox-row-mobile">
+                                    <input type="checkbox" id="automezzo">
+                                    <label for="automezzo">Accesso automezzo</label>
+                                </div>
+                                <div class="checkbox-row-mobile">
+                                    <input type="checkbox" id="dpi">
+                                    <label for="dpi">Richiesta DPI</label>
+                                </div>
+                            </div>
+
+                            <div class="button-container-mobile">
+                                <button class="action-button">Prenota</button>
+                            </div>
+
+                        </div>
+                    </div>
                 </section>
-                <section id="visitatori-opzione2-mobile-section" class="mobile-section">
-                    <h1>Opzione 2</h1>
+                <section id="visitatori-crea-utente-mobile-section" class="mobile-section">
+                    <h1>Crea utente</h1>
                     <p>Contenuto Opzione 2.</p>
                 </section>
             </main>

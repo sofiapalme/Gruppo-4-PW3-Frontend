@@ -30,7 +30,7 @@ function base64UrlDecode(e) {
     }
 }
 
-export function jwtDecode(e, r) {
+function jwtDecode(e, r) {
     if ("string" != typeof e)
         throw new InvalidTokenError("Invalid token specified: must be a string");
     r || (r = {});
@@ -51,7 +51,7 @@ export function jwtDecode(e, r) {
     }
 };
 
-export async function refreshJwt() {
+async function refreshJwt() {
     const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken) {

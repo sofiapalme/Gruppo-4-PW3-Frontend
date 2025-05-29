@@ -1,5 +1,3 @@
-import { refreshJwt } from "./jwtManager"
-
 let contactListTableInstance = null;
 
 function getIsoDate(inputDate) {
@@ -19,6 +17,22 @@ function convertToItalianDate(isoDate) {
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
+}
+
+// Funzione globale per formattare le ore
+function formatTime(timeString) {
+    if (!timeString) return '';
+    // Se è già nel formato HH:MM, restituiscilo così com'è
+    if (timeString.match(/^\d{2}:\d{2}$/)) return timeString;
+    // Se è nel formato HH:MM:SS, rimuovi i secondi
+    if (timeString.match(/^\d{2}:\d{2}:\d{2}$/)) {
+        return timeString.substring(0, 5);
+    }
+    // Se è nel formato HH:MM:SS.sss (con millisecondi), rimuovi secondi e millisecondi
+    if (timeString.match(/^\d{2}:\d{2}:\d{2}\.\d+$/)) {
+        return timeString.substring(0, 5);
+    }
+    return timeString;
 }
 
 const visualizzaPersoneNavElement = document.getElementById("visualizza-elenco-persone");
@@ -91,7 +105,7 @@ async function createPersonDataTable() {
     }
 }
 
-function createPerson(event) {
+async function createPerson(event) {
     event.preventDefault();
     const nome = String(document.getElementById("nome-crea-persona").value);
     const cognome = String(document.getElementById("cognome-crea-persona").value);
@@ -103,10 +117,10 @@ function createPerson(event) {
     const telefono = String(document.getElementById("telefono").value);
     const cellulare = String(document.getElementById("cellulare").value);
     let fax = String(document.getElementById("fax").value);
-    fax = fax === "" ? null : value;
+    fax = fax === "" ? null : fax;
 
     let pIva = String(document.getElementById("pIva").value);
-    pIva = pIva === "" ? null : value;
+    pIva = pIva === "" ? null : pIva;
 
     const cf = String(document.getElementById("cf").value);
     const mail = String(document.getElementById("mail-crea-persona").value);
@@ -124,7 +138,7 @@ function createPerson(event) {
     const dataScadenzaDoc = document.getElementById("dataScadenzaDoc").value; // date string
     const duvri = String(document.getElementById("duvri").checked);
     let numCentriCosto = Number(document.getElementById("numCentriCosto").value);
-    numCentriCosto = numCentriCosto === 0 ? null : value;
+    numCentriCosto = numCentriCosto === 0 ? null : numCentriCosto;
 
     const flagDocPrivacy = document.getElementById("flagDocPrivacy").checked;
     const dataConsegnaDocPrivacy = document.getElementById("dataConsegnaDocPrivacy").value; // date string
@@ -195,8 +209,7 @@ async function createPersonFetch(requestBody) {
         if (!response.ok) {
             throw new Error(`Errore nel recupero dei dati: ${response.status}`);
         }
-
-        alert("Persona salvata con successo! (forse)")
+        window.location.reload();
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
     }
@@ -234,12 +247,10 @@ async function createVisiteFutureDataTable() {
         }
 
         const futureVisits = new Array;
-        const today = getIsoDate(new Date);
-
-        data.forEach(visit => {
+        const today = getIsoDate(new Date);        data.forEach(visit => {
             if (visit.dataInizio > today) {
                 visit.dataInizio = convertToItalianDate(visit.dataInizio);
-                visit.dataFine = convertToItalianDate(visit.dataFine);
+                visit.dataFine = visit.dataFine ? convertToItalianDate(visit.dataFine) : null;
                 futureVisits.push(visit)
             }
         });
@@ -396,6 +407,8 @@ async function createVisiteOdierneDataTable() {
 
         data.forEach(visit => {
             if (visit.dataInizio === today) {
+                // Salva la data originale per il confronto
+                visit.dataInizioOriginal = visit.dataInizio;
                 visit.dataInizio = convertToItalianDate(visit.dataInizio);
                 visit.dataFine = convertToItalianDate(visit.dataFine);
                 todayVisits.push(visit);
@@ -563,7 +576,12 @@ async function createStrocioTimbratureVisitatoriDataTable() {
                 { data: "azienda" },
                 { data: "codiceBadge" },
                 { data: "dataTimbratura" },
-                { data: "oraTimbrature" },
+                { 
+                    data: "oraTimbrature",
+                    render: function(data) {
+                        return formatTime(data);
+                    }
+                },
                 { data: "descrizioneTimbratrice" }
             ],
             lengthChange: false,
@@ -615,9 +633,7 @@ async function createStrocioTimbratureDipendentiDataTable() {
         if (contactListTableInstance) {
             contactListTableInstance.destroy();
             contactListTableInstance = null;
-        }
-
-        contactListTableInstance = new DataTable("#tabella-timbrature-dipendenti", {
+        }        contactListTableInstance = new DataTable("#tabella-timbrature-dipendenti", {
             data: data,
             destroy: true,
             columns: [
@@ -626,7 +642,12 @@ async function createStrocioTimbratureDipendentiDataTable() {
                 { data: "azienda" },
                 { data: "codiceBadge" },
                 { data: "dataTimbratura" },
-                { data: "oraTimbrature" },
+                { 
+                    data: "oraTimbrature",
+                    render: function(data) {
+                        return formatTime(data);
+                    }
+                },
                 { data: "descrizioneTimbratrice" }
             ],
             lengthChange: false,
@@ -678,9 +699,7 @@ async function createStoricoTimbratureMensaDataTable() {
         if (contactListTableInstance) {
             contactListTableInstance.destroy();
             contactListTableInstance = null;
-        }
-
-        contactListTableInstance = new DataTable("#tabella-timbrature-mensa", {
+        }        contactListTableInstance = new DataTable("#tabella-timbrature-mensa", {
             data: data,
             destroy: true,
             columns: [
@@ -689,7 +708,12 @@ async function createStoricoTimbratureMensaDataTable() {
                 { data: "azienda" },
                 { data: "codiceBadge" },
                 { data: "dataTimbratura" },
-                { data: "oraTimbrature" },
+                { 
+                    data: "oraTimbrature",
+                    render: function(data) {
+                        return formatTime(data);
+                    }
+                },
                 { data: "descrizioneTimbratrice" }
             ],
             lengthChange: false,
@@ -784,3 +808,142 @@ window.createContactListDataTable = createContactListDataTable;
 window.createStrocioTimbratureVisitatoriDataTable = createStrocioTimbratureVisitatoriDataTable;
 window.createStrocioTimbratureDipendentiDataTable = createStrocioTimbratureDipendentiDataTable;
 window.createStoricoTimbratureMensaDataTable = createStoricoTimbratureMensaDataTable;
+
+// Event listeners per i pulsanti della tabella visite odierne
+document.addEventListener('click', function(event) {    // Gestione click pulsante Dettagli visite odierne
+    if (event.target.classList.contains('dettagli-visite-odierne-btn')) {
+        const azienda = event.target.getAttribute('data-azienda');
+        const flagDPI = event.target.getAttribute('data-flagdpi');
+        const materiale = event.target.getAttribute('data-materiale');
+        const automezzo = event.target.getAttribute('data-automezzo');
+        
+        // Popola la modale con i dati (solo i campi richiesti)
+        document.getElementById('modal-visite-odierne-azienda').textContent = azienda;
+        document.getElementById('modal-visite-odierne-flagdpi').textContent = flagDPI;
+        document.getElementById('modal-visite-odierne-materiale').textContent = materiale;
+        document.getElementById('modal-visite-odierne-automezzo').textContent = automezzo;
+        
+        // Mostra la modale
+        document.getElementById('dettagli-visite-odierne-modal').style.display = 'flex';
+    }
+
+    // Gestione click pulsante Dettagli visite future
+    if (event.target.classList.contains('dettagli-visite-future-btn')) {
+        const azienda = event.target.getAttribute('data-azienda');
+        const flagDPI = event.target.getAttribute('data-flagdpi');
+        const materiale = event.target.getAttribute('data-materiale');
+        const automezzo = event.target.getAttribute('data-automezzo');
+        
+        // Popola la modale con i dati
+        document.getElementById('modal-visite-future-azienda').textContent = azienda;
+        document.getElementById('modal-visite-future-flagdpi').textContent = flagDPI;
+        document.getElementById('modal-visite-future-materiale').textContent = materiale;
+        document.getElementById('modal-visite-future-automezzo').textContent = automezzo;
+        
+        // Mostra la modale
+        document.getElementById('dettagli-visite-future-modal').style.display = 'flex';
+    }    // Gestione click pulsante Elimina visite odierne
+    if (event.target.classList.contains('elimina-btn')) {
+        // Trova la riga della tabella
+        const row = event.target.closest('tr');
+        if (!row) return;
+        
+        // Prendi l'ID della visita dalla riga DataTable 
+        const table = $('#tabella-visite-odierne').DataTable();
+        const rowData = table.row(row).data();
+        const visitId = rowData?.id;
+        
+        if (!visitId) {
+            alert('Impossibile trovare l\'ID della visita');
+            return;
+        }
+        
+        // Memorizza i dati per l'eliminazione e mostra la modale
+        window.visitIdToDelete = visitId;
+        window.rowToDelete = row;
+        window.tableToUpdate = '#tabella-visite-odierne';
+        document.getElementById('delete-modal-message').textContent = 'Sei sicuro di voler eliminare questa visita?';
+        document.getElementById('delete-modal').style.display = 'flex';
+    }
+
+    // Gestione click pulsante Elimina visite future
+    if (event.target.classList.contains('elimina-future-btn')) {
+        // Trova la riga della tabella
+        const row = event.target.closest('tr');
+        if (!row) return;
+        
+        // Prendi l'ID della visita dalla riga DataTable 
+        const table = $('#tabella-visite-future').DataTable();
+        const rowData = table.row(row).data();
+        const visitId = rowData?.id;
+        
+        if (!visitId) {
+            alert('Impossibile trovare l\'ID della visita');
+            return;
+        }
+        
+        // Memorizza i dati per l'eliminazione e mostra la modale
+        window.visitIdToDelete = visitId;
+        window.rowToDelete = row;
+        window.tableToUpdate = '#tabella-visite-future';
+        document.getElementById('delete-modal-message').textContent = 'Sei sicuro di voler eliminare questa visita futura?';
+        document.getElementById('delete-modal').style.display = 'flex';
+    }
+      // Gestione click per chiudere le modali
+    if (event.target.id === 'close-dettagli-visite-odierne-modal' || event.target.id === 'dettagli-visite-odierne-modal') {
+        document.getElementById('dettagli-visite-odierne-modal').style.display = 'none';
+    }
+    
+    if (event.target.id === 'close-dettagli-visite-future-modal' || event.target.id === 'dettagli-visite-future-modal') {
+        document.getElementById('dettagli-visite-future-modal').style.display = 'none';
+    }
+    
+    // Gestione click pulsante Assegna Badge
+    if (event.target.textContent === 'Assegna Badge') {
+        // Trova la riga della tabella
+        const row = event.target.closest('tr');
+        if (!row) return;
+        
+        // Prendi i dati della riga DataTable 
+        const table = $('#tabella-visite-odierne').DataTable();
+        const rowData = table.row(row).data();
+        const visitatoreName = rowData?.personaVisitatore?.nome || '';
+        const visitatoreSurname = rowData?.personaVisitatore?.cognome || '';
+        
+        // Richiedi il numero del badge
+        const badgeNumber = prompt(`Inserisci il numero del badge per ${visitatoreName} ${visitatoreSurname}:`);
+        
+        if (badgeNumber && badgeNumber.trim() !== '') {
+            // Qui puoi implementare la logica per assegnare il badge
+            // Per ora mostriamo solo un messaggio di conferma
+            alert(`Badge ${badgeNumber.trim()} assegnato a ${visitatoreName} ${visitatoreSurname}`);
+            
+            // TODO: Implementare chiamata API per assegnare il badge
+            // fetch(`http://localhost:8080/badge/assign`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
+            //     },
+            //     body: JSON.stringify({
+            //         visitId: rowData.id,
+            //         badgeNumber: badgeNumber.trim()
+            //     })
+            // })
+        }
+    }
+});
+
+// Event listener per chiudere la modale cliccando fuori
+document.getElementById('dettagli-visite-odierne-modal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        this.style.display = 'none';
+    }
+});
+
+// Event listener per chiudere la modale visite future cliccando fuori
+document.getElementById('dettagli-visite-future-modal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        this.style.display = 'none';
+    }
+});

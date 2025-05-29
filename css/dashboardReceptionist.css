@@ -149,7 +149,7 @@ html, body {
    ===================== */
 .user-box {
   margin-top: auto;
-  margin-left: 12.5%;
+  margin-left: 10%;
   width: 80%;
   background-color: #7C8BA6;
   border-radius: 16px;
@@ -601,7 +601,7 @@ table.dataTable.custom-table.no-footer {
     min-width: 90px;
 }
 /* Bottone Elimina rosso nei modali */
-.action-button.delete, #delete-modal .action-button, .action-button[style*="background:#c0392b"] {
+.action-button.delete, #delete-modal #delete-confirm, .action-button[style*="background:#c0392b"] {
     background: #c0392b !important;
     color: #fff !important;
 }

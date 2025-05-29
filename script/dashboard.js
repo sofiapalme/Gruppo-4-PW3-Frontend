@@ -2,6 +2,37 @@
 
 const accessToken = localStorage.getItem("accessToken");
 
+// Utility functions for date and time formatting
+function convertToItalianDate(isoDate) {
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+function formatTime(timeString) {
+    if (!timeString) return '';
+    // Se è già nel formato HH:MM, restituiscilo così com'è
+    if (timeString.match(/^\d{2}:\d{2}$/)) return timeString;
+    // Se è nel formato HH:MM:SS, rimuovi i secondi
+    if (timeString.match(/^\d{2}:\d{2}:\d{2}$/)) {
+        return timeString.substring(0, 5);
+    }
+    // Se è nel formato HH:MM:SS.sss (con millisecondi), rimuovi secondi e millisecondi
+    if (timeString.match(/^\d{2}:\d{2}:\d{2}\.\d+$/)) {
+        return timeString.substring(0, 5);
+    }
+    return timeString;
+}
+
+// JWT refresh function (simplified version for mobile functions)
+async function refreshJwt() {
+    // Simplified version - in a real implementation this would refresh the JWT token
+    // For now, we'll just return a resolved promise
+    return Promise.resolve();
+}
+
 // Funzione per caricare i dati del count e aggiornare la dashboard
 function loadCountData() {
     console.log('🔄 Loading count data...');
@@ -240,9 +271,8 @@ fetch('http://localhost:8080/visit', {
 const sectionMapping = {
   // Mobile => Desktop
   'home-mobile-section': 'home-section',
-  'visualizza-opzione1-mobile-section': 'visualizza-opzione1-section',
-  'visualizza-visite-mobile-section': 'visualizza-visite-section',
-  'visualizza-presenti-mobile-section': 'visualizza-presenti-section',
+  'visualizza-opzione1-mobile-section': 'visualizza-opzione1-section',  'visualizza-visite-mobile-section': 'visualizza-visite-section',
+  'visitatori-elenco-presenti-mobile-section': 'visitatori-elenco-presenti-section',
   'visualizza-elenco-visitatori-futuri-mobile-section': 'visualizza-elenco-visite-future-section',
   'visualizza-elenco-visitatori-oggi-mobile-section': 'visualizza-elenco-visite-odierne-section',
   'visualizza-visite-suo-carico-mobile-section': 'visualizza-visite-suo-carico-section',
@@ -274,23 +304,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('overlay');
   const submenu = document.getElementById('submenu-container');  const submenuData = {
     'visualizza-mobile-section': [
-      { label: 'Visitatori Oggi', target: 'visualizza-elenco-visitatori-oggi-mobile-section' },
-      { label: 'Visitatori Futuri', target: 'visualizza-elenco-visitatori-futuri-mobile-section' },
-      { label: 'Visite', target: 'visualizza-visite-mobile-section' },
-      { label: 'Presenti', target: 'visualizza-presenti-mobile-section' },
-      { label: 'Visite a suo carico', target: 'visualizza-visite-suo-carico-mobile-section' },
-      { label: 'Presenti a suo carico', target: 'visualizza-presenti-suo-carico-mobile-section' },
-      { label: 'Futuri a suo carico', target: 'visualizza-futuri-suo-carico-mobile-section' },
-      { label: 'Elenco telefonico SM', target: 'visualizza-elenco-tel-sm-mobile-section' }
+      { label: 'Elenco odierne', target: 'visualizza-elenco-visitatori-oggi-mobile-section' },
+      { label: 'Elenco future', target: 'visualizza-elenco-visitatori-futuri-mobile-section' }
     ],
     'storico-mobile-section': [
-      { label: 'Timbrature visitatori', target: 'storico-timbrature-visitatori-mobile-section' },
-      { label: 'Timbrature dipendenti', target: 'storico-timbrature-dipendenti-mobile-section' },
-      { label: 'Timbrature mensa', target: 'storico-timbrature-mensa-mobile-section' }
-    ],
-    'visitatori-mobile-section': [
-      { label: 'Nuova visita', target: 'visitatori-nuova-visita-mobile-section' },
-      { label: 'Crea utente', target: 'visitatori-crea-utente-mobile-section' }
+      { label: 'Storico visite', target: 'visualizza-visite-mobile-section' },
+      { label: 'Storico timbrature visitatori', target: 'storico-timbrature-visitatori-mobile-section' },
+      { label: 'Storico timbrature dipendenti', target: 'storico-timbrature-dipendenti-mobile-section' },
+      { label: 'Storico timbrature mensa', target: 'storico-timbrature-mensa-mobile-section' }
+    ],    'visitatori-mobile-section': [
+      { label: 'Crea visite', target: 'visitatori-nuova-visita-mobile-section' },
+      { label: 'Crea persone', target: 'visitatori-crea-utente-mobile-section' },
+      { label: 'Elenco presenti', target: 'visitatori-elenco-presenti-mobile-section' },
+      { label: 'Elenco persone', target: 'visualizza-elenco-persone-mobile-section' },
+      { label: 'Elenco telefonico dipendenti', target: 'visualizza-elenco-tel-sm-mobile-section' }
     ]
   };
 
@@ -322,8 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
     handleSectionTransition(currentActive, target);
     currentActiveSection = id; // Aggiorna la sezione corrente
     console.log('📱 Updated currentActiveSection to:', currentActiveSection);
-    
-    // Call appropriate populate function for storico sections when directly navigating
+      // Call appropriate populate function for storico sections when directly navigating
     if (id === 'storico-timbrature-visitatori-mobile-section') {
       console.log('Loading storico timbrature visitatori mobile data...');
       if (window.populateStoricoTimbratureVisitatoriMobile) {
@@ -338,6 +364,16 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Loading storico timbrature mensa mobile data...');
       if (window.populateStoricoTimbratureMensaMobile) {
         window.populateStoricoTimbratureMensaMobile();
+      }
+    } else if (id === 'visualizza-elenco-visitatori-futuri-mobile-section') {
+      console.log('Loading visite future mobile data...');
+      if (window.createVisiteFutureMobileDataTable) {
+        window.createVisiteFutureMobileDataTable();
+      }
+    } else if (id === 'visualizza-elenco-visitatori-oggi-mobile-section') {
+      console.log('Loading visite odierne mobile data...');
+      if (window.createVisiteOdierneMobileDataTable) {
+        window.createVisiteOdierneMobileDataTable();
       }
     }
   };  window.handleSectionTransition = function(currentSection, newSection) {
@@ -522,12 +558,20 @@ function triggerSectionDataLoading(sectionId) {
                 console.log('📊 Loading employee timestamps data...');
                 window.createStrocioTimbratureDipendentiDataTable();
             }
-            break;
-        case 'storico-timbrature-mensa-section':
+            break;        case 'storico-timbrature-mensa-section':
             if (window.createStoricoTimbratureMensaDataTable) {
                 console.log('📊 Loading cafeteria timestamps data...');
                 window.createStoricoTimbratureMensaDataTable();
             }
+            break;
+        case 'visitatori-elenco-presenti-section':
+        case 'visitatori-elenco-presenti-mobile-section':
+            if (window.createElencoPresentiDataTable) {
+                console.log('📊 Loading present people data...');
+                window.createElencoPresentiDataTable();
+            }
+            // AGGIUNTA: aggiorna i counter anche quando si entra nella sezione Presenti
+            loadCountData();
             break;
         default:
             console.log('ℹ️ No data loading needed for section:', sectionId);
@@ -993,8 +1037,7 @@ window.populateStoricoTimbratureVisitatoriMobile = async function() {
         // Destroy previous DataTable if exists
         if ($.fn.DataTable.isDataTable(tableId)) {
             $(tableId).DataTable().clear().destroy();
-        }
-        // Prepare data for DataTable (Nome, Cognome, Dettagli)
+        }        // Prepare data for DataTable (Nome, Cognome, Dettagli)
         const tableData = data.map(row => ({
             nome: row.nome || '',
             cognome: row.cognome || '',
@@ -1010,7 +1053,7 @@ window.populateStoricoTimbratureVisitatoriMobile = async function() {
                     data: 'dettagli',
                     orderable: false,
                     render: function(data, type, row) {
-                        return `<button class='action-button-mobile dettagli-btn-mobile' data-row='${JSON.stringify(data).replace(/'/g, "&apos;")}' style='font-size:12px;'>Dettagli</button>`;
+                        return `<button class='action-button-mobile dettagli-timbrature-visitatori-btn-mobile' data-row='${JSON.stringify(data).replace(/'/g, "&apos;")}' style='font-size:12px;'>Dettagli</button>`;
                     }
                 }
             ],
@@ -1067,7 +1110,7 @@ window.populateStoricoTimbratureDipendentiMobile = async function() {
                     data: 'dettagli',
                     orderable: false,
                     render: function(data, type, row) {
-                        return `<button class='action-button-mobile dettagli-btn-mobile' data-row='${JSON.stringify(data).replace(/'/g, "&apos;")}' style='font-size:12px;'>Dettagli</button>`;
+                        return `<button class='action-button-mobile dettagli-timbrature-dipendenti-btn-mobile' data-row='${JSON.stringify(data).replace(/'/g, "&apos;")}' style='font-size:12px;'>Dettagli</button>`;
                     }
                 }
             ],
@@ -1124,7 +1167,7 @@ window.populateStoricoTimbratureMensaMobile = async function() {
                     data: 'dettagli',
                     orderable: false,
                     render: function(data, type, row) {
-                        return `<button class='action-button-mobile dettagli-btn-mobile' data-row='${JSON.stringify(data).replace(/'/g, "&apos;")}' style='font-size:12px;'>Dettagli</button>`;
+                        return `<button class='action-button-mobile dettagli-timbrature-mensa-btn-mobile' data-row='${JSON.stringify(data).replace(/'/g, "&apos;")}' style='font-size:12px;'>Dettagli</button>`;
                     }
                 }
             ],
@@ -1191,3 +1234,448 @@ $(document).on('click', '#close-modal-mobile', function () {
 $(document).on('click', '#dettagli-modal-mobile', function (e) {
     if (e.target === this) $(this).hide();
 });
+
+// Modal close handlers for mobile storico modals
+$(document).on('click', '#close-dettagli-timbrature-visitatori-modal-mobile', function() {
+    $('#dettagli-timbrature-visitatori-modal-mobile').hide();
+});
+
+$(document).on('click', '#close-dettagli-timbrature-dipendenti-modal-mobile', function() {
+    $('#dettagli-timbrature-dipendenti-modal-mobile').hide();
+});
+
+$(document).on('click', '#close-dettagli-timbrature-mensa-modal-mobile', function() {
+    $('#dettagli-timbrature-mensa-modal-mobile').hide();
+});
+
+// Click outside modal to close for storico modals
+$(document).on('click', '#dettagli-timbrature-visitatori-modal-mobile', function(e) {
+    if (e.target === this) $(this).hide();
+});
+
+$(document).on('click', '#dettagli-timbrature-dipendenti-modal-mobile', function(e) {
+    if (e.target === this) $(this).hide();
+});
+
+$(document).on('click', '#dettagli-timbrature-mensa-modal-mobile', function(e) {
+    if (e.target === this) $(this).hide();
+});
+
+// Specific handlers for mobile storico detail buttons
+$(document).on('click', '.dettagli-timbrature-visitatori-btn-mobile', function() {
+    const rowData = $(this).data('row');
+    let dati = rowData;
+    if (typeof rowData === 'string') {
+        try { dati = JSON.parse(rowData.replace(/&apos;/g, "'")); } catch { dati = {}; }
+    }
+    
+    // Populate visitatori modal
+    $('#modal-visitatori-nome-mobile').text(dati.nome || '-');
+    $('#modal-visitatori-cognome-mobile').text(dati.cognome || '-');
+    $('#modal-visitatori-azienda-mobile').text(dati.azienda || '-');
+    $('#modal-visitatori-badge-mobile').text(dati.codiceBadge || '-');
+    $('#modal-visitatori-data-mobile').text(dati.dataTimbratura || '-');
+    $('#modal-visitatori-ora-mobile').text(dati.oraTimbrature || dati.oraTimbratura || '-');
+    $('#modal-visitatori-descrizione-mobile').text(dati.descrizioneTimbratrice || dati.descrizione || '-');
+    
+    $('#dettagli-timbrature-visitatori-modal-mobile').show();
+});
+
+$(document).on('click', '.dettagli-timbrature-dipendenti-btn-mobile', function() {
+    const rowData = $(this).data('row');
+    let dati = rowData;
+    if (typeof rowData === 'string') {
+        try { dati = JSON.parse(rowData.replace(/&apos;/g, "'")); } catch { dati = {}; }
+    }
+    
+    // Populate dipendenti modal
+    $('#modal-dipendenti-nome-mobile').text(dati.nome || '-');
+    $('#modal-dipendenti-cognome-mobile').text(dati.cognome || '-');
+    $('#modal-dipendenti-matricola-mobile').text(dati.matricola || '-');
+    $('#modal-dipendenti-badge-mobile').text(dati.codiceBadge || '-');
+    $('#modal-dipendenti-data-mobile').text(dati.dataTimbratura || '-');
+    $('#modal-dipendenti-ora-mobile').text(dati.oraTimbrature || dati.oraTimbratura || '-');
+    $('#modal-dipendenti-descrizione-mobile').text(dati.descrizioneTimbratrice || dati.descrizione || '-');
+    
+    $('#dettagli-timbrature-dipendenti-modal-mobile').show();
+});
+
+$(document).on('click', '.dettagli-timbrature-mensa-btn-mobile', function() {
+    const rowData = $(this).data('row');
+    let dati = rowData;
+    if (typeof rowData === 'string') {
+        try { dati = JSON.parse(rowData.replace(/&apos;/g, "'")); } catch { dati = {}; }
+    }
+    
+    // Populate mensa modal
+    $('#modal-mensa-nome-mobile').text(dati.nome || '-');
+    $('#modal-mensa-cognome-mobile').text(dati.cognome || '-');
+    $('#modal-mensa-azienda-mobile').text(dati.azienda || '-');
+    $('#modal-mensa-badge-mobile').text(dati.codiceBadge || '-');
+    $('#modal-mensa-data-mobile').text(dati.dataTimbratura || '-');
+    $('#modal-mensa-ora-mobile').text(dati.oraTimbrature || dati.oraTimbratura || '-');
+    $('#modal-mensa-descrizione-mobile').text(dati.descrizioneTimbratrice || dati.descrizione || '-');
+    
+    $('#dettagli-timbrature-mensa-modal-mobile').show();
+});
+
+// Mobile Visit Table Functions
+window.createVisiteFutureMobileDataTable = async function() {
+    await refreshJwt();
+    const url = "http://localhost:8080/visit";
+    const accessToken = localStorage.getItem("accessToken");
+    const tableId = '#tabella-visite-future-mobile';
+    
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+            }
+        });
+
+        if (!response.ok) throw new Error('Errore nel recupero dei dati');
+        
+        const data = await response.json();
+        
+        if ($.fn.DataTable.isDataTable(tableId)) {
+            $(tableId).DataTable().clear().destroy();
+        }
+
+        // Filter future visits
+        const today = new Date().toISOString().split('T')[0];
+        const futureVisits = data.filter(visit => visit.dataInizio > today);
+          const tableData = futureVisits.map(visit => ({
+            nome: visit.personaVisitatore?.nome || '',
+            cognome: visit.personaVisitatore?.cognome || '',
+            dettagli: {
+                dataInizio: convertToItalianDate(visit.dataInizio),
+                oraInizio: formatTime(visit.oraInizio),
+                motivo: visit.motivo || '',
+                responsabile: (visit.responsabile?.nome || '') + ' ' + (visit.responsabile?.cognome || ''),
+                azienda: visit.personaVisitatore?.azienda || '',
+                flagDPI: visit.flagDPI ? 'Sì' : 'No',
+                materialeInformatico: visit.materialeInformatico?.descrizione || 'Nessuno',
+                accessoAutomezzo: visit.flagAccessoConAutomezzo ? 'Sì' : 'No'
+            },
+            eliminaData: visit
+        }));
+
+        $(tableId).DataTable({
+            data: tableData,
+            destroy: true,
+            columns: [
+                { data: 'nome' },
+                { data: 'cognome' },
+                {
+                    data: 'dettagli',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return `<button class='action-button-mobile dettagli-visite-future-btn-mobile' 
+                                data-datainizio='${data.dataInizio}'
+                                data-orainizio='${data.oraInizio}'
+                                data-motivo='${data.motivo}'
+                                data-responsabile='${data.responsabile}'
+                                data-azienda='${data.azienda}' 
+                                data-flagdpi='${data.flagDPI}'
+                                data-materiale='${data.materialeInformatico}'
+                                data-automezzo='${data.accessoAutomezzo}' 
+                                style='font-size:12px;'>Dettagli</button>`;
+                    }
+                },
+                {
+                    data: 'eliminaData',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return `<button class='action-button-mobile elimina-future-btn-mobile' 
+                                data-id='${data.idVisita}' 
+                                style='font-size:12px;background:#c0392b;'>Elimina</button>`;
+                    }
+                }
+            ],
+            lengthChange: false,
+            pageLength: 4,
+            autoWidth: false,
+            responsive: true,
+            searching: true,
+            info: true,
+            language: {
+                paginate: { next: '>', previous: '<' },
+                emptyTable: 'Nessun dato presente nella tabella',
+                zeroRecords: 'Nessun risultato trovato',
+                info: 'Pagina _PAGE_ di _PAGES_',
+                infoEmpty: 'Nessun elemento disponibile',
+                search: 'Cerca:',
+            }
+        });    } catch (err) {
+        console.error('Errore nel caricamento visite future mobile:', err);
+        const tbody = document.querySelector(tableId + ' tbody');
+        if (tbody) tbody.innerHTML = '<tr><td colspan="4">Errore nel caricamento</td></tr>';
+    }
+};
+
+window.createVisiteOdierneMobileDataTable = async function() {
+    await refreshJwt();
+    const url = "http://localhost:8080/visit";
+    const accessToken = localStorage.getItem("accessToken");
+    const tableId = '#tabella-visite-odierne-mobile';
+    
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+            }
+        });
+
+        if (!response.ok) throw new Error('Errore nel recupero dei dati');
+        
+        const data = await response.json();
+        
+        if ($.fn.DataTable.isDataTable(tableId)) {
+            $(tableId).DataTable().clear().destroy();
+        }
+
+        // Filter today's visits
+        const today = new Date().toISOString().split('T')[0];
+        const todayVisits = data.filter(visit => visit.dataInizio === today);
+          const tableData = todayVisits.map(visit => {
+            const now = new Date();
+            const visitStart = new Date(visit.dataInizio + 'T' + visit.oraInizio);
+            const oraFineDisplay = now < visitStart ? "Non ancora iniziata" : (visit.oraFine ? formatTime(visit.oraFine) : "-");
+            
+            return {
+                nome: visit.personaVisitatore?.nome || '',
+                cognome: visit.personaVisitatore?.cognome || '',
+                dettagli: {
+                    dataInizio: convertToItalianDate(visit.dataInizio),
+                    oraInizio: formatTime(visit.oraInizio),
+                    dataFine: visit.dataFine ? convertToItalianDate(visit.dataFine) : "-",
+                    oraFine: oraFineDisplay,
+                    motivo: visit.motivo || '',
+                    responsabile: (visit.responsabile?.nome || '') + ' ' + (visit.responsabile?.cognome || ''),
+                    azienda: visit.personaVisitatore?.azienda || '',
+                    flagDPI: visit.flagDPI ? 'Sì' : 'No',
+                    materialeInformatico: visit.materialeInformatico?.descrizione || 'Nessuno',
+                    accessoAutomezzo: visit.flagAccessoConAutomezzo ? 'Sì' : 'No'
+                },
+                eliminaData: visit,
+                badgeData: visit
+            };
+        });
+
+        $(tableId).DataTable({
+            data: tableData,
+            destroy: true,
+            columns: [
+                { data: 'nome' },
+                { data: 'cognome' },
+                {
+                    data: 'dettagli',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return `<button class='action-button-mobile dettagli-visite-odierne-btn-mobile' 
+                                data-datainizio='${data.dataInizio}'
+                                data-orainizio='${data.oraInizio}'
+                                data-datafine='${data.dataFine}'
+                                data-orafine='${data.oraFine}'
+                                data-motivo='${data.motivo}'
+                                data-responsabile='${data.responsabile}'
+                                data-azienda='${data.azienda}' 
+                                data-flagdpi='${data.flagDPI}'
+                                data-materiale='${data.materialeInformatico}'
+                                data-automezzo='${data.accessoAutomezzo}' 
+                                style='font-size:12px;'>Dettagli</button>`;
+                    }
+                },
+                {
+                    data: 'eliminaData',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return `<button class='action-button-mobile elimina-btn-mobile' 
+                                data-id='${data.idVisita}' 
+                                style='font-size:12px;background:#c0392b;'>Elimina</button>`;
+                    }
+                },
+                {
+                    data: 'badgeData',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return `<button class='action-button-mobile assegna-badge-btn-mobile' 
+                                data-id='${data.idVisita}' 
+                                style='font-size:12px;background:#27ae60;'>Badge</button>`;
+                    }
+                }
+            ],
+            lengthChange: false,
+            pageLength: 4,
+            autoWidth: false,
+            responsive: true,
+            searching: true,
+            info: true,
+            language: {
+                paginate: { next: '>', previous: '<' },
+                emptyTable: 'Nessun dato presente nella tabella',
+                zeroRecords: 'Nessun risultato trovato',
+                info: 'Pagina _PAGE_ di _PAGES_',
+                infoEmpty: 'Nessun elemento disponibile',
+                search: 'Cerca:',
+            }
+        });    } catch (err) {
+        console.error('Errore nel caricamento visite odierne mobile:', err);
+        const tbody = document.querySelector(tableId + ' tbody');
+        if (tbody) tbody.innerHTML = '<tr><td colspan="5">Errore nel caricamento</td></tr>';
+    }
+};
+
+// Mobile Visit Event Handlers
+$(document).on('click', '.dettagli-visite-future-btn-mobile', function() {
+    const dataInizio = $(this).data('datainizio');
+    const oraInizio = $(this).data('orainizio');
+    const motivo = $(this).data('motivo');
+    const responsabile = $(this).data('responsabile');
+    const azienda = $(this).data('azienda');
+    const flagDPI = $(this).data('flagdpi');
+    const materiale = $(this).data('materiale');
+    const automezzo = $(this).data('automezzo');
+    
+    // Usa il modal generico per dettagli
+    let modalContent = `
+        <div style="margin-bottom:10px;"><b>Data inizio:</b> ${dataInizio}</div>
+        <div style="margin-bottom:10px;"><b>Ora inizio:</b> ${oraInizio}</div>
+        <div style="margin-bottom:10px;"><b>Motivo:</b> ${motivo}</div>
+        <div style="margin-bottom:10px;"><b>Responsabile:</b> ${responsabile}</div>
+        <div style="margin-bottom:10px;"><b>Azienda:</b> ${azienda}</div>
+        <div style="margin-bottom:10px;"><b>Flag DPI:</b> ${flagDPI}</div>
+        <div style="margin-bottom:10px;"><b>Materiale informatico:</b> ${materiale}</div>
+        <div style="margin-bottom:10px;"><b>Accesso con Automezzo:</b> ${automezzo}</div>
+    `;
+    
+    // Crea o usa il modal generico
+    let modal = document.getElementById('dettagli-modal-mobile');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'dettagli-modal-mobile';
+        modal.className = 'modal';
+        modal.style = 'display:flex;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;';
+        document.body.appendChild(modal);
+    }
+    
+    modal.innerHTML = `
+        <div class='modal-content' style='background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;'>
+            <span id='close-modal-mobile' style='position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;'>&times;</span>
+            <h3>Dettagli Visita Futura</h3>
+            ${modalContent}
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+});
+
+$(document).on('click', '.dettagli-visite-odierne-btn-mobile', function() {
+    const dataInizio = $(this).data('datainizio');
+    const oraInizio = $(this).data('orainizio');
+    const dataFine = $(this).data('datafine');
+    const oraFine = $(this).data('orafine');
+    const motivo = $(this).data('motivo');
+    const responsabile = $(this).data('responsabile');
+    const azienda = $(this).data('azienda');
+    const flagDPI = $(this).data('flagdpi');
+    const materiale = $(this).data('materiale');
+    const automezzo = $(this).data('automezzo');
+    
+    let modalContent = `
+        <div style="margin-bottom:10px;"><b>Data inizio:</b> ${dataInizio}</div>
+        <div style="margin-bottom:10px;"><b>Ora inizio:</b> ${oraInizio}</div>
+        <div style="margin-bottom:10px;"><b>Data fine:</b> ${dataFine}</div>
+        <div style="margin-bottom:10px;"><b>Ora fine:</b> ${oraFine}</div>
+        <div style="margin-bottom:10px;"><b>Motivo:</b> ${motivo}</div>
+        <div style="margin-bottom:10px;"><b>Responsabile:</b> ${responsabile}</div>
+        <div style="margin-bottom:10px;"><b>Azienda:</b> ${azienda}</div>
+        <div style="margin-bottom:10px;"><b>Flag DPI:</b> ${flagDPI}</div>
+        <div style="margin-bottom:10px;"><b>Materiale informatico:</b> ${materiale}</div>
+        <div style="margin-bottom:10px;"><b>Accesso con Automezzo:</b> ${automezzo}</div>
+    `;
+    
+    // Crea o usa il modal generico
+    let modal = document.getElementById('dettagli-modal-mobile');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'dettagli-modal-mobile';
+        modal.className = 'modal';
+        modal.style = 'display:flex;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;';
+        document.body.appendChild(modal);
+    }
+    
+    modal.innerHTML = `
+        <div class='modal-content' style='background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;'>
+            <span id='close-modal-mobile' style='position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;'>&times;</span>
+            <h3>Dettagli Visita Odierna</h3>
+            ${modalContent}
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+});
+
+$(document).on('click', '.elimina-future-btn-mobile, .elimina-btn-mobile', function() {
+    const visitId = $(this).data('id');
+    if (confirm('Sei sicuro di voler eliminare questa visita?')) {
+        deleteVisit(visitId);
+    }
+});
+
+$(document).on('click', '.assegna-badge-btn-mobile', function() {
+    const visitId = $(this).data('id');
+    // TODO: Implement badge assignment functionality
+    alert('Funzionalità assegnazione badge da implementare per visita ID: ' + visitId);
+});
+
+// Modal close handlers for mobile visit modals
+$(document).on('click', '#close-dettagli-visite-future-modal-mobile', function() {
+    $('#dettagli-visite-future-modal-mobile').hide();
+});
+
+$(document).on('click', '#close-dettagli-visite-odierne-modal-mobile', function() {
+    $('#dettagli-visite-odierne-modal-mobile').hide();
+});
+
+$(document).on('click', '#dettagli-visite-future-modal-mobile, #dettagli-visite-odierne-modal-mobile', function(e) {
+    if (e.target === this) {
+        $(this).hide();
+    }
+});
+
+// Helper function for visit deletion
+async function deleteVisit(visitId) {
+    await refreshJwt();
+    const accessToken = localStorage.getItem("accessToken");
+    
+    try {
+        const response = await fetch(`http://localhost:8080/visit/${visitId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
+            }
+        });
+        
+        if (response.ok) {
+            alert('Visita eliminata con successo');
+            // Refresh the current table
+            const currentSection = $('.mobile-section:visible').attr('id');
+            if (currentSection === 'visualizza-elenco-visitatori-futuri-mobile-section') {
+                createVisiteFutureMobileDataTable();
+            } else if (currentSection === 'visualizza-elenco-visitatori-oggi-mobile-section') {
+                createVisiteOdierneMobileDataTable();
+            }
+        } else {
+            throw new Error('Errore nell\'eliminazione della visita');
+        }
+    } catch (err) {
+        console.error('Errore eliminazione visita:', err);
+        alert('Errore nell\'eliminazione della visita');
+    }
+}

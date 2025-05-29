@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="/css/miniDatatableHome.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
-    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">    <title>Dashboard Receptionist</title>
 </head>
 
 <body>
     <div class="dashboard">
+        <!-- ============================ MODAL DI ELIMINAZIONE ============================ -->
         <div id="delete-modal">
             <div class="modal-content">
                 <div id="delete-modal-message">Sei sicuro di voler eliminare questa visita?</div>
@@ -22,14 +22,16 @@
                         style="background:#c0392b;color:#fff;">Elimina</button>
                     <button class="action-button" id="delete-cancel">Annulla</button>
                 </div>
-            </div>
-        </div>
+            </div>        </div>
+        
         <div class="dashboardDesktop">
+            <!-- ============================ SIDEBAR ============================ -->
             <aside class="sidebar">
-                <img class="logo" src="/assets/logo.png" alt="Logo">
-                <nav class="menu">
+                <img class="logo" src="/assets/logo.png" alt="Logo">                <nav class="menu">
+                    <!-- Home -->
                     <div class="menu-item" id="home">Home</div>
 
+                    <!-- Menu Visite -->
                     <div class="menu-item" id="visualizza">
                         <div class="menu-content">
                             Visite <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
@@ -38,9 +40,9 @@
                         <div class="submenu">
                             <div class="submenu-item" id="visualizza-elenco-visite-odierne">Elenco odierne</div>
                             <div class="submenu-item" id="visualizza-elenco-visite-future">Elenco future</div>
-                        </div>
-                    </div>
+                        </div>                    </div>
 
+                    <!-- Menu Storico -->
                     <div class="menu-item" id="storico">
                         <div class="menu-content">
                             Storico <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
@@ -51,9 +53,9 @@
                             <div class="submenu-item" id="storico-timbrature-visitatori">Storico timbrature visitatori</div>
                             <div class="submenu-item" id="storico-timbrature-dipendenti">Storico timbrature dipendenti</div>
                             <div class="submenu-item" id="storico-timbrature-mensa">Storico timbrature mensa</div>
-                        </div>
-                    </div>
+                        </div>                    </div>
 
+                    <!-- Menu Persone -->
                     <div class="menu-item" id="visitatori">
                         <div class="menu-content">
                             Persone <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
@@ -62,24 +64,27 @@
                         <div class="submenu">
                             <div class="submenu-item" id="visitatori-crea-visite">Crea visite</div>
                             <div class="submenu-item" id="visitatori-crea-persone">Crea persone</div>
-                            <div class="submenu-item" id="visitatori-crea-utenti">Elenco presenti</div>
+                            <div class="submenu-item" id="visitatori-elenco-presenti">Elenco presenti</div>
                             <div class="submenu-item" id="visualizza-elenco-persone">Elenco persone</div>
                             <div class="submenu-item" id="visualizza-elenco-tel-sm">Elenco telefonico dipendenti</div>
                         </div>
-                    </div>
+                    </div>                
                 </nav>
+
+                <!-- User Info -->
                 <div class="user-box">
                     <div class="avatar-bg"></div>
                     <img class="avatar" src="/assets/utente.png" alt="User Avatar">
                     <div class="user-name">Nome e Cognome</div>
                     <button class="action-button">Logout</button>
-                </div>
-            </aside>
+                </div>            </aside>
 
-            <main class="content-area">
-                <section id="home-section" class="section home active">
-                    <div class="container">
+            <!-- ============================ AREA CONTENUTI PRINCIPALI ============================ -->            <main class="content-area">
+                
+                <!-- ============================== SEZIONE HOME ============================== -->
+                <section id="home-section" class="section home active">                    <div class="container">
 
+                        <!-- Top section con statistiche -->
                         <div class="top-section">
                             <div class="top-left">
                                 <h1>Home</h1>
@@ -103,9 +108,10 @@
                                     <button class="action-button mini-link" type="button"
                                         onclick="showSection('visitatori-opzione1-section')">Vai</button>
                                 </div>
-                            </div>
+                            </div>                        
                         </div>
 
+                        <!-- Bottom section con tabelle riassuntive -->
                         <div class="bottom-section">
                             <div class="box">
                                 <h3>Visitatori odierni</h3>
@@ -148,9 +154,11 @@
                                     Futuri</button>
                             </div>
                         </div>
-                    </div>
-                </section>
-                    <!-- Modale Dettagli -->
+                    </div>                </section>                <!-- ============================== SEZIONI VISITE ============================== -->
+                
+                <!-- ============================ MODALS - DETTAGLI E MODIFICA VISITE ============================ -->
+                
+                <!-- Modale Dettagli -->
                     <div id="dettagli-modal" class="modal"
                         style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
                         <div class="modal-content"
@@ -203,28 +211,10 @@
                         </div>
                     </div>
                 </section>
-                <section id="visualizza-opzione2-section" class="section">
-                    <h2>Visualizza - Opzione 2</h2>
-                    <p>Contenuto della sezione Visualizza Opzione 2</p>
-                </section>
 
-                <section id="storico-opzione1-section" class="section">
-                    <h2>Storico - Opzione 1</h2>
-                    <p>Contenuto della sezione Storico Opzione 1</p>
-                </section>
-                <section id="storico-opzione2-section" class="section">
-                    <h2>Storico - Opzione 2</h2>
-                    <p>Contenuto della sezione Storico Opzione 2</p>
-                </section>
-                <section id="storico-timbrature-visi-section" class="section">
-                    <h2>Storico timbrature visi</h2>
-                    <div id="tabella-storico-timbrature-visi"></div>
-                </section>
-                <section id="storico-timbrature-dip-section" class="section">
-                    <h2>Storico timbrature dipendenti</h2>
-                    <div id="tabella-storico-timbrature-dip"></div>
-                </section>
-
+                <!-- ============================== SEZIONI PERSONE ============================== -->
+                
+                <!-- Crea Visite -->
                 <section id="visitatori-crea-visite-section" class="section centered">
                     <div class="visitatori-wrapper">
                         <h2>Prenota visita</h2>
@@ -291,10 +281,9 @@
                             </div>
 
                         </div>
-                    </div>
-                </section>
+                    </div>                </section>
 
-                <!-- Sezione creazione persone -->
+                <!-- Crea Persone -->
                 <section id="visitatori-crea-persone-section" class="section">
                     <h2>Crea Persone</h2>
 
@@ -430,25 +419,42 @@
 
                         <button type="submit" onclick="createPerson(event)">Invia</button>
                     </form>
-                </section>
-
-                <!-- Sezione creazione visite -->
+                </section>                <!-- Altre Funzioni di Creazione -->
                 <section id="visualizza-visite-section" class="section">
                     <h2>Crea una visita</h2>
                     <button class="action-button" id="stampa-visite-oggi">Stampa visite di oggi</button>
-                    <div id="tabella-visite"></div>
-                </section>
+                    <div id="tabella-visite"></div>                </section>
 
-                <section id="visualizza-presenti-section" class="section">
-                    <h2>Presenti</h2>
-                    <div id="indicatori-presenti"></div>
-                    <div id="tab-dip-presenti"></div>
-                    <div id="tab-vis-presenti"></div>
+                <!-- ============================== SEZIONI TABELLE E ELENCHI ============================== -->
+                  <!-- Elenco Presenti -->
+                <section id="visitatori-elenco-presenti-section" class="section">
+                    <div class="top-section">
+                            <div class="top-left">
+                                <h1>Presenti</h1>
+                            </div>
+                            <div class="top-right">                                
+                                <div class="big-box">
+                                    <div style="font-size:2.5rem;font-weight:bold;line-height:1;" id="total-presenti-desktop">0</div>
+                                    <div style="font-size:1rem;">Presenti totali</div>
+                                </div>
+
+                                <div class="small-box">
+                                    <div style="font-size:1.5rem;font-weight:bold;" id="dipendenti-count-desktop">0</div>
+                                    <div style="font-size:0.9rem;">Dipendenti</div>
+                                </div>
+                                <div class="small-box">
+                                    <div style="font-size:1.5rem;font-weight:bold;" id="visitatori-count-desktop">0</div>
+                                    <div style="font-size:0.9rem;">Visitatori</div>
+                                </div>
+                            </div>                        
+                        </div>
+                        <!-- Container per le tabelle dei presenti (verrà popolato dinamicamente) -->
+                        <div id="presenti-tables-container"></div>
                 </section>
 
                 <!-- Tabella Elenco Persone -->
                 <section id="visualizza-elenco-persone-section" class="section">
-                    <h2>Elenco dipendenti e visitatori</h2>
+                    <h2>Elenco persone</h2>
                     <table id="tabella-persone" class="display custom-table">
                         <thead>
                             <tr>
@@ -463,8 +469,9 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
-                    </table>
-                </section>                <!-- Tabella visite future -->
+                    </table>                </section>
+                
+                <!-- Elenco Visite Future -->
                 <section id="visualizza-elenco-visite-future-section" class="section">
                     <h2>Elenco visitatori futuri</h2>
                     <table id="tabella-visite-future" class="display custom-table">
@@ -482,9 +489,7 @@
                         </thead>
                         <tbody></tbody>
                     </table>
-                </section>
-
-                <!-- Modale Dettagli Visite Future -->
+                </section>                <!-- Modale Dettagli Visite Future -->
                 <div id="dettagli-visite-future-modal" class="modal"
                     style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
                     <div class="modal-content"
@@ -496,10 +501,10 @@
                         <div><b>Flag DPI:</b> <span id="modal-visite-future-flagdpi"></span></div>
                         <div><b>Materiale informatico:</b> <span id="modal-visite-future-materiale"></span></div>
                         <div><b>Accesso con Automezzo:</b> <span id="modal-visite-future-automezzo"></span></div>
-                    </div>
-                </div>
+                    </div>                </div>
 
-                <!-- Tabella visite di oggi -->                <section id="visualizza-elenco-visite-odierne-section" class="section">
+                <!-- Elenco Visite Odierne -->
+                <section id="visualizza-elenco-visite-odierne-section" class="section">
                     <h2>Elenco visitatori odierni</h2>
                     <table id="tabella-visite-odierne" class="display custom-table">                        <thead>
                             <tr>
@@ -532,22 +537,9 @@
                         <div><b>Accesso con Automezzo:</b> <span id="modal-visite-odierne-automezzo"></span></div>
                     </div>
                 </div>
-
-
-                <section id="visualizza-visite-suo-carico-section" class="section">
-                    <h2>Visite a suo carico</h2>
-                    <div id="tabella-visite-suo-carico"></div>
-                </section>
-                <section id="visualizza-presenti-suo-carico-section" class="section">
-                    <h2>Presenti a suo carico</h2>
-                    <div id="tabella-presenti-suo-carico"></div>
-                </section>
-                <section id="visualizza-futuri-suo-carico-section" class="section">
-                    <h2>Futuri a suo carico</h2>
-                    <div id="tabella-futuri-suo-carico"></div>
-                </section>
-
-
+                <!-- ============================== SEZIONI STORICO ============================== -->
+                
+                <!-- Storico Timbrature Visitatori -->
                 <section id="storico-timbrature-visitatori-section" class="section">
                     <h2>Storico timbrature dei visitatori</h2>
                     <table id="tabella-timbrature-visitatori" class="display custom-table">
@@ -563,9 +555,9 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
-                    </table>
-                </section>
+                    </table>                </section>
 
+                <!-- Storico Timbrature Dipendenti -->
                 <section id="storico-timbrature-dipendenti-section" class="section">
                     <h2>Storico timbrature dei dipendenti</h2>
                     <table id="tabella-timbrature-dipendenti" class="display custom-table">
@@ -573,7 +565,7 @@
                             <tr>
                                 <th>Nome</th>
                                 <th>Cognome</th>
-                                <th>Azienda</th>
+                                <th>Matricola</th>
                                 <th>Codice Badge</th>
                                 <th>Data Timbratura</th>
                                 <th>Ora Timbratura</th>
@@ -584,6 +576,7 @@
                     </table>
                 </section>
 
+                <!-- Storico Timbrature Mensa -->
                 <section id="storico-timbrature-mensa-section" class="section">
                     <h2>Storico timbrature della mensa</h2>
                     <table id="tabella-timbrature-mensa" class="display custom-table">
@@ -599,10 +592,9 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
-                    </table>
-                </section>
+                    </table>                </section>
 
-                <!-- Elenco telefonico dipendenti -->
+                <!-- Elenco Telefonico Dipendenti -->
                 <section id="visualizza-elenco-tel-sm-section" class="section">
                     <h2>Elenco telefonico sm</h2>
                     <table id="contactListTable" class="display custom-table">
@@ -616,14 +608,16 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
-                    </table>
-                </section>
+                    </table>                </section>
             </main>
 
         </div>
 
+        <!-- ============================ VERSIONE MOBILE ============================ -->
         <div class="dashboardMobile">
             <main class="mobile-content-area">
+                
+                <!-- ============================ MOBILE HOME SECTION ============================ -->
                 <section id="home-mobile-section" class="mobile-section active">
                     <div class="container-mobile">
                         <div class="header-section-mobile">
@@ -707,9 +701,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </div>                </section>
 
+                <!-- ============================== VERSIONE MOBILE ============================== -->
+                
+                <!-- ============================ MOBILE HOME SECTION ============================ -->
 
                 <section id="visualizza-mobile-section" class="mobile-section">
                     <h1>Visualizza</h1>
@@ -725,6 +721,8 @@
                     <h1>Visitatori</h1>
                     <p>Contenuto visitatori.</p>
                 </section>
+
+                <!-- ============================ MOBILE VISUALIZZA SECTIONS ============================ -->
 
                 <section id="visualizza-opzione1-mobile-section" class="mobile-section">
                     <div class="container-mobile">
@@ -750,51 +748,224 @@
                                 </table>
                             </div>
                         </div>
+                    </div>                </section>
+  <!-- Mobile Future Visitors Section -->
+                <section id="visualizza-elenco-visitatori-futuri-mobile-section" class="mobile-section">
+                    <div class="container-mobile">
+                        <div class="header-section-mobile">
+                            <div class="mobile-top-name">
+                                <h1>Visitatori futuri</h1>
+                            </div>
+                        </div>
+                        <div class="content-area-mobile">
+                            <div class="table-container-mobile">                                <table id="tabella-visite-future-mobile" class="display custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Cognome</th>
+                                            <th>Dettagli</th>
+                                            <th>Elimina</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Modals for Future Visits -->
+                    <div id="dettagli-visite-future-modal-mobile" class="modal" 
+                         style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                        <div class="modal-content" 
+                             style="background:#fff;padding:20px;border-radius:18px;min-width:90%;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                            <span id="close-dettagli-visite-future-modal-mobile" 
+                                  style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                            <h3>Dettagli Visita Futura</h3>
+                            <div><b>Azienda:</b> <span id="modal-visite-future-azienda-mobile"></span></div>
+                            <div><b>Flag DPI:</b> <span id="modal-visite-future-flagdpi-mobile"></span></div>
+                            <div><b>Materiale informatico:</b> <span id="modal-visite-future-materiale-mobile"></span></div>
+                            <div><b>Accesso con Automezzo:</b> <span id="modal-visite-future-automezzo-mobile"></span></div>
+                        </div>
                     </div>
                 </section>
-                <section id="visualizza-visite-mobile-section" class="mobile-section">
-                    <h1>Visite</h1>
-                    <p>Contenuto Visite.</p>
-                </section>
-                <section id="visualizza-presenti-mobile-section" class="mobile-section">
-                    <h1>Presenti</h1>
-                    <p>Contenuto Presenti.</p>
-                </section>
-                <section id="visualizza-elenco-visitatori-futuri-mobile-section" class="mobile-section">
-                    <h1>Elenco visitatori futuri</h1>
-                    <p>Contenuto Elenco visitatori futuri.</p>
-                </section>
+                
+                <!-- Mobile Today Visitors Section -->
                 <section id="visualizza-elenco-visitatori-oggi-mobile-section" class="mobile-section">
-                    <h1>Elenco visitatori odierni</h1>
-                    <p>Contenuto Elenco visitatori odierni.</p>
-                </section>
-                <section id="visualizza-visite-suo-carico-mobile-section" class="mobile-section">
-                    <h1>Visite a suo carico</h1>
-                    <p>Contenuto Visite a suo carico.</p>
-                </section>
-                <section id="visualizza-presenti-suo-carico-mobile-section" class="mobile-section">
-                    <h1>Presenti a suo carico</h1>
-                    <p>Contenuto Presenti a suo carico.</p>
-                </section>
-                <section id="visualizza-futuri-suo-carico-mobile-section" class="mobile-section">
-                    <h1>Futuri a suo carico</h1>
-                    <p>Contenuto Futuri a suo carico.</p>
-                </section>
-                <section id="visualizza-elenco-tel-sm-mobile-section" class="mobile-section">
-                    <h1>Elenco telefonico sm</h1>
-                    <p>Contenuto Elenco telefonico sm.</p>
+                    <div class="container-mobile">
+                        <div class="header-section-mobile">
+                            <div class="mobile-top-name">
+                                <h1>Visitatori odierni</h1>
+                            </div>
+                        </div>
+                        <div class="content-area-mobile">
+                            <div class="table-container-mobile">                                <table id="tabella-visite-odierne-mobile" class="display custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Cognome</th>
+                                            <th>Dettagli</th>
+                                            <th>Elimina</th>
+                                            <th>Badge</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                      <!-- Mobile Modals for Today's Visits -->
+                    <div id="dettagli-visite-odierne-modal-mobile" class="modal" 
+                         style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                        <div class="modal-content" 
+                             style="background:#fff;padding:20px;border-radius:18px;min-width:90%;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                            <span id="close-dettagli-visite-odierne-modal-mobile" 
+                                  style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                            <h3>Dettagli Visita Odierna</h3>
+                            <div><b>Azienda:</b> <span id="modal-visite-odierne-azienda-mobile"></span></div>
+                            <div><b>Flag DPI:</b> <span id="modal-visite-odierne-flagdpi-mobile"></span></div>
+                            <div><b>Materiale informatico:</b> <span id="modal-visite-odierne-materiale-mobile"></span></div>
+                            <div><b>Accesso con Automezzo:</b> <span id="modal-visite-odierne-automezzo-mobile"></span></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile Modify Modal -->
+                    <div id="modifica-modal-mobile" class="modal"
+                         style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                        <div class="modal-content"
+                             style="background:#fff;padding:20px;border-radius:18px;min-width:90%;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;overflow-y:auto;">
+                            <span id="close-modifica-modal-mobile"
+                                  style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                            <h3>Modifica Visita</h3>
+                            <form id="modifica-form-mobile" class="form-sezione-mobile">
+                                <input type="hidden" id="modifica-idVisita-mobile">
+                                <input type="hidden" id="modifica-idPersonaVisitatore-mobile">
+                                <input type="hidden" id="modifica-idResponsabile-mobile">
+                                
+                                <div class="input-group-mobile">
+                                    <label for="modifica-motivo-mobile">Motivo</label>
+                                    <input type="text" id="modifica-motivo-mobile" name="motivo" required>
+                                </div>
+                                <div class="input-group-mobile">
+                                    <label for="modifica-dataInizio-mobile">Data inizio</label>
+                                    <input type="date" id="modifica-dataInizio-mobile" name="dataInizio" required>
+                                </div>
+                                <div class="input-group-mobile">
+                                    <label for="modifica-oraInizio-mobile">Ora inizio</label>
+                                    <input type="time" id="modifica-oraInizio-mobile" name="oraInizio" required>
+                                </div>
+                                <div class="input-group-mobile">
+                                    <label for="modifica-dataFine-mobile">Data fine</label>
+                                    <input type="date" id="modifica-dataFine-mobile" name="dataFine" required>
+                                </div>
+                                <div class="input-group-mobile">
+                                    <label for="modifica-oraFine-mobile">Ora fine</label>
+                                    <input type="time" id="modifica-oraFine-mobile" name="oraFine" required>
+                                </div>
+                                <div class="button-container-mobile">
+                                    <button type="submit" class="action-button-mobile" style="width:100%;">Salva modifiche</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </section>
                 
-<!-- Sostituzione della sezione storico-timbrature-visitatori-mobile-section -->
+                <!-- Mobile People Lists Sections -->
+                <section id="visualizza-elenco-persone-mobile-section" class="mobile-section">
+                    <div class="container-mobile">
+                        <div class="header-section-mobile">
+                            <div class="mobile-top-name">
+                                <h1>Elenco persone</h1>
+                            </div>
+                        </div>
+                        <div class="content-area-mobile">
+                            <div class="table-container-mobile">
+                                <table id="tabella-persone-mobile" class="display custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Cognome</th>
+                                            <th>Azienda</th>
+                                            <th>Città</th>
+                                            <th>Email</th>
+                                            <th>Cellulare</th>
+                                            <th>Luogo di Nascita</th>
+                                            <th>Data di nascita</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                  <!-- Mobile Present People Section -->
+                <section id="visitatori-elenco-presenti-mobile-section" class="mobile-section">
+                    <div class="container-mobile">
+                        <div class="header-section-mobile">
+                            <div class="mobile-top-name">
+                                <h1>Presenti</h1>
+                            </div>
+                        </div>
+                        <div class="content-area-mobile">
+                            <div id="indicatori-presenti-mobile"></div>
+                            <div id="tab-dip-presenti-mobile"></div>
+                            <div id="tab-vis-presenti-mobile"></div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Mobile Phone Directory Section -->
+                <section id="visualizza-elenco-tel-sm-mobile-section" class="mobile-section">
+                    <div class="container-mobile">
+                        <div class="header-section-mobile">
+                            <div class="mobile-top-name">
+                                <h1>Elenco telefonico</h1>
+                            </div>
+                        </div>
+                        <div class="content-area-mobile">
+                            <div class="table-container-mobile">
+                                <table id="contactListTable-mobile" class="display custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Cognome</th>
+                                            <th>Email</th>
+                                            <th>Telefono</th>
+                                            <th>Cellulare</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Mobile Create Visits Section -->
+                <section id="visualizza-visite-mobile-section" class="mobile-section">
+                    <div class="container-mobile">
+                        <div class="header-section-mobile">
+                            <div class="mobile-top-name">
+                                <h1>Crea una visita</h1>
+                            </div>
+                        </div>
+                        <div class="content-area-mobile">
+                            <button class="action-button-mobile" id="stampa-visite-oggi-mobile">Stampa visite di oggi</button>
+                            <div id="tabella-visite-mobile"></div>
+                        </div>
+                    </div>
+                </section>                <!-- ============================ MOBILE STORICO SECTIONS ============================ -->
+                  <!-- Mobile Visitor Timekeeping History -->
                 <section id="storico-timbrature-visitatori-mobile-section" class="mobile-section">
                     <div class="container-mobile">
                         <div class="header-section-mobile">
-                            <h1>Storico timbrature visite</h1>
+                            <div class="mobile-top-name">
+                                <h1>Storico timbrature visitatori</h1>
+                            </div>
                         </div>
                         <div class="content-area-mobile">
                             <div class="table-container-mobile">
-                                <table id="tabella-timbrature-visitatori-mobile"
-                                    class="display responsive-table-mobile">
+                                <table id="tabella-timbrature-visitatori-mobile" class="display custom-table">
                                     <thead>
                                         <tr>
                                             <th>Nome</th>
@@ -807,18 +978,17 @@
                             </div>
                         </div>
                     </div>
-                </section>
-
-                <!-- Sostituzione della sezione storico-timbrature-dipendenti-mobile-section -->
+                </section>                <!-- Mobile Employee Timekeeping History -->
                 <section id="storico-timbrature-dipendenti-mobile-section" class="mobile-section">
                     <div class="container-mobile">
                         <div class="header-section-mobile">
-                            <h1>Storico timbrature dipendenti</h1>
+                            <div class="mobile-top-name">
+                                <h1>Storico timbrature dipendenti</h1>
+                            </div>
                         </div>
                         <div class="content-area-mobile">
                             <div class="table-container-mobile">
-                                <table id="tabella-timbrature-dipendenti-mobile"
-                                    class="display responsive-table-mobile">
+                                <table id="tabella-timbrature-dipendenti-mobile" class="display custom-table">
                                     <thead>
                                         <tr>
                                             <th>Nome</th>
@@ -831,17 +1001,17 @@
                             </div>
                         </div>
                     </div>
-                </section>
-
-                <!-- Sostituzione della sezione storico-timbrature-mensa-mobile-section -->
+                </section>                <!-- Mobile Cafeteria Timekeeping History -->
                 <section id="storico-timbrature-mensa-mobile-section" class="mobile-section">
                     <div class="container-mobile">
                         <div class="header-section-mobile">
-                            <h1>Storico timbrature mensa</h1>
+                            <div class="mobile-top-name">
+                                <h1>Storico timbrature mensa</h1>
+                            </div>
                         </div>
                         <div class="content-area-mobile">
                             <div class="table-container-mobile">
-                                <table id="tabella-timbrature-mensa-mobile" class="display responsive-table-mobile">
+                                <table id="tabella-timbrature-mensa-mobile" class="display custom-table">
                                     <thead>
                                         <tr>
                                             <th>Nome</th>
@@ -855,6 +1025,10 @@
                         </div>
                     </div>
                 </section>
+                
+                <!-- ============================ MOBILE VISITORS SECTIONS ============================ -->
+                
+                <!-- Mobile New Visit Form -->
                 <section id="visitatori-nuova-visita-mobile-section" class="mobile-section">
                     <div class="visitatori-mobile-wrapper">
                         <h2>Prenota visita</h2>
@@ -921,37 +1095,233 @@
                             </div>
 
                         </div>
-                    </div>
-                </section>
+                    </div>                </section>
+                  <!-- Mobile Create User Form -->
                 <section id="visitatori-crea-utente-mobile-section" class="mobile-section">
-                    <h1>Crea utente</h1>
-                    <p>Contenuto Opzione 2.</p>
+                    <div class="visitatori-mobile-wrapper">
+                        <h2>Crea Persone</h2>
+                        <form id="personForm-mobile" class="form-sezione-mobile">
+                            <div class="input-group-mobile">
+                                <label for="nome-crea-persona-mobile">Nome:</label>
+                                <input type="text" name="nome" id="nome-crea-persona-mobile" placeholder="Nome" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="cognome-crea-persona-mobile">Cognome:</label>
+                                <input type="text" name="cognome" id="cognome-crea-persona-mobile" placeholder="Cognome" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="azienda-crea-persona-mobile">Azienda:</label>
+                                <input type="text" name="azienda" id="azienda-crea-persona-mobile" placeholder="Azienda" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="indirizzo-mobile">Indirizzo:</label>
+                                <input type="text" name="indirizzo" id="indirizzo-mobile" placeholder="Indirizzo" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="citta-mobile">Città:</label>
+                                <input type="text" name="citta" id="citta-mobile" placeholder="Città" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="provincia-mobile">Provincia:</label>
+                                <input type="text" name="provincia" id="provincia-mobile" placeholder="Provincia" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="nazione-mobile">Nazione:</label>
+                                <input type="text" name="nazione" id="nazione-mobile" placeholder="Nazione" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="telefono-mobile">Telefono:</label>
+                                <input type="tel" name="telefono" id="telefono-mobile" placeholder="Telefono" />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="cellulare-mobile">Cellulare:</label>
+                                <input type="tel" name="cellulare" id="cellulare-mobile" placeholder="Cellulare" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="fax-mobile">Fax:</label>
+                                <input type="text" name="fax" id="fax-mobile" placeholder="Fax" />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="pIva-mobile">Partita IVA:</label>
+                                <input type="text" name="pIva" id="pIva-mobile" placeholder="Partita IVA" />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="cf-mobile">Codice Fiscale:</label>
+                                <input type="text" name="cf" id="cf-mobile" placeholder="Codice Fiscale" />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="mail-crea-persona-mobile">Email:</label>
+                                <input type="email" name="mail" id="mail-crea-persona-mobile" placeholder="Email" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="dataAssunzione-mobile">Data Assunzione:</label>
+                                <input type="date" name="dataAssunzione" id="dataAssunzione-mobile" />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="luogoNascita-mobile">Luogo Nascita:</label>
+                                <input type="text" name="luogoNascita" id="luogoNascita-mobile" placeholder="Luogo di Nascita" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="dataNascita-mobile">Data Nascita:</label>
+                                <input type="date" name="dataNascita" id="dataNascita-mobile" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="tipoDocumento-mobile">Tipo Documento:</label>
+                                <select name="tipoDocumento" id="tipoDocumento-mobile" required>
+                                    <option value="C.I.">Carta d'identità</option>
+                                    <option value="PATENTE">Patente</option>
+                                    <option value="PASSAPORTO">Passaporto</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="numeroDocumento-mobile">Numero Documento:</label>
+                                <input type="text" name="numeroDocumento" id="numeroDocumento-mobile" placeholder="Numero Documento" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="dataScadenzaDoc-mobile">Data Scadenza Documento:</label>
+                                <input type="date" name="dataScadenzaDoc" id="dataScadenzaDoc-mobile" required />
+                            </div>
+                            
+                            <div class="checkbox-row-mobile">
+                                <input type="checkbox" name="duvri" id="duvri-mobile" />
+                                <label for="duvri-mobile">DUVRI:</label>
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="numCentriCosto-mobile">Numero Centri Costo:</label>
+                                <input type="number" name="numCentriCosto" id="numCentriCosto-mobile" placeholder="Numero Centri Costo" />
+                            </div>
+                            
+                            <div class="checkbox-row-mobile">
+                                <input type="checkbox" name="flagDocPrivacy" id="flagDocPrivacy-mobile" required />
+                                <label for="flagDocPrivacy-mobile">Flag Doc Privacy:</label>
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="dataConsegnaDocPrivacy-mobile">Data Consegna Doc Privacy:</label>
+                                <input type="date" name="dataConsegnaDocPrivacy" id="dataConsegnaDocPrivacy-mobile" required />
+                            </div>
+                            
+                            <div class="input-group-mobile">
+                                <label for="idRuolo-mobile">Ruolo:</label>
+                                <select name="idRuolo" id="idRuolo-mobile">
+                                    <option>Dipendente</option>
+                                    <option value="4">Visitatore</option>
+                                    <option value="5">Manutenzione</option>
+                                </select>
+                            </div>
+                            
+                            <div class="button-container-mobile">
+                                <button type="submit" class="action-button-mobile" onclick="createPerson(event)">Invia</button>
+                            </div>
+                        </form>
+                    </div>
                 </section>
             </main>
 
+            <!-- ============================ MOBILE NAVIGATION ============================ -->
             <nav class="menuM">
                 <div class="menu-item-mobile" data-target="home-mobile-section">
                     <img class="iconM" src="/assets/home_black_icon.png" alt="Home">
                     <div class="labelM">Home</div>
-                </div>
-                <div class="menu-item-mobile" data-target="visualizza-mobile-section">
-                    <img class="iconM" src="/assets/calendar_black_icon.png" alt="Visualizza">
-                    <div class="labelM">Visualizza</div>
+                </div>                <div class="menu-item-mobile" data-target="visualizza-mobile-section">
+                    <img class="iconM" src="/assets/calendar_black_icon.png" alt="Visite">
+                    <div class="labelM">Visite</div>
                 </div>
                 <div class="menu-item-mobile" data-target="storico-mobile-section">
                     <img class="iconM" src="/assets/archive_black_icon.png" alt="Storico">
                     <div class="labelM">Storico</div>
                 </div>
                 <div class="menu-item-mobile" data-target="visitatori-mobile-section">
-                    <img class="iconM" src="/assets/users_black_icon.png" alt="Visitatori">
-                    <div class="labelM">Visitatori</div>
-                </div>
-            </nav>
+                    <img class="iconM" src="/assets/users_black_icon.png" alt="Persone">
+                    <div class="labelM">Persone</div>
+                </div></nav>
 
-            <div id="submenu-container" class="submenuM"></div>
+            <!-- ============================ MOBILE MODALS FOR STORICO ============================ -->
+            
+            <!-- Mobile Modal for Visitor Timekeeping Details -->
+            <div id="dettagli-timbrature-visitatori-modal-mobile" class="modal" 
+                 style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                <div class="modal-content" 
+                     style="background:#fff;padding:20px;border-radius:18px;min-width:90%;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                    <span id="close-dettagli-timbrature-visitatori-modal-mobile" 
+                          style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                    <h3>Dettagli Timbratura Visitatore</h3>
+                    <div><b>Nome:</b> <span id="modal-visitatori-nome-mobile"></span></div>
+                    <div><b>Cognome:</b> <span id="modal-visitatori-cognome-mobile"></span></div>
+                    <div><b>Azienda:</b> <span id="modal-visitatori-azienda-mobile"></span></div>
+                    <div><b>Codice Badge:</b> <span id="modal-visitatori-badge-mobile"></span></div>
+                    <div><b>Data Timbratura:</b> <span id="modal-visitatori-data-mobile"></span></div>
+                    <div><b>Ora Timbratura:</b> <span id="modal-visitatori-ora-mobile"></span></div>
+                    <div><b>Descrizione:</b> <span id="modal-visitatori-descrizione-mobile"></span></div>
+                </div>
+            </div>
+
+            <!-- Mobile Modal for Employee Timekeeping Details -->
+            <div id="dettagli-timbrature-dipendenti-modal-mobile" class="modal" 
+                 style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                <div class="modal-content" 
+                     style="background:#fff;padding:20px;border-radius:18px;min-width:90%;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                    <span id="close-dettagli-timbrature-dipendenti-modal-mobile" 
+                          style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                    <h3>Dettagli Timbratura Dipendente</h3>
+                    <div><b>Nome:</b> <span id="modal-dipendenti-nome-mobile"></span></div>
+                    <div><b>Cognome:</b> <span id="modal-dipendenti-cognome-mobile"></span></div>
+                    <div><b>Matricola:</b> <span id="modal-dipendenti-matricola-mobile"></span></div>
+                    <div><b>Codice Badge:</b> <span id="modal-dipendenti-badge-mobile"></span></div>
+                    <div><b>Data Timbratura:</b> <span id="modal-dipendenti-data-mobile"></span></div>
+                    <div><b>Ora Timbratura:</b> <span id="modal-dipendenti-ora-mobile"></span></div>
+                    <div><b>Descrizione:</b> <span id="modal-dipendenti-descrizione-mobile"></span></div>
+                </div>
+            </div>
+
+            <!-- Mobile Modal for Cafeteria Timekeeping Details -->
+            <div id="dettagli-timbrature-mensa-modal-mobile" class="modal" 
+                 style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.4);align-items:center;justify-content:center;">
+                <div class="modal-content" 
+                     style="background:#fff;padding:20px;border-radius:18px;min-width:90%;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
+                    <span id="close-dettagli-timbrature-mensa-modal-mobile" 
+                          style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                    <h3>Dettagli Timbratura Mensa</h3>
+                    <div><b>Nome:</b> <span id="modal-mensa-nome-mobile"></span></div>
+                    <div><b>Cognome:</b> <span id="modal-mensa-cognome-mobile"></span></div>
+                    <div><b>Azienda:</b> <span id="modal-mensa-azienda-mobile"></span></div>
+                    <div><b>Codice Badge:</b> <span id="modal-mensa-badge-mobile"></span></div>
+                    <div><b>Data Timbratura:</b> <span id="modal-mensa-data-mobile"></span></div>
+                    <div><b>Ora Timbratura:</b> <span id="modal-mensa-ora-mobile"></span></div>
+                    <div><b>Descrizione:</b> <span id="modal-mensa-descrizione-mobile"></span></div>
+                </div>
+            </div>
+
+            <!-- Mobile Submenu and Overlay -->
+            <div id="submenu-container" class="submenuM">
+
+            </div>
             <div id="overlay"></div>
 
         </div>
+        <!-- ============================ FINE VERSIONE MOBILE ============================ -->
+
+    </div>
+    <!-- ============================ FINE DASHBOARD ============================ -->
 
 </body>
 <script src="/script/dataTables.js" type="module"></script>

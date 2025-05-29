@@ -189,12 +189,13 @@ function createPerson(event) {
         "idRuolo": idRuolo
     }
 
-    console.log(requestBody)
+    console.log(requestBody);
     createPersonFetch(requestBody);
 }
 
 async function createPersonFetch(requestBody) {
     await refreshJwt();
+    console.log(requestBody);
     const url = "http://localhost:8080/people";
     const accessToken = localStorage.getItem("accessToken");
 
@@ -212,7 +213,7 @@ async function createPersonFetch(requestBody) {
             throw new Error(`Errore nel recupero dei dati: ${response.status}`);
         }
 
-        alert("Persona salvata con successo! (forse)")
+        alert("Persona salvata con successo! (forse)");
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
     }

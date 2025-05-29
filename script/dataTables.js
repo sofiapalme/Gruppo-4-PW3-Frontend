@@ -203,7 +203,10 @@ async function createPersonFetch(requestBody) {
 };
 
 const visiteFutureNavList = document.getElementById("visualizza-elenco-visite-future");
-visiteFutureNavList.addEventListener("click", createVisiteFutureDataTable);
+
+if (visiteFutureNavList) {
+    visiteFutureNavList.addEventListener("click", createVisiteFutureDataTable);
+}
 
 async function createVisiteFutureDataTable() {
     await refreshJwt();
@@ -240,22 +243,75 @@ async function createVisiteFutureDataTable() {
                 futureVisits.push(visit)
             }
         });
-        console.log(futureVisits)
+
+        console.log('Future visits:', futureVisits);
+
+        const isAdmin = window.location.href.includes('dashboardAdmin');
 
         contactListTableInstance = new DataTable("#tabella-visite-future", {
             data: futureVisits,
             destroy: true,
-            columns: [
+            columns: isAdmin ? [
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.personaVisitatore?.nome || ''} ${data.personaVisitatore?.cognome || ''}`;
+                    }
+                },
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.oraInizio || ''} - ${data.oraFine || ''}`;
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data) {
+                        const actions = [];
+                        if (data.flagDPI) actions.push('DPI richiesto');
+                        if (data.materialeInformatico?.id) actions.push('Mat. informatico');
+                        if (data.flagAccessoConAutomezzo) actions.push('Automezzo');
+                        return `<button class="action-button dettagli-btn" data-azienda="${data.personaVisitatore?.azienda || ''}" 
+                                data-motivo="${data.motivo || ''}" data-responsabile="${data.responsabile?.nome} ${data.responsabile?.cognome}">
+                                Dettagli${actions.length ? ` (${actions.join(', ')})` : ''}</button>`;
+                    }
+                }
+            ] : [
                 { data: "dataInizio" },
                 { data: "dataFine" },
                 { data: "oraInizio" },
                 { data: "oraFine" },
                 { data: "motivo" },
-                { data: "personaVisitatore.nome" },
-                { data: "responsabile.nome" },
-                { data: "flagDPI" },
-                { data: "materialeInformatico.id" },
-                { data: "flagAccessoConAutomezzo" }
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.personaVisitatore?.nome || ''} ${data.personaVisitatore?.cognome || ''}`;
+                    }
+                },
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.responsabile?.nome || ''} ${data.responsabile?.cognome || ''}`;
+                    }
+                },
+                { 
+                    data: "flagDPI",
+                    render: function(data) {
+                        return data ? 'Sì' : 'No';
+                    }
+                },
+                { 
+                    data: "materialeInformatico",
+                    render: function(data) {
+                        return data?.descrizione || 'Nessuno';
+                    }
+                },
+                { 
+                    data: "flagAccessoConAutomezzo",
+                    render: function(data) {
+                        return data ? 'Sì' : 'No';
+                    }
+                }
             ],
             lengthChange: false,
             pageLength: 8,
@@ -274,13 +330,41 @@ async function createVisiteFutureDataTable() {
                 zeroRecords: "Nessun risultato trovato"
             }
         });
+
+        // Add click handler for details button
+        if (isAdmin) {
+            $(document).on('click', '.dettagli-btn', function(e) {
+                e.preventDefault();
+                const azienda = $(this).data('azienda');
+                const motivo = $(this).data('motivo');
+                const responsabile = $(this).data('responsabile');
+                
+                // Show details in a modal or other UI element
+                alert(`Dettagli visita:\nAzienda: ${azienda}\nMotivo: ${motivo}\nResponsabile: ${responsabile}`);
+            });
+        }
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
+        const table = document.querySelector("#tabella-visite-future");
+        if (table) {
+            const tbody = table.querySelector("tbody");
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="12">Errore nel caricamento dei dati</td></tr>';
+            }
+        }
     }
 }
 
 const visiteOrdierneNavList = document.getElementById("visualizza-elenco-visite-odierne");
-visiteOrdierneNavList.addEventListener("click", createVisiteOdierneDataTable);
+const adminVisiteOdierneNavList = document.getElementById("admin-visite-odierne");
+
+// Add event listeners for both reception and admin dashboard
+if (visiteOrdierneNavList) {
+    visiteOrdierneNavList.addEventListener("click", createVisiteOdierneDataTable);
+}
+if (adminVisiteOdierneNavList) {
+    adminVisiteOdierneNavList.addEventListener("click", createVisiteOdierneDataTable);
+}
 
 async function createVisiteOdierneDataTable() {
     await refreshJwt();
@@ -307,32 +391,98 @@ async function createVisiteOdierneDataTable() {
             contactListTableInstance = null;
         }
 
-        const todayVisits = new Array;
-        const today = getIsoDate(new Date);
+        const todayVisits = [];
+        const today = getIsoDate(new Date());
 
         data.forEach(visit => {
             if (visit.dataInizio === today) {
                 visit.dataInizio = convertToItalianDate(visit.dataInizio);
                 visit.dataFine = convertToItalianDate(visit.dataFine);
-                todayVisits.push(visit)
+                todayVisits.push(visit);
             }
         });
-        console.log(todayVisits)
+
+        console.log('Today visits:', todayVisits);
+
+        // Get the current page URL to determine whether we're in admin or reception dashboard
+        const isAdmin = window.location.href.includes('dashboardAdmin');
 
         contactListTableInstance = new DataTable("#tabella-visite-odierne", {
             data: todayVisits,
             destroy: true,
-            columns: [
+            columns: isAdmin ? [
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.personaVisitatore?.nome || ''} ${data.personaVisitatore?.cognome || ''}`;
+                    }
+                },
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.oraInizio || ''} - ${data.oraFine || ''}`;
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data) {
+                        const now = new Date();
+                        const startTime = new Date(`${data.dataInizio} ${data.oraInizio}`);
+                        const endTime = new Date(`${data.dataFine} ${data.oraFine}`);
+                        
+                        if (now < startTime) return 'In attesa';
+                        if (now > endTime) return 'Completata';
+                        return 'In corso';
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data) {
+                        const actions = [];
+                        if (data.flagDPI) actions.push('DPI richiesto');
+                        if (data.materialeInformatico?.id) actions.push('Mat. informatico');
+                        if (data.flagAccessoConAutomezzo) actions.push('Automezzo');
+                        return `<button class="action-button dettagli-btn" data-azienda="${data.personaVisitatore?.azienda || ''}" 
+                                data-motivo="${data.motivo || ''}" data-responsabile="${data.responsabile?.nome} ${data.responsabile?.cognome}">
+                                Dettagli${actions.length ? ` (${actions.join(', ')})` : ''}</button>`;
+                    }
+                }
+            ] : [
                 { data: "dataInizio" },
                 { data: "dataFine" },
                 { data: "oraInizio" },
                 { data: "oraFine" },
                 { data: "motivo" },
-                { data: "personaVisitatore.nome" },
-                { data: "responsabile.nome" },
-                { data: "flagDPI" },
-                { data: "materialeInformatico.id" },
-                { data: "flagAccessoConAutomezzo" }
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.personaVisitatore?.nome || ''} ${data.personaVisitatore?.cognome || ''}`;
+                    }
+                },
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.responsabile?.nome || ''} ${data.responsabile?.cognome || ''}`;
+                    }
+                },
+                { 
+                    data: "flagDPI",
+                    render: function(data) {
+                        return data ? 'Sì' : 'No';
+                    }
+                },
+                { 
+                    data: "materialeInformatico",
+                    render: function(data) {
+                        return data?.descrizione || 'Nessuno';
+                    }
+                },
+                { 
+                    data: "flagAccessoConAutomezzo",
+                    render: function(data) {
+                        return data ? 'Sì' : 'No';
+                    }
+                }
             ],
             lengthChange: false,
             pageLength: 8,
@@ -352,8 +502,29 @@ async function createVisiteOdierneDataTable() {
             }
         });
 
+        // Add click handler for details button
+        if (isAdmin) {
+            $(document).on('click', '.dettagli-btn', function(e) {
+                e.preventDefault();
+                const azienda = $(this).data('azienda');
+                const motivo = $(this).data('motivo');
+                const responsabile = $(this).data('responsabile');
+                
+                // Show details in a modal or other UI element
+                // This should be implemented based on your UI requirements
+                alert(`Dettagli visita:\nAzienda: ${azienda}\nMotivo: ${motivo}\nResponsabile: ${responsabile}`);
+            });
+        }
+
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
+        const table = document.querySelector("#tabella-visite-odierne");
+        if (table) {
+            const tbody = table.querySelector("tbody");
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="12">Errore nel caricamento dei dati</td></tr>';
+            }
+        }
     }
 }
 

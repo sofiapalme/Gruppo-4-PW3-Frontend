@@ -1,5 +1,3 @@
-import { refreshJwt } from "./jwtManager"
-
 let contactListTableInstance = null;
 
 function getIsoDate(inputDate) {
@@ -107,7 +105,9 @@ async function createPersonDataTable() {
     }
 }
 
-function createPerson(event) {
+async function createPerson(event) {
+    console.log("Crea persona");
+    debugger;
     event.preventDefault();
     const nome = String(document.getElementById("nome-crea-persona").value);
     const cognome = String(document.getElementById("cognome-crea-persona").value);
@@ -119,10 +119,10 @@ function createPerson(event) {
     const telefono = String(document.getElementById("telefono").value);
     const cellulare = String(document.getElementById("cellulare").value);
     let fax = String(document.getElementById("fax").value);
-    fax = fax === "" ? null : value;
+    fax = fax === "" ? null : fax;
 
     let pIva = String(document.getElementById("pIva").value);
-    pIva = pIva === "" ? null : value;
+    pIva = pIva === "" ? null : pIva;
 
     const cf = String(document.getElementById("cf").value);
     const mail = String(document.getElementById("mail-crea-persona").value);

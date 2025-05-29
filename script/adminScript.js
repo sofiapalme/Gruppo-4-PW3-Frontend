@@ -60,7 +60,7 @@ async function createUserDataTable() {
                     data: null,
                     render: function (data, type, row) {
                         return `
-                            <form action="/your-target-url" method="POST">
+                            <form action="/FAKE/ADMINSCRIPT" method="POST">
                                 <input type="hidden" name="userId" value="${row.id}" />
                                 <button type="submit" class="edit-btn">Modifica</button>
                             </form>

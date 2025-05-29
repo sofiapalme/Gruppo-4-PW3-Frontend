@@ -1,5 +1,3 @@
-import { refreshJwt } from "./jwtManager"
-
 let contactListTableInstance = null;
 
 function getIsoDate(inputDate) {
@@ -21,23 +19,7 @@ function convertToItalianDate(isoDate) {
     return `${day}/${month}/${year}`;
 }
 
-// Funzione globale per formattare le ore
-function formatTime(timeString) {
-    if (!timeString) return '';
-    // Se è già nel formato HH:MM, restituiscilo così com'è
-    if (timeString.match(/^\d{2}:\d{2}$/)) return timeString;
-    // Se è nel formato HH:MM:SS, rimuovi i secondi
-    if (timeString.match(/^\d{2}:\d{2}:\d{2}$/)) {
-        return timeString.substring(0, 5);
-    }
-    // Se è nel formato HH:MM:SS.sss (con millisecondi), rimuovi secondi e millisecondi
-    if (timeString.match(/^\d{2}:\d{2}:\d{2}\.\d+$/)) {
-        return timeString.substring(0, 5);
-    }
-    return timeString;
-}
-
-const visualizzaPersoneNavElement = document.getElementById("visualizza-elenco-persone");
+const visualizzaPersoneNavElement = document.getElementById("visualizza-elenco-visite-odierne");
 visualizzaPersoneNavElement.addEventListener("click", createPersonDataTable);
 
 async function createPersonDataTable() {
@@ -107,7 +89,7 @@ async function createPersonDataTable() {
     }
 }
 
-function createPerson(event) {
+async function createPerson(event) {
     event.preventDefault();
     const nome = String(document.getElementById("nome-crea-persona").value);
     const cognome = String(document.getElementById("cognome-crea-persona").value);
@@ -119,10 +101,10 @@ function createPerson(event) {
     const telefono = String(document.getElementById("telefono").value);
     const cellulare = String(document.getElementById("cellulare").value);
     let fax = String(document.getElementById("fax").value);
-    fax = fax === "" ? null : value;
+    fax = fax === "" ? null : fax;
 
     let pIva = String(document.getElementById("pIva").value);
-    pIva = pIva === "" ? null : value;
+    pIva = pIva === "" ? null : pIva;
 
     const cf = String(document.getElementById("cf").value);
     const mail = String(document.getElementById("mail-crea-persona").value);
@@ -140,7 +122,7 @@ function createPerson(event) {
     const dataScadenzaDoc = document.getElementById("dataScadenzaDoc").value; // date string
     const duvri = String(document.getElementById("duvri").checked);
     let numCentriCosto = Number(document.getElementById("numCentriCosto").value);
-    numCentriCosto = numCentriCosto === 0 ? null : value;
+    numCentriCosto = numCentriCosto === 0 ? null : numCentriCosto;
 
     const flagDocPrivacy = document.getElementById("flagDocPrivacy").checked;
     const dataConsegnaDocPrivacy = document.getElementById("dataConsegnaDocPrivacy").value; // date string
@@ -212,15 +194,22 @@ async function createPersonFetch(requestBody) {
         if (!response.ok) {
             throw new Error(`Errore nel recupero dei dati: ${response.status}`);
         }
+<<<<<<< HEAD:script/dataTables.js
 
         alert("Persona salvata con successo! (forse)");
+=======
+        window.location.reload();
+>>>>>>> b13a8871136efe2c7de082ace1a41199fbd3e372:script/customDataTables.js
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
     }
 };
 
 const visiteFutureNavList = document.getElementById("visualizza-elenco-visite-future");
-visiteFutureNavList.addEventListener("click", createVisiteFutureDataTable);
+
+if (visiteFutureNavList) {
+    visiteFutureNavList.addEventListener("click", createVisiteFutureDataTable);
+}
 
 async function createVisiteFutureDataTable() {
     await refreshJwt();
@@ -255,45 +244,73 @@ async function createVisiteFutureDataTable() {
                 futureVisits.push(visit)
             }
         });
-        console.log(futureVisits);
+
+        console.log('Future visits:', futureVisits);
+
+        const isAdmin = window.location.href.includes('dashboardAdmin');
 
         contactListTableInstance = new DataTable("#tabella-visite-future", {
             data: futureVisits,
-            destroy: true,            columns: [
-                { data: "personaVisitatore.nome" },
-                { data: "personaVisitatore.cognome" },
-                { data: "dataInizio" },
+            destroy: true,
+            columns: isAdmin ? [
                 { 
-                    data: "oraInizio",
-                    render: function(data, type, row) {
-                        return formatTime(data);
+                    data: null,
+                    render: function(data) {
+                        return `${data.personaVisitatore?.nome || ''} ${data.personaVisitatore?.cognome || ''}`;
                     }
                 },
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.oraInizio || ''} - ${data.oraFine || ''}`;
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data) {
+                        const actions = [];
+                        if (data.flagDPI) actions.push('DPI richiesto');
+                        if (data.materialeInformatico?.id) actions.push('Mat. informatico');
+                        if (data.flagAccessoConAutomezzo) actions.push('Automezzo');
+                        return `<button class="action-button dettagli-btn" data-azienda="${data.personaVisitatore?.azienda || ''}" 
+                                data-motivo="${data.motivo || ''}" data-responsabile="${data.responsabile?.nome} ${data.responsabile?.cognome}">
+                                Dettagli${actions.length ? ` (${actions.join(', ')})` : ''}</button>`;
+                    }
+                }
+            ] : [
+                { data: "dataInizio" },
+                { data: "dataFine" },
+                { data: "oraInizio" },
+                { data: "oraFine" },
                 { data: "motivo" },
                 { 
                     data: null,
-                    render: function(data, type, row) {
-                        return (row.responsabile.nome || '') + ' ' + (row.responsabile.cognome || '');
+                    render: function(data) {
+                        return `${data.personaVisitatore?.nome || ''} ${data.personaVisitatore?.cognome || ''}`;
                     }
                 },
-                {
+                { 
                     data: null,
-                    render: function(data, type, row) {
-                        const azienda = row.personaVisitatore?.azienda || '';
-                        const flagDPI = row.flagDPI ? 'Sì' : 'No';
-                        const materialeInformatico = row.materialeInformatico?.descrizione || 'Nessuno';
-                        const accessoAutomezzo = row.flagAccessoConAutomezzo ? 'Sì' : 'No';
-                        return `<button class="action-button dettagli-visite-future-btn" 
-                                data-azienda="${azienda}" 
-                                data-flagdpi="${flagDPI}"
-                                data-materiale="${materialeInformatico}"
-                                data-automezzo="${accessoAutomezzo}">Dettagli</button>`;
+                    render: function(data) {
+                        return `${data.responsabile?.nome || ''} ${data.responsabile?.cognome || ''}`;
                     }
                 },
-                {
-                    data: null,
-                    render: function() {
-                        return '<button class="action-button elimina-future-btn" style="max-width:70px;height:28px;font-size:12px;background:#c0392b;">Elimina</button>';
+                { 
+                    data: "flagDPI",
+                    render: function(data) {
+                        return data ? 'Sì' : 'No';
+                    }
+                },
+                { 
+                    data: "materialeInformatico",
+                    render: function(data) {
+                        return data?.descrizione || 'Nessuno';
+                    }
+                },
+                { 
+                    data: "flagAccessoConAutomezzo",
+                    render: function(data) {
+                        return data ? 'Sì' : 'No';
                     }
                 }
             ],
@@ -314,13 +331,41 @@ async function createVisiteFutureDataTable() {
                 zeroRecords: "Nessun risultato trovato"
             }
         });
+
+        // Add click handler for details button
+        if (isAdmin) {
+            $(document).on('click', '.dettagli-btn', function(e) {
+                e.preventDefault();
+                const azienda = $(this).data('azienda');
+                const motivo = $(this).data('motivo');
+                const responsabile = $(this).data('responsabile');
+                
+                // Show details in a modal or other UI element
+                alert(`Dettagli visita:\nAzienda: ${azienda}\nMotivo: ${motivo}\nResponsabile: ${responsabile}`);
+            });
+        }
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
+        const table = document.querySelector("#tabella-visite-future");
+        if (table) {
+            const tbody = table.querySelector("tbody");
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="12">Errore nel caricamento dei dati</td></tr>';
+            }
+        }
     }
 }
 
 const visiteOrdierneNavList = document.getElementById("visualizza-elenco-visite-odierne");
-visiteOrdierneNavList.addEventListener("click", createVisiteOdierneDataTable);
+const adminVisiteOdierneNavList = document.getElementById("admin-visite-odierne");
+
+// Add event listeners for both reception and admin dashboard
+if (visiteOrdierneNavList) {
+    visiteOrdierneNavList.addEventListener("click", createVisiteOdierneDataTable);
+}
+if (adminVisiteOdierneNavList) {
+    adminVisiteOdierneNavList.addEventListener("click", createVisiteOdierneDataTable);
+}
 
 async function createVisiteOdierneDataTable() {
     await refreshJwt();
@@ -347,76 +392,98 @@ async function createVisiteOdierneDataTable() {
             contactListTableInstance = null;
         }
 
-        const todayVisits = new Array;
-        const today = getIsoDate(new Date);        data.forEach(visit => {
+        const todayVisits = [];
+        const today = getIsoDate(new Date());
+
+        data.forEach(visit => {
             if (visit.dataInizio === today) {
                 // Salva la data originale per il confronto
                 visit.dataInizioOriginal = visit.dataInizio;
                 visit.dataInizio = convertToItalianDate(visit.dataInizio);
-                visit.dataFine = visit.dataFine ? convertToItalianDate(visit.dataFine) : null;
-                todayVisits.push(visit)
-            }        });
-        console.log(todayVisits);
-          contactListTableInstance = new DataTable("#tabella-visite-odierne", {
+                visit.dataFine = convertToItalianDate(visit.dataFine);
+                todayVisits.push(visit);
+            }
+        });
+
+        console.log('Today visits:', todayVisits);
+
+        // Get the current page URL to determine whether we're in admin or reception dashboard
+        const isAdmin = window.location.href.includes('dashboardAdmin');
+
+        contactListTableInstance = new DataTable("#tabella-visite-odierne", {
             data: todayVisits,
             destroy: true,
-            columns: [
-                { data: "personaVisitatore.nome" },
-                { data: "personaVisitatore.cognome" },
-                { data: "dataInizio" },
+            columns: isAdmin ? [
                 { 
-                    data: "oraInizio",
-                    render: function(data, type, row) {
-                        return formatTime(data);
-                    }
-                },                { 
-                    data: "dataFine",
-                    render: function(data, type, row) {
-                        return data || "-";
-                    }
-                },                { 
-                    data: "oraFine",
-                    render: function(data, type, row) {
-                        // Se la visita non è ancora iniziata, mostra "Non ancora iniziata"
-                        const now = new Date();
-                        const visitStart = new Date(row.dataInizioOriginal + 'T' + row.oraInizio);
-                        
-                        if (now < visitStart) {
-                            return "Non ancora iniziata";
-                        }
-                        return data ? formatTime(data) : "-";
+                    data: null,
+                    render: function(data) {
+                        return `${data.personaVisitatore?.nome || ''} ${data.personaVisitatore?.cognome || ''}`;
                     }
                 },
+                { 
+                    data: null,
+                    render: function(data) {
+                        return `${data.oraInizio || ''} - ${data.oraFine || ''}`;
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data) {
+                        const now = new Date();
+                        const startTime = new Date(`${data.dataInizio} ${data.oraInizio}`);
+                        const endTime = new Date(`${data.dataFine} ${data.oraFine}`);
+                        
+                        if (now < startTime) return 'In attesa';
+                        if (now > endTime) return 'Completata';
+                        return 'In corso';
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data) {
+                        const actions = [];
+                        if (data.flagDPI) actions.push('DPI richiesto');
+                        if (data.materialeInformatico?.id) actions.push('Mat. informatico');
+                        if (data.flagAccessoConAutomezzo) actions.push('Automezzo');
+                        return `<button class="action-button dettagli-btn" data-azienda="${data.personaVisitatore?.azienda || ''}" 
+                                data-motivo="${data.motivo || ''}" data-responsabile="${data.responsabile?.nome} ${data.responsabile?.cognome}">
+                                Dettagli${actions.length ? ` (${actions.join(', ')})` : ''}</button>`;
+                    }
+                }
+            ] : [
+                { data: "dataInizio" },
+                { data: "dataFine" },
+                { data: "oraInizio" },
+                { data: "oraFine" },
                 { data: "motivo" },
                 { 
                     data: null,
-                    render: function(data, type, row) {
-                        return (row.responsabile.nome || '') + ' ' + (row.responsabile.cognome || '');
-                    }
-                },{
-                    data: null,
-                    render: function(data, type, row) {
-                        const azienda = row.personaVisitatore?.azienda || '';
-                        const flagDPI = row.flagDPI ? 'Sì' : 'No';
-                        const materialeInformatico = row.materialeInformatico?.descrizione || 'Nessuno';
-                        const accessoAutomezzo = row.flagAccessoConAutomezzo ? 'Sì' : 'No';
-                        return `<button class="action-button dettagli-visite-odierne-btn" 
-                                data-azienda="${azienda}" 
-                                data-flagdpi="${flagDPI}"
-                                data-materiale="${materialeInformatico}"
-                                data-automezzo="${accessoAutomezzo}">Dettagli</button>`;
+                    render: function(data) {
+                        return `${data.personaVisitatore?.nome || ''} ${data.personaVisitatore?.cognome || ''}`;
                     }
                 },
-                {
+                { 
                     data: null,
-                    render: function() {
-                        return '<button class="action-button elimina-btn" style="max-width:70px;height:28px;font-size:12px;background:#c0392b;">Elimina</button>';
+                    render: function(data) {
+                        return `${data.responsabile?.nome || ''} ${data.responsabile?.cognome || ''}`;
                     }
                 },
-                {
-                    data: null,
-                    render: function() {
-                        return '<button class="action-button" style="max-width:110px;height:28px;font-size:12px;background:#27ae60;">Assegna Badge</button>';
+                { 
+                    data: "flagDPI",
+                    render: function(data) {
+                        return data ? 'Sì' : 'No';
+                    }
+                },
+                { 
+                    data: "materialeInformatico",
+                    render: function(data) {
+                        return data?.descrizione || 'Nessuno';
+                    }
+                },
+                { 
+                    data: "flagAccessoConAutomezzo",
+                    render: function(data) {
+                        return data ? 'Sì' : 'No';
                     }
                 }
             ],
@@ -438,8 +505,29 @@ async function createVisiteOdierneDataTable() {
             }
         });
 
+        // Add click handler for details button
+        if (isAdmin) {
+            $(document).on('click', '.dettagli-btn', function(e) {
+                e.preventDefault();
+                const azienda = $(this).data('azienda');
+                const motivo = $(this).data('motivo');
+                const responsabile = $(this).data('responsabile');
+                
+                // Show details in a modal or other UI element
+                // This should be implemented based on your UI requirements
+                alert(`Dettagli visita:\nAzienda: ${azienda}\nMotivo: ${motivo}\nResponsabile: ${responsabile}`);
+            });
+        }
+
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
+        const table = document.querySelector("#tabella-visite-odierne");
+        if (table) {
+            const tbody = table.querySelector("tbody");
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="12">Errore nel caricamento dei dati</td></tr>';
+            }
+        }
     }
 }
 

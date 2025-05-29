@@ -8,6 +8,12 @@
     <link rel="stylesheet" href="/css/miniDatatableHome.css" />
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+    <script src="/script/jwtManager.js"></script>
+    <script src="/script/customDataTables.js"></script>
+    <script src="/script/dashboard.js" defer></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">    <title>Dashboard Receptionist</title>
 </head>
 
@@ -89,17 +95,21 @@
                             <div class="top-left">
                                 <h1>Home</h1>
                             </div>
-                            <div class="top-right">                                <div class="big-box">
-                                    <div style="font-size:2.5rem;font-weight:bold;line-height:1;" id="total-presenti-desktop">128</div>
+                            <div class="top-right">
+                                <div class="big-box">
+                                    <div style="font-size:2.5rem;font-weight:bold;line-height:1;"
+                                        id="total-presenti-desktop">128</div>
                                     <div style="font-size:1rem;">Presenti totali</div>
                                 </div>
 
                                 <div class="small-box">
-                                    <div style="font-size:1.5rem;font-weight:bold;" id="dipendenti-count-desktop">85</div>
+                                    <div style="font-size:1.5rem;font-weight:bold;" id="dipendenti-count-desktop">85
+                                    </div>
                                     <div style="font-size:0.9rem;">Dipendenti</div>
                                 </div>
                                 <div class="small-box">
-                                    <div style="font-size:1.5rem;font-weight:bold;" id="visitatori-count-desktop">43</div>
+                                    <div style="font-size:1.5rem;font-weight:bold;" id="visitatori-count-desktop">43
+                                    </div>
                                     <div style="font-size:0.9rem;">Visitatori</div>
                                 </div>
                                 <div class="big-box create-user-box">
@@ -132,7 +142,8 @@
                                 </table> <button class="action-button mini-link" type="button"
                                     onclick="showSection('visualizza-elenco-visite-odierne-section')">Vai a Visitatori
                                     Oggi</button>
-                            </div>                            <div class="box">
+                            </div>
+                            <div class="box">
                                 <h3>Visitatori futuri</h3>
                                 <table id="home-table2" class="display mini-datatable">
                                     <thead>
@@ -287,42 +298,42 @@
                 <section id="visitatori-crea-persone-section" class="section">
                     <h2>Crea Persone</h2>
 
-                    <form id="personForm">
+                    <form id="personForm" action="/FAKE/DASHBOARDRECEPTION/CREA_PERSONA">
                         <label>
                             Nome:
-                            <input type="text" name="nome" id="nome-crea-persona" placeholder="Nome" required />
+                            <input type="text" name="nome" id="nome-crea-persona" placeholder="Nome" />
                         </label>
                         <br />
                         <label>
                             Cognome:
                             <input type="text" name="cognome" id="cognome-crea-persona" placeholder="Cognome"
-                                required />
+                                 />
                         </label>
                         <br />
                         <label>
                             Azienda:
                             <input type="text" name="azienda" id="azienda-crea-persona" placeholder="Azienda"
-                                required />
+                                 />
                         </label>
                         <br />
                         <label>
                             Indirizzo:
-                            <input type="text" name="indirizzo" id="indirizzo" placeholder="Indirizzo" required />
+                            <input type="text" name="indirizzo" id="indirizzo" placeholder="Indirizzo"  />
                         </label>
                         <br />
                         <label>
                             Città:
-                            <input type="text" name="citta" id="citta" placeholder="Città" required />
+                            <input type="text" name="citta" id="citta" placeholder="Città"  />
                         </label>
                         <br />
                         <label>
                             Provincia:
-                            <input type="text" name="provincia" id="provincia" placeholder="Provincia" required />
+                            <input type="text" name="provincia" id="provincia" placeholder="Provincia"  />
                         </label>
                         <br />
                         <label>
                             Nazione:
-                            <input type="text" name="nazione" id="nazione" placeholder="Nazione" required />
+                            <input type="text" name="nazione" id="nazione" placeholder="Nazione"  />
                         </label>
                         <br />
                         <label>
@@ -332,7 +343,7 @@
                         <br />
                         <label>
                             Cellulare:
-                            <input type="tel" name="cellulare" id="cellulare" placeholder="Cellulare" required />
+                            <input type="tel" name="cellulare" id="cellulare" placeholder="Cellulare"  />
                         </label>
                         <br />
                         <label>
@@ -351,7 +362,7 @@
                         <br />
                         <label>
                             Email:
-                            <input type="email" name="mail" id="mail-crea-persona" placeholder="Email" required />
+                            <input type="email" name="mail" id="mail-crea-persona" placeholder="Email"  />
                         </label>
                         <br />
                         <label>
@@ -366,12 +377,12 @@
                         </label>
                         <br />
                         <label>Data Nascita:
-                            <input type="date" name="dataNascita" id="dataNascita" required />
+                            <input type="date" name="dataNascita" id="dataNascita"  />
                         </label>
                         <br />
                         <label>
                             Tipo Documento:
-                            <select name="tipoDocumento" id="tipoDocumento" required>
+                            <select name="tipoDocumento" id="tipoDocumento" >
                                 <option value="C.I.">Carta d'identità</option>
                                 <option value="PATENTE">Patente</option>
                                 <option value="PASSAPORTO">Passaporto</option>
@@ -381,12 +392,12 @@
                         <label>
                             Numero Documento:
                             <input type="text" name="numeroDocumento" id="numeroDocumento"
-                                placeholder="Numero Documento" required />
+                                placeholder="Numero Documento"  />
                         </label>
                         <br />
                         <label>
                             Data Scadenza Documento:
-                            <input type="date" name="dataScadenzaDoc" id="dataScadenzaDoc" required />
+                            <input type="date" name="dataScadenzaDoc" id="dataScadenzaDoc"  />
                         </label>
                         <br />
                         <label>DUVRI:
@@ -401,11 +412,11 @@
                         <br />
                         <label>
                             Flag Doc Privacy:
-                            <input type="checkbox" name="flagDocPrivacy" id="flagDocPrivacy" required />
+                            <input type="checkbox" name="flagDocPrivacy" id="flagDocPrivacy"  />
                         </label>
                         <br />
                         <label>Data Consegna Doc Privacy:
-                            <input type="date" name="dataConsegnaDocPrivacy" id="dataConsegnaDocPrivacy" required />
+                            <input type="date" name="dataConsegnaDocPrivacy" id="dataConsegnaDocPrivacy"  />
                         </label>
                         <br />
                         <label>Ruolo:
@@ -415,8 +426,7 @@
                                 <option value="5">Manutenzione</option>
                             </select>
                         </label>
-                        <br />
-
+                        <br/>
                         <button type="submit" onclick="createPerson(event)">Invia</button>
                     </form>
                 </section>                <!-- Altre Funzioni di Creazione -->
@@ -506,7 +516,8 @@
                 <!-- Elenco Visite Odierne -->
                 <section id="visualizza-elenco-visite-odierne-section" class="section">
                     <h2>Elenco visitatori odierni</h2>
-                    <table id="tabella-visite-odierne" class="display custom-table">                        <thead>
+                    <table id="tabella-visite-odierne" class="display custom-table">
+                        <thead>
                             <tr>
                                 <th>Nome</th>
                                 <th>Cognome</th>
@@ -517,7 +528,8 @@
                                 <th>Motivo</th>
                                 <th>Responsabile</th>
                                 <th>Dettagli</th>
-                                <th>Elimina</th>                                <th>Assegna Badge</th>
+                                <th>Elimina</th>
+                                <th>Assegna Badge</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -530,7 +542,8 @@
                     <div class="modal-content"
                         style="background:#fff;padding:30px 40px;border-radius:18px;min-width:300px;max-width:90vw;max-height:90vh;box-shadow:0 2px 16px #0002;position:relative;">
                         <span id="close-dettagli-visite-odierne-modal"
-                            style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>                        <h3>Dettagli Visita Odierna</h3>
+                            style="position:absolute;top:10px;right:18px;font-size:28px;cursor:pointer;">&times;</span>
+                        <h3>Dettagli Visita Odierna</h3>
                         <div><b>Azienda:</b> <span id="modal-visite-odierne-azienda"></span></div>
                         <div><b>Flag DPI:</b> <span id="modal-visite-odierne-flagdpi"></span></div>
                         <div><b>Materiale informatico:</b> <span id="modal-visite-odierne-materiale"></span></div>
@@ -627,7 +640,8 @@
                             <div class="logout-mobile-icon">
                                 <img src="/assets/logout_black_icon.png" alt="Logout">
                             </div>
-                        </div>                        <div class="stats-bar-mobile">
+                        </div>
+                        <div class="stats-bar-mobile">
                             <div class="stat-box-mobile main-stat">
                                 <div class="stat-number" id="total-presenti-mobile">128</div>
                                 <div class="stat-label">Presenti totali</div>
@@ -641,8 +655,9 @@
                                 <div class="stat-label">Visitatori</div>
                             </div>
                             <div class="big-box-mobile create-user-box">
-                                    <button class="action-button mini-link" type="button"
-                                        onclick="showMobileSection('visitatori-crea-utente-mobile-section')">Crea utente</button>
+                                <button class="action-button mini-link" type="button"
+                                    onclick="showMobileSection('visitatori-crea-utente-mobile-section')">Crea
+                                    utente</button>
                             </div>
                         </div>
 
@@ -1324,7 +1339,4 @@
     <!-- ============================ FINE DASHBOARD ============================ -->
 
 </body>
-<script src="/script/dataTables.js" type="module"></script>
-<script src="/script/dashboard.js" defer></script>
-
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,10 +9,10 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
-    <script src="/script/requester.js" type="module"></script>
     <link rel="icon" type="image/png" href="/assets/logo-mona.png">
     <title>Dashboard Richiedente</title>
 </head>
+
 <body>
     <div class="dashboard">
         <aside class="sidebar">
@@ -20,23 +21,129 @@
                 <div class="menu-item" id="requester-home">Home</div>
                 <div class="menu-item" id="requester-visite">Visite</div>
                 <div class="menu-item" id="requester-elenco-telefonico">Elenco Telefonico</div>
-                <div class="menu-item" id="requester-crea-visita">Crea visita</div>
+                <div class="menu-item" id="requester-create-visit">Crea visita</div>
             </nav>
+
+            <!-- BOX DELL'UTENTE -->
             <div class="user-box">
                 <img class="avatar" src="/assets/utente.png" alt="User Avatar">
                 <div class="user-name">Richiedente</div>
                 <button class="action-button">Logout</button>
             </div>
         </aside>
+
         <main class="content-area">
+
+            <!-- SEZIONE HOME -->
             <section id="requester-home-section" class="section active">
-                <h2>Benvenuto Richiedente</h2>
-                <p>Seleziona una voce dal menu per iniziare.</p>
+                <div class="container">
+                    <div class="top-section">
+                        <div class="top-left">
+                            <h1>Home</h1>
+                        </div>
+                        <div class="top-right">
+                            <div class="big-box">
+                                <div style="font-size:2.5rem;font-weight:bold;line-height:1;">128</div>
+                                <div style="font-size:1rem;">Presenti totali</div>
+                            </div>
+
+                            <div class="small-box">
+                                <div style="font-size:1.5rem;font-weight:bold;">85</div>
+                                <div style="font-size:0.9rem;">Dipendenti</div>
+                            </div>
+                            <div class="small-box">
+                                <div style="font-size:1.5rem;font-weight:bold;">43</div>
+                                <div style="font-size:0.9rem;">Visitatori</div>
+                            </div>
+                            <div class="big-box create-user-box">
+                                <div style="font-size:1.3rem;font-weight:bold;margin-bottom:0.5rem;">Crea utente</div>
+                                <button class="action-button mini-link" type="button"
+                                    onclick="showSection('visitatori-opzione1-section')">Vai</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-section">
+                        <div class="box">
+                            <h3>Visitatori oggi</h3>
+                            <table id="requester-home-table-visite-odierne" class="display mini-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Cognome</th>
+                                        <th>Data inizio</th>
+                                        <th>Ora inizio</th>
+                                        <th>Data fine</th>
+                                        <th>Ora fine</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <button class="action-button mini-link" type="button"
+                                onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione
+                                1</button>
+                        </div>
+                        <div class="box">
+                            <h3>Visitatori domani</h3>
+                            <table id="requester-home-table-visite-future" class="display mini-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Cognome</th>
+                                        <th>Data inizio</th>
+                                        <th>Ora inizio</th>
+                                        <th>Data fine</th>
+                                        <th>Ora fine</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <button class="action-button mini-link" type="button"
+                                onclick="showSection('visualizza-opzione1-section')">Vai a Visualizza - Opzione
+                                1</button>
+                        </div>
+                    </div>
+                </div>
             </section>
+
+            <!-- SEZIONE VISITE PERSONALI -->
             <section id="requester-visite-section" class="section">
-                <h2>Le mie Visite</h2>
-                <div id="tabella-mie-visite"></div>
+                <h2>Prossime visite</h2>
+                <p id="next-visits-title">Seleziona una voce dal menu per iniziare.</p>
+                <p id="home-paragraph-next-visits"></p>
+
+                <form>
+                    <label for="home-next-visits-date">
+                        Filtra le visite per data:
+                        <input type="date" name="home-next-visits-date" id="home-next-visits-date">
+                    </label>
+                    <button id="home-next-visits-button">Filtra</button>
+                </form>
+
+                <table id="home-table-next-visits" class="display custom-table">
+                    <thead>
+                        <tr>
+                            <th>Visitatore</th>
+                            <th>Responsabile</th>
+                            <th>Data inizio</th>
+                            <th>Ora inizio</th>
+                            <th>Data fine</th>
+                            <th>Ora fine</th>
+                            <th>Motivo</th>
+                            <th>DPI</th>
+                            <th>Materiale infomratico</th>
+                            <th>Automezzo</th>
+                            <th>Opzioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </section>
+
+
             <section id="requester-elenco-telefonico-section" class="section">
                 <h2>ELenco Telefonico</h2>
                 <table id="tabella-elenco-telefonico" class="display custom-table">
@@ -52,13 +159,78 @@
                     <tbody></tbody>
                 </table>
             </section>
-            <section id="requester-profilo-section" class="section">
-                <h2>Profilo</h2>
-                <div id="area-profilo"></div>
+
+            <!-- Crea visite -->
+            <section id="requester-create-visit-section" class="section centered">
+                <div class="visitatori-wrapper">
+                    <h2>Prenota visita</h2>
+                    <div class="form-sezione">
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="prima-visita">
+                            <label for="prima-visita">Prima visita</label>
+                        </div>
+
+                        <div>
+                            <label>Visitatore</label>
+                            <select name="idVisitatore-crea-visita" id="idVisitatore-crea-visita">
+                                <option></option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Responsabile visita</label>
+                            <select name="idResponsabile-crea-visita" id="idResponsabile-crea-visita">
+                                <option></option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Materiale informatico</label>
+                            <select name="materiale-informatico-crea-visita" id="materiale-informatico-crea-visita">
+                                <option></option>
+                            </select>
+                        </div>
+
+                        <div class="input-row left-align">
+                            <div class="input-group">
+                                <label for="data-inizio">Data inizio</label>
+                                <input type="date" id="data-inizio" name="data-inizio">
+                            </div>
+                            <div class="input-group">
+                                <label for="ora-inizio">Ora inizio</label>
+                                <input type="time" id="ora-inizio" name="orz-inizio">
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="motivo">Motivo visita</label>
+                                <input type="text" id="motivo" name="motivo">
+                            </div>
+                        </div>
+
+                        <div class="checkbox-group">
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="automezzo">
+                                <label for="automezzo">Accesso automezzo</label>
+                            </div>
+                            <div class="checkbox-row">
+                                <input type="checkbox" id="dpi">
+                                <label for="dpi">Richiesta DPI</label>
+                            </div>
+                        </div>
+
+                        <div class="button-container">
+                            <button class="action-button" id="crea-visita-button">Prenota</button>
+                        </div>
+
+                    </div>
+                </div>
             </section>
+
         </main>
-    </div> 
-    
-<script src="/script/dashboard.js" defer></script>
+    </div>
 </body>
+<script src="/script/requester.js" type="module"></script>
+<script src="/script/dashboard.js" defer></script>
 </html>

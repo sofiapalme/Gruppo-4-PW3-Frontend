@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="/css/dashboardReceptionist.css" />
     <link rel="stylesheet" href="/css/dashboardAdmin.css" />
     <link rel="stylesheet" href="/css/miniDatatableHome.css" />
+    <script src="/script/adminScript.js" defer></script>
+    <script src="/script/dashboard.js" defer></script>
+    <script src="/script/jwtManager.js"></script>
+    <script src="/script/customDataTables.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css">
@@ -25,7 +29,8 @@
                 </div>
                 <div class="menu-item" id="admin-visite">
                     <div class="menu-content">
-                        Visite <span class="arrow"><img src="/assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
+                        Visite <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
+                                alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
                         <div class="submenu-item" id="visualizza-elenco-visite-odierne">Elenco odierne</div>
@@ -35,18 +40,22 @@
                 </div>
                 <div class="menu-item" id="admin-storico">
                     <div class="menu-content">
-                        Storico <span class="arrow"><img src="/assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
+                        Storico <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
+                                alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
                         <div class="submenu-item" id="admin-storico-visite">Storico visite</div>
-                        <div class="submenu-item" id="admin-storico-timbrature-visitatori">Storico timbrature visitatori</div>
-                        <div class="submenu-item" id="admin-storico-timbrature-dipendenti">Storico timbrature dipendenti</div>
+                        <div class="submenu-item" id="admin-storico-timbrature-visitatori">Storico timbrature visitatori
+                        </div>
+                        <div class="submenu-item" id="admin-storico-timbrature-dipendenti">Storico timbrature dipendenti
+                        </div>
                         <div class="submenu-item" id="admin-storico-timbrature-mensa">Storico timbrature mensa</div>
                     </div>
                 </div>
                 <div class="menu-item" id="admin-persone">
                     <div class="menu-content">
-                        Persone <span class="arrow"><img src="/assets/down_arrow_white_icon.png" alt="Freccia giù"></span>
+                        Persone <span class="arrow"><img src="/assets/down_arrow_white_icon.png"
+                                alt="Freccia giù"></span>
                     </div>
                     <div class="submenu">
                         <div class="submenu-item" id="admin-persone-crea-visite">Crea visite</div>
@@ -58,132 +67,130 @@
                 </div>
             </nav>
             <div class="user-box">
-                    <div class="avatar-bg"></div>
-                    <img class="avatar" src="/assets/utente.png" alt="User Avatar">
-                    <div class="user-name">Nome e Cognome</div>
-                    <button class="action-button">Logout</button>
-                </div>
+                <div class="avatar-bg"></div>
+                <img class="avatar" src="/assets/utente.png" alt="User Avatar">
+                <div class="user-name">Nome e Cognome</div>
+                <button class="action-button">Logout</button>
+            </div>
         </aside>
-        <main class="content-area">            
+        <main class="content-area">
             <section id="admin-home-section" class="section home active">
-                    <div class="container">
+                <div class="container">
 
-                        <div class="top-section">
-                            <div class="top-left">
-                                <h1>Home</h1>
-                            </div>
-                            <div class="top-right">
-                                <div class="big-box">
-                                    <div style="font-size:2.5rem;font-weight:bold;line-height:1;">128</div>
-                                    <div style="font-size:1rem;">Presenti totali</div>
-                                </div>
-
-                                <div class="small-box">
-                                    <div style="font-size:1.5rem;font-weight:bold;">85</div>
-                                    <div style="font-size:0.9rem;">Dipendenti</div>
-                                </div>
-                                <div class="small-box">
-                                    <div style="font-size:1.5rem;font-weight:bold;">43</div>
-                                    <div style="font-size:0.9rem;">Visitatori</div>
-                                </div>
-                                <div class="big-box create-user-box">
-                                    <div style="font-size:1.3rem;font-weight:bold;margin-bottom:0.5rem;">Crea utente
-                                    </div>
-                                    <button class="action-button mini-link" type="button"
-                                        onclick="showSection('visitatori-opzione1-section')">Vai</button>
-                                </div>
-                            </div>
+                    <div class="top-section">
+                        <div class="top-left">
+                            <h1>Home</h1>
                         </div>
-
-                        <div class="bottom-section">
-                            <div class="box">
-                                <h3>Visitatori oggi</h3>
-                                <table id="home-table1" class="display mini-datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>Nome</th>
-                                            <th>Cognome</th>
-                                            <th>Data inizio</th>
-                                            <th>Ora inizio</th>
-                                            <th>Data fine</th>
-                                            <th>Ora fine</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="home-table1-body">
-                                        <!-- Popolato dinamicamente -->
-                                    </tbody>
-                                </table> <button class="action-button mini-link" type="button"
-                                    onclick="showSection('visualizza-elenco-visite-odierne-section')">Vai a Visitatori
-                                    Oggi</button>
+                        <div class="top-right">
+                            <div class="big-box">
+                                <div style="font-size:2.5rem;font-weight:bold;line-height:1;">128</div>
+                                <div style="font-size:1rem;">Presenti totali</div>
                             </div>
-                            <div class="box">
-                                <h3>Visitatori domani</h3>
-                                <table id="home-table2" class="display mini-datatable">
-                                    <thead>
-                                        <tr>
-                                            <th>Nome</th>
-                                            <th>Cognome</th>
-                                            <th>Data inizio</th>
-                                            <th>Ora inizio</th>
-                                            <th>Data fine</th>
-                                            <th>Ora fine</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="home-table2-body">
-                                        <!-- Popolato dinamicamente -->
-                                    </tbody>
-                                </table>
+
+                            <div class="small-box">
+                                <div style="font-size:1.5rem;font-weight:bold;">85</div>
+                                <div style="font-size:0.9rem;">Dipendenti</div>
+                            </div>
+                            <div class="small-box">
+                                <div style="font-size:1.5rem;font-weight:bold;">43</div>
+                                <div style="font-size:0.9rem;">Visitatori</div>
+                            </div>
+                            <div class="big-box create-user-box">
+                                <div style="font-size:1.3rem;font-weight:bold;margin-bottom:0.5rem;">Crea utente
+                                </div>
                                 <button class="action-button mini-link" type="button"
-                                    onclick="showSection('visualizza-elenco-visite-future-section')">Vai a Visitatori
-                                    Futuri</button>
+                                    onclick="showSection('visitatori-opzione1-section')">Vai</button>
                             </div>
                         </div>
                     </div>
-                </section>
-                <section id="visualizza-elenco-visite-future-section" class="section">
-                    <h2>Elenco visitatori futuri</h2>
-                    <table id="tabella-visite-future" class="display custom-table">
-                        <thead>
-                            <tr>
-                                <th>Data inizio</th>
-                                <th>Data fine</th>
-                                <th>Ora inizio</th>
-                                <th>Ora fine</th>
-                                <th>Motivo</th>
-                                <th>Visitatore</th>
-                                <th>Responsabile</th>
-                                <th>Flag DPI</th>
-                                <th>Materiale informatico</th>
-                                <th>Accesso con Automezzo</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </section>
-                <section id="visualizza-elenco-visite-odierne-section" class="section">
-                    <h2>Elenco visitatori odierni</h2>
-                    <table id="tabella-visite-odierne" class="display custom-table">
-                        <thead>
-                            <tr>
-                                <th>Data inizio</th>
-                                <th>Data fine</th>
-                                <th>Ora inizio</th>
-                                <th>Ora fine</th>
-                                <th>Motivo</th>
-                                <th>Visitatore</th>
-                                <th>Responsabile</th>
-                                <th>Flag DPI</th>
-                                <th>Materiale informatico</th>
-                                <th>Accesso con Automezzo</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </section>
+
+                    <div class="bottom-section">
+                        <div class="box">
+                            <h3>Visitatori oggi</h3>
+                            <table id="home-table1" class="display mini-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Cognome</th>
+                                        <th>Data inizio</th>
+                                        <th>Ora inizio</th>
+                                        <th>Data fine</th>
+                                        <th>Ora fine</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="home-table1-body">
+                                    <!-- Popolato dinamicamente -->
+                                </tbody>
+                            </table> <button class="action-button mini-link" type="button"
+                                onclick="showSection('visualizza-elenco-visite-odierne-section')">Vai a Visitatori
+                                Oggi</button>
+                        </div>
+                        <div class="box">
+                            <h3>Visitatori domani</h3>
+                            <table id="home-table2" class="display mini-datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Cognome</th>
+                                        <th>Data inizio</th>
+                                        <th>Ora inizio</th>
+                                        <th>Data fine</th>
+                                        <th>Ora fine</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="home-table2-body">
+                                    <!-- Popolato dinamicamente -->
+                                </tbody>
+                            </table>
+                            <button class="action-button mini-link" type="button"
+                                onclick="showSection('visualizza-elenco-visite-future-section')">Vai a Visitatori
+                                Futuri</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="visualizza-elenco-visite-future-section" class="section">
+                <h2>Elenco visitatori futuri</h2>
+                <table id="tabella-visite-future" class="display custom-table">
+                    <thead>
+                        <tr>
+                            <th>Data inizio</th>
+                            <th>Data fine</th>
+                            <th>Ora inizio</th>
+                            <th>Ora fine</th>
+                            <th>Motivo</th>
+                            <th>Visitatore</th>
+                            <th>Responsabile</th>
+                            <th>Flag DPI</th>
+                            <th>Materiale informatico</th>
+                            <th>Accesso con Automezzo</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
+            <section id="visualizza-elenco-visite-odierne-section" class="section">
+                <h2>Elenco visitatori odierni</h2>
+                <table id="tabella-visite-odierne" class="display custom-table">
+                    <thead>
+                        <tr>
+                            <th>Data inizio</th>
+                            <th>Data fine</th>
+                            <th>Ora inizio</th>
+                            <th>Ora fine</th>
+                            <th>Motivo</th>
+                            <th>Visitatore</th>
+                            <th>Responsabile</th>
+                            <th>Flag DPI</th>
+                            <th>Materiale informatico</th>
+                            <th>Accesso con Automezzo</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </section>
         </main>
     </div>
 </body>
-<script src="/script/adminScript.js" defer></script>
-<script src="/script/dashboard.js" defer></script>
-<script src="/script/dataTables.js" type="module"></script>
+
 </html>

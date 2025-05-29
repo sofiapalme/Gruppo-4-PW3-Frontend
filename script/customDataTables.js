@@ -140,7 +140,7 @@ async function createPerson(event) {
     const dataScadenzaDoc = document.getElementById("dataScadenzaDoc").value; // date string
     const duvri = String(document.getElementById("duvri").checked);
     let numCentriCosto = Number(document.getElementById("numCentriCosto").value);
-    numCentriCosto = numCentriCosto === 0 ? null : value;
+    numCentriCosto = numCentriCosto === 0 ? null : numCentriCosto;
 
     const flagDocPrivacy = document.getElementById("flagDocPrivacy").checked;
     const dataConsegnaDocPrivacy = document.getElementById("dataConsegnaDocPrivacy").value; // date string
@@ -211,8 +211,7 @@ async function createPersonFetch(requestBody) {
         if (!response.ok) {
             throw new Error(`Errore nel recupero dei dati: ${response.status}`);
         }
-
-        alert("Persona salvata con successo! (forse)")
+        window.location.reload();
     } catch (error) {
         console.error("Errore nella creazione della tabella:", error.message);
     }

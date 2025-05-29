@@ -122,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
       { label: 'Timbrature mensa', target: 'storico-timbrature-mensa-mobile-section' }
     ],
     'visitatori-mobile-section': [
-      { label: 'Opzione 1', target: 'visitatori-opzione1-mobile-section' },
-      { label: 'Opzione 2', target: 'visitatori-opzione2-mobile-section' }
+      { label: 'Nuova visita', target: 'visitatori-nuova-visita-mobile-section' },
+      { label: 'Crea utente', target: 'visitatori-crea-utente-mobile-section' }
     ]
   };
 

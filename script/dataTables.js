@@ -21,7 +21,7 @@ function convertToItalianDate(isoDate) {
     return `${day}/${month}/${year}`;
 }
 
-const visualizzaPersoneNavElement = document.getElementById("visualizza-elenco-persone");
+const visualizzaPersoneNavElement = document.getElementById("visualizza-elenco-visite-odierne");
 visualizzaPersoneNavElement.addEventListener("click", createPersonDataTable);
 
 async function createPersonDataTable() {

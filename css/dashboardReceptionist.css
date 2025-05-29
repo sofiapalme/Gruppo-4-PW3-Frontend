@@ -969,8 +969,10 @@ table.dataTable.custom-table .action-button {
   .container-mobile {
     padding: 0.75rem;
     width: 100%;
-    max-width: 1200px;
+    max-width: none;
     margin: 0 auto;
+    overflow-y: auto;
+    max-height: 90vh;
   }
 
   .header-section-mobile {
@@ -1173,9 +1175,19 @@ table.dataTable.custom-table .action-button {
     gap: 1rem;
   }
 
+  .left-column-mobile .box-mobile {
+    margin-top: 1rem;
+  }
+
   .table-container-mobile {
     overflow-x: auto;
     width: 100%;
   }
 
+  .box-mobile {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    padding: 0.5rem 1rem;
+  }
 }

@@ -106,8 +106,6 @@ async function createPersonDataTable() {
 }
 
 async function createPerson(event) {
-    console.log("Crea persona");
-    debugger;
     event.preventDefault();
     const nome = String(document.getElementById("nome-crea-persona").value);
     const cognome = String(document.getElementById("cognome-crea-persona").value);

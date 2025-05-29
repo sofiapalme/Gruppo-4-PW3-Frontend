@@ -2,7 +2,7 @@ import { jwtDecode } from "./jwtManager.js";
 import { refreshJwt } from "./jwtManager.js";
 
 let todayVisitsDataInstace = null;
-let futureVisitDatainstance = null
+let futureVisitDatainstance = null;
 let contactListTableInstance = null;
 let visitsTableInstance = null;
 

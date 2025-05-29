@@ -18,6 +18,9 @@ function convertToItalianDate(isoDate) {
     return `${day}/${month}/${year}`;
 }
 
+let todayVisitsDataInstace = null;
+let futureVisitDatainstance = null;
+
 // === Script specifico per Desktop ===
 function showSection(id) {
     // Nascondi tutte le sezioni
@@ -71,71 +74,124 @@ function showHomeSection() {
     }
 }
 
-// Load data for the homepage tables
-async function loadHomePageData() {
+window.addEventListener("load", creatHomeDataTables);
+
+async function creatHomeDataTables() {
     const accessToken = localStorage.getItem("accessToken");
-    fetch('http://localhost:8080/visit', {
-        method: 'GET',
-        headers: {
-            'Authorization': accessToken ? `Bearer ${accessToken}` : undefined
-        }
-    })
-    .then(response => {
-        if (!response.ok) throw new Error('Errore nel recupero delle visite');
-        return response.json();
-    })
-    .then(data => {
-        const today = new Date().toISOString().split('T')[0];
-        const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+    const decodedAccessToken = jwtDecode(accessToken);
+    const today = getIsoDate(new Date);
+    const todayVisits = new Array;
+    const futureVisits = new Array;
 
-        const todayVisits = data.filter(visit => visit.dataInizio === today);
-        const tomorrowVisits = data.filter(visit => visit.dataInizio === tomorrow);
+    const url = "http://localhost:8080/people?id=" + decodedAccessToken.id;
 
-        const homeTbody1 = $('#home-table1-body');
-        homeTbody1.empty();
-        todayVisits.forEach(visit => {
-            const row = `
-                <tr>
-                    <td>${visit.personaVisitatore?.nome || ''}</td>
-                    <td>${visit.personaVisitatore?.cognome || ''}</td>
-                    <td>${visit.dataInizio || ''}</td>
-                    <td>${visit.oraInizio || ''}</td>
-                    <td>${visit.dataFine || ''}</td>
-                    <td>${visit.oraFine || ''}</td>
-                </tr>`;
-            homeTbody1.append(row);
-        });
-
-        const homeTbody2 = $('#home-table2-body');
-        homeTbody2.empty();
-        tomorrowVisits.forEach(visit => {
-            const row = `
-                <tr>
-                    <td>${visit.personaVisitatore?.nome || ''}</td>
-                    <td>${visit.personaVisitatore?.cognome || ''}</td>
-                    <td>${visit.dataInizio || ''}</td>
-                    <td>${visit.oraInizio || ''}</td>
-                    <td>${visit.dataFine || ''}</td>
-                    <td>${visit.oraFine || ''}</td>
-                </tr>`;
-            homeTbody2.append(row);
-        });
-
-        $('#home-table1, #home-table2').DataTable({
-            searching: false,
-            paging: false,
-            info: false,
-            lengthChange: false,
-            ordering: false,
-            language: {
-                emptyTable: "Nessun dato presente nella tabella"
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + accessToken
             }
         });
-    })
-    .catch(err => {
-        $('#home-table1-body').html('<tr><td colspan="6">Errore nel caricamento dei visitatori</td></tr>');
-        $('#home-table2-body').html('<tr><td colspan="6">Errore nel caricamento dei visitatori</td></tr>');
-    });
+
+        if (!response.ok) {
+            throw new Error(`Errore nel recupero dei dati: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (todayVisitsDataInstace) {
+            todayVisitsDataInstace.destroy();
+            todayVisitsDataInstace = null;
+        }
+
+        if (futureVisitDatainstance) {
+            futureVisitDatainstance.destroy();
+            futureVisitDatainstance = null;
+        }
+
+        data.forEach(visit => {
+            if (new Date(visit.dataInizio) === today) {
+                todayVisits.push(visit);
+            }
+            else if (new Date(visit.dataInizio) > today) {
+                futureVisits.push(visit);
+            }
+        });
+
+        todayVisits.forEach(todayVisit => {
+            todayVisit.dataInizio = convertToItalianDate(todayVisit.dataInizio);
+            todayVisit.dataFine = convertToItalianDate(todayVisit.dataFine);
+
+        });
+
+        futureVisits.forEach(futureVisit => {
+            futureVisit.dataInizio = convertToItalianDate(futureVisit.dataInizio);
+            futureVisit.dataFine = convertToItalianDate(futureVisit.dataFine);
+
+        });
+
+        todayVisitsDataInstace = new DataTable("#requester-home-table-visite-odierne", {
+            data: todayVisits,
+            destroy: true,
+            columns: [
+                { data: "nome" },
+                { data: "cognome" },
+                { data: "dataInizio" },
+                { data: "oraInizio" },
+                { data: "dataFine" },
+                { data: "oraFine" }
+            ],
+            lengthChange: false,
+            pageLength: 8,
+            autoWidth: false,
+            responsive: true,
+            language: {
+                info: "Pagina _PAGE_ di _PAGES_",
+                infoEmpty: "Nessun elemento disponibile",
+                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                search: "Cerca:",
+                paginate: {
+                    next: ">",
+                    previous: "<"
+                },
+                emptyTable: "Nessun dato presente nella tabella",
+                zeroRecords: "Nessun risultato trovato"
+            }
+        });
+
+        futureVisitDatainstance = new DataTable("#requester-home-table-visite-future", {
+            data: futureVisits,
+            destroy: true,
+            columns: [
+                { data: "nome" },
+                { data: "cognome" },
+                { data: "dataInizio" },
+                { data: "oraInizio" },
+                { data: "dataFine" },
+                { data: "oraFine" }
+            ],
+            lengthChange: false,
+            pageLength: 8,
+            autoWidth: false,
+            responsive: true,
+            language: {
+                info: "Pagina _PAGE_ di _PAGES_",
+                infoEmpty: "Nessun elemento disponibile",
+                infoFiltered: "(filtrati da _MAX_ elementi totali)",
+                search: "Cerca:",
+                paginate: {
+                    next: ">",
+                    previous: "<"
+                },
+                emptyTable: "Nessun dato presente nella tabella",
+                zeroRecords: "Nessun risultato trovato"
+            }
+        });
+    }
+    catch {
+        console.error("Errore nella creazione della tabella:", error.message);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
